@@ -9,7 +9,7 @@ public enum AttackState
 { 
     Idle,
     Attack,
-    Defend,
+    Block,
     Parrry
 }
 
