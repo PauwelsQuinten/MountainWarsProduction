@@ -26,7 +26,7 @@ public class CharacterController : MonoBehaviour
 
     private void AimInputRef_ValueChanged(object sender, AimInputEventArgs e)
     {
-        if (_stateManager.AttackState == AttackState.Block) return;
+        if (_stateManager.AttackState == AttackState.Block || _stateManager.AttackState == AttackState.Parrry) return;
         if (_stateManager.AttackState != AttackState.Idle && _AimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
         else if(_stateManager.AttackState != AttackState.Attack && _AimInputRef.Value != Vector2.zero) _stateManager.AttackState = AttackState.Attack;
         _AimInputRef.variable.State = _stateManager.AttackState;
@@ -43,6 +43,21 @@ public class CharacterController : MonoBehaviour
         if (ctx.action.WasPressedThisFrame())
         {
             _stateManager.AttackState = AttackState.Block;
+        }
+
+        if (ctx.action.WasReleasedThisFrame())
+        {
+            _stateManager.AttackState = AttackState.Idle;
+        }
+
+        _AimInputRef.variable.State = _stateManager.AttackState;
+    }
+
+    public void ProccesSetParryInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.action.WasPressedThisFrame())
+        {
+            _stateManager.AttackState = AttackState.Parrry;
         }
 
         if (ctx.action.WasReleasedThisFrame())
