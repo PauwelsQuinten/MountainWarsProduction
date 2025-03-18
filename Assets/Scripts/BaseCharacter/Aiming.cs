@@ -15,9 +15,29 @@ public class Aiming : MonoBehaviour
         _vec2AimingInput.variable.ValueChanged += Variable_ValueChanged;
     }
 
-    private void Variable_ValueChanged(object sender, System.EventArgs e)
+    private void Variable_ValueChanged(object sender, AimInputEventArgs e)
     {
-        
+        switch(e.ThisChanged)
+        {
+            case AimInputEventArgs.WhatChaned.Input:
+                OnInputChanged();
+                break;
+            case AimInputEventArgs.WhatChaned.State:
+                OnStateChanged();
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    private void OnInputChanged()
+    {
+
+    }
+     private void OnStateChanged()
+    {
+
     }
 
     
