@@ -1,10 +1,26 @@
 using TMPro;
+using System;
 using UnityEngine;
 
 public enum AimingInputState
 {
     Idle, Moving, Hold, Reset
 }
+
+public enum Direction
+{
+    ToRight, ToLeft, ToCenter
+}
+
+public class AimingOutputArgs : EventArgs
+{
+    public Direction Direction;
+    public AimingInputState AimingInputState;
+    //public Height AttackHeight;
+    public float Speed;
+    public float AngleTravelled;
+}
+
 public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
@@ -16,6 +32,7 @@ public class Aiming : MonoBehaviour
     private const float F_MIN_DIFF_BETWEEN_INPUT = 0.0225f;
     private const float F_MAX_TIME_NOT_MOVING = 0.20f;
     private float _fNotMovingTime = 0f;
+    private GameEvent _gameEvent;
     
     void Start()
     {
@@ -61,7 +78,7 @@ public class Aiming : MonoBehaviour
              _enmAimingInput = AimingInputState.Moving;
 
 
-        
+        _gameEvent.Raise(this, )
 
     }
 
