@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ public class CharacterController : MonoBehaviour
     private AimingInputReference _AimInputRef;
 
     private Vector2 _moveInput;
+    private Coroutine _resetAttackheight;
     private void Start()
     {
         _AimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
@@ -66,5 +68,38 @@ public class CharacterController : MonoBehaviour
         }
 
         _AimInputRef.variable.State = _stateManager.AttackState;
+    }
+
+    public void ProccesDodgeInput(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        //TODO add doge event
+    }
+
+    public void ProccesPickUpInput(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        //TODO add dodge event
+    }
+
+    public void ProccesAtackHeightInput(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        _stateManager.AttackHeight = AttackHeight.Head;
+
+        if (_resetAttackheight != null) StopCoroutine(_resetAttackheight);
+        _resetAttackheight = StartCoroutine(ResetAttackHeight());
+    }
+
+    public void ProssesLockShieldInput(InputAction.CallbackContext ctx)
+    {
+        if(!ctx.performed) return;
+        _stateManager.AttackState = AttackState.blockAttack;
+    }
+
+    private IEnumerator ResetAttackHeight()
+    {
+        yield return new WaitForSeconds(1);
+        _stateManager.AttackHeight = AttackHeight.Torso;
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static AimInputEventArgs;
 
 [CreateAssetMenu(fileName = "AimingInputVariable", menuName = "DataScripts / AimingInput Variable")]
 public class AimingInputVariable : ScriptableObject
@@ -20,7 +19,7 @@ public class AimingInputVariable : ScriptableObject
             if (_value != value)
             {
                 _value = value;
-                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = WhatChanged.Input });
+                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = AimInputEventArgs.WhatChanged.Input });
             }
         }
     }
@@ -33,19 +32,8 @@ public class AimingInputVariable : ScriptableObject
             if (_state != value)
             {
                 _state = value;
-                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = WhatChanged.State });
+                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = AimInputEventArgs.WhatChanged.State });
             }
         }
     }
 }
-
-public class AimInputEventArgs : EventArgs
-{
-    public WhatChanged ThisChanged;
-    public enum WhatChanged 
-    { 
-        Input,
-        State
-    }
-}
-
