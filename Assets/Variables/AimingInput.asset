@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c054497c081d12041bf32716b193ce0d, type: 3}
   m_Name: AimingInput
   m_EditorClassIdentifier: 
+  StateManager: {fileID: 0}
   _value: {x: 0, y: 0}
   _state: 0
