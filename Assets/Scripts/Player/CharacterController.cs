@@ -29,10 +29,14 @@ public class CharacterController : MonoBehaviour
     private void AimInputRef_ValueChanged(object sender, AimInputEventArgs e)
     {
         if (_stateManager.AttackState == AttackState.Block ||
-            _stateManager.AttackState == AttackState.Parrry || 
-            _stateManager.AttackState == AttackState.blockAttack) return;
+            _stateManager.AttackState == AttackState.Parrry ||
+            _stateManager.AttackState == AttackState.blockAttack)
+        {
+            _AimInputRef.variable.State = _stateManager.AttackState;
+            return;
+        }
 
-        if (_stateManager.AttackState != AttackState.Idle && _AimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
+            if (_stateManager.AttackState != AttackState.Idle && _AimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
         else if(_stateManager.AttackState != AttackState.Attack && _AimInputRef.Value != Vector2.zero) _stateManager.AttackState = AttackState.Attack;
 
         _AimInputRef.variable.State = _stateManager.AttackState;
@@ -57,7 +61,7 @@ public class CharacterController : MonoBehaviour
             {
                 _stateManager.AttackState = AttackState.Idle;
             }
-        } else _stateManager.AttackState = AttackState.Idle;
+        } else if(ctx.performed) _stateManager.AttackState = AttackState.Idle;
 
         _AimInputRef.variable.State = _stateManager.AttackState;
     }
@@ -101,7 +105,9 @@ public class CharacterController : MonoBehaviour
     public void ProssesLockShieldInput(InputAction.CallbackContext ctx)
     {
         if(!ctx.performed) return;
+        if (_stateManager.AttackState != AttackState.Block) return;
         _stateManager.AttackState = AttackState.blockAttack;
+        _AimInputRef.variable.State = _stateManager.AttackState;
     }
 
     private IEnumerator ResetAttackHeight()
