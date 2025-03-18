@@ -20,7 +20,7 @@ public class AimingInputVariable : ScriptableObject
             if (_value != value)
             {
                 _value = value;
-                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = WhatChanged.Input });
+                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = WhatChaned.Input });
             }
         }
     }
@@ -33,7 +33,7 @@ public class AimingInputVariable : ScriptableObject
             if (_state != value)
             {
                 _state = value;
-                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = WhatChanged.State });
+                ValueChanged?.Invoke(this, new AimInputEventArgs { ThisChanged = WhatChaned.State });
             }
         }
     }
@@ -41,8 +41,8 @@ public class AimingInputVariable : ScriptableObject
 
 public class AimInputEventArgs : EventArgs
 {
-    public WhatChanged ThisChanged;
-    public enum WhatChanged 
+    public WhatChaned ThisChanged;
+    public enum WhatChaned 
     { 
         Input,
         State
