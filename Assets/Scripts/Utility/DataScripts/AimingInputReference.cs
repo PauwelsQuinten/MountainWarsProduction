@@ -10,7 +10,7 @@ public class AimingInputReference
     public Vector2 constantValue;
     public AimingInputVariable variable;
 
-    public Vector3 Value
+    public Vector2 Value
     {
         get
         {
