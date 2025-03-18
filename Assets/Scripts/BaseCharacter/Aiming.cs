@@ -26,8 +26,7 @@ public class Aiming : MonoBehaviour
     private const float F_MAX_TIME_NOT_MOVING = 0.20f;
 
     private float _fNotMovingTime = 0f;
-    private float _fMovementSpeed = 0f;
-    private float _fMovedAngle = 0f;
+    private float _fMovingTime = 0f;
     
     void Start()
     {
@@ -38,11 +37,12 @@ public class Aiming : MonoBehaviour
     void Update()
     {
         CheckIfHoldingPosition();
+        UpdateMovingTime();
 
         if (_textMeshPro && _textMeshPro2 && _enmAimingInput != AimingInputState.Idle)
         {
             _textMeshPro2.text = $"{_refAimingInput.variable.value}";
-            Debug.Log($"{_enmAimingInput}");
+            //Debug.Log($"{_enmAimingInput}");
         }
             _textMeshPro.text = $"{_enmAimingInput}";
 
@@ -78,14 +78,12 @@ public class Aiming : MonoBehaviour
                 case AimingInputState.Hold:
                     _vec2Start = _refAimingInput.variable.value;
                     _enmAimingInput = AimingInputState.Moving;
+                    _fMovingTime = 0f;
+
                     break;
             }
-
-           
         }
-
-
-        
+      
     }
 
     private void OnStateChanged()
@@ -134,26 +132,59 @@ public class Aiming : MonoBehaviour
         {
             _enmAimingInput = AimingInputState.Hold;
             _fNotMovingTime = 0f;
-            if (_refAimingInput.variable.State == AttackState.Attack)
-                SendPackage();
-
+            var dir = CalculateStartDirection();
+            Debug.Log($"{dir}");
+            var angl = CalculateAngleLength();
+            Debug.Log($"distance : {angl}");
+            var speed = CalculateSwingSpeed(angl);
+            Debug.Log($"speed : {speed}");
+            //if (_refAimingInput.variable.State == AttackState.Attack)
+            //    SendPackage();
+            _vec2Start = _refAimingInput.variable.value;
+            _fMovingTime = 0f;
         }
 
     }
 
     private void SendPackage()
     {
+        Direction direction = CalculateStartDirection();
         var package = new AimingOutputArgs
         {
-            AimingInputState = 
+            AimingInputState =
                 _enmAimingInput
-                ,AngleTravelled = 0f
-                ,AttackHeight = AttackHeight.Torso
-                ,Direction = Direction.ToRight
-                ,Speed = 0f
+                ,
+            AngleTravelled = CalculateAngleLength()
+                ,
+            AttackHeight = _refAimingInput.variable.StateManager.AttackHeight
+                ,
+            Direction = CalculateStartDirection()
+                ,
+            Speed = 0f
         };
         _gameEvent.Raise(this, package);
     }
 
+    private Direction CalculateStartDirection()
+    {
+        float cross = _vec2Start.x * _refAimingInput.variable.value.y - _vec2Start.y * _refAimingInput.variable.value.x;
+        if (cross == 0f)
+            return Direction.ToCenter;
+        return cross > 0 ? Direction.ToLeft : Direction.ToRight;
+    }
 
+    private float CalculateAngleLength()
+    {
+        return Vector2.Angle(_vec2Start, _refAimingInput.variable.value);
+    }
+
+    private void UpdateMovingTime()
+    {
+        _fMovingTime += Time.deltaTime;
+    }
+     private float CalculateSwingSpeed(float length)
+    {
+        return (length *1/ _fMovingTime) * 0.01f;
+    }
+    
 }
