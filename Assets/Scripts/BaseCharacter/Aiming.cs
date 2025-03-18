@@ -2,19 +2,23 @@ using UnityEngine;
 
 public enum AimingInputState
 {
-
+    Idle, Moving, Hold, Reset
 }
 public class Aiming : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private AimingInputReference _vec2AimingInput;
+    private Vector2 _previousDirection = Vector2.zero;
+    private AimingInputState _enmAimingInput = AimingInputState.Idle;
     void Start()
+    {
+        _enmAimingInput = AimingInputState.Idle;
+        _vec2AimingInput.variable.ValueChanged += Variable_ValueChanged;
+    }
+
+    private void Variable_ValueChanged(object sender, System.EventArgs e)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
