@@ -9,15 +9,31 @@ public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
+    [SerializeField] private TextMeshProUGUI _textMeshPro2;
     private Vector2 _vec2previousDirection = Vector2.zero;
     private AttackState _enmCurrentAttackState = AttackState.Idle;
     private AimingInputState _enmAimingInput = AimingInputState.Idle;
-    private const float F_MIN_DIFF_BETWEEN_INPUT = 0.00125f;
+    private const float F_MIN_DIFF_BETWEEN_INPUT = 0.0225f;
+    private const float F_MAX_TIME_NOT_MOVING = 0.20f;
+    private float _fNotMovingTime = 0f;
     
     void Start()
     {
         _enmAimingInput = AimingInputState.Idle;
         _refAimingInput.variable.ValueChanged += Variable_ValueChanged;
+    }
+
+    void Update()
+    {
+        CheckIfHoldingPosition();
+
+        if (_textMeshPro && _textMeshPro2 && _enmAimingInput != AimingInputState.Idle)
+        {
+            _textMeshPro2.text = $"{_refAimingInput.variable.value}";
+            Debug.Log($"{_enmAimingInput}");
+        }
+            _textMeshPro.text = $"{_enmAimingInput}";
+
     }
 
     private void Variable_ValueChanged(object sender, AimInputEventArgs e)
@@ -38,35 +54,15 @@ public class Aiming : MonoBehaviour
 
     private void OnInputChanged()
     {
-        switch (_enmAimingInput)
-        {
-            case AimingInputState.Idle:
-                if (DetectAnalogMovement())
-                {
-                    _enmAimingInput = AimingInputState.Moving;
-                }
-                break;
+        if (_refAimingInput.variable.value == Vector2.zero)
+             _enmAimingInput = AimingInputState.Idle;
 
-            case AimingInputState.Moving:
-                if (!DetectAnalogMovement())
-                {
-                    _enmAimingInput = 
-                        (_refAimingInput.variable.value == Vector2.zero)? AimingInputState.Reset : AimingInputState.Moving;
+        else if (DetectAnalogMovement())
+             _enmAimingInput = AimingInputState.Moving;
 
-                }
-                break;
 
-            case AimingInputState.Hold:
-                break;
+        
 
-            case AimingInputState.Reset:
-                break;
-            
-            default:
-                break;
-        }
-        if (_textMeshPro)
-            _textMeshPro.text = $"{_enmAimingInput}";
     }
 
     private void OnStateChanged()
@@ -90,6 +86,33 @@ public class Aiming : MonoBehaviour
        
         _vec2previousDirection = _refAimingInput.variable.value;
         return value;
+    }
+
+    private void CheckIfHoldingPosition()
+    {
+        switch( _enmAimingInput )
+        {
+            case AimingInputState.Idle:
+            case AimingInputState.Hold:
+                 _fNotMovingTime = 0f;
+            break;
+
+            case AimingInputState.Moving:
+                if (!DetectAnalogMovement())
+                {
+                    _fNotMovingTime += Time.deltaTime;
+                }
+                else
+                    _fNotMovingTime = 0f;
+            break;
+        }
+
+        if (_fNotMovingTime >= F_MAX_TIME_NOT_MOVING)
+        {
+            _enmAimingInput = AimingInputState.Hold;
+            _fNotMovingTime = 0f;
+        }
+
     }
 
 
