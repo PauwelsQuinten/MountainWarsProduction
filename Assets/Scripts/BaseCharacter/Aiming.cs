@@ -12,27 +12,22 @@ public enum Direction
     ToRight, ToLeft, ToCenter
 }
 
-public class AimingOutputArgs : EventArgs
-{
-    public Direction Direction;
-    public AimingInputState AimingInputState;
-    //public Height AttackHeight;
-    public float Speed;
-    public float AngleTravelled;
-}
-
 public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
+    [SerializeField] private GameEvent _gameEvent;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
     private Vector2 _vec2previousDirection = Vector2.zero;
+    private Vector2 _vec2Start = Vector2.zero;
     private AttackState _enmCurrentAttackState = AttackState.Idle;
     private AimingInputState _enmAimingInput = AimingInputState.Idle;
     private const float F_MIN_DIFF_BETWEEN_INPUT = 0.0225f;
     private const float F_MAX_TIME_NOT_MOVING = 0.20f;
+
     private float _fNotMovingTime = 0f;
-    private GameEvent _gameEvent;
+    private float _fMovementSpeed = 0f;
+    private float _fMovedAngle = 0f;
     
     void Start()
     {
@@ -72,14 +67,25 @@ public class Aiming : MonoBehaviour
     private void OnInputChanged()
     {
         if (_refAimingInput.variable.value == Vector2.zero)
-             _enmAimingInput = AimingInputState.Idle;
+            _enmAimingInput = AimingInputState.Idle;
 
         else if (DetectAnalogMovement())
-             _enmAimingInput = AimingInputState.Moving;
+        {
+
+            switch(_enmAimingInput)
+            {
+                case AimingInputState.Idle:
+                case AimingInputState.Hold:
+                    _vec2Start = _refAimingInput.variable.value;
+                    _enmAimingInput = AimingInputState.Moving;
+                    break;
+            }
+
+           
+        }
 
 
-        _gameEvent.Raise(this, )
-
+        
     }
 
     private void OnStateChanged()
@@ -128,10 +134,26 @@ public class Aiming : MonoBehaviour
         {
             _enmAimingInput = AimingInputState.Hold;
             _fNotMovingTime = 0f;
+            if (_refAimingInput.variable.State == AttackState.Attack)
+                SendPackage();
+
         }
 
     }
 
+    private void SendPackage()
+    {
+        var package = new AimingOutputArgs
+        {
+            AimingInputState = 
+                _enmAimingInput
+                ,AngleTravelled = 0f
+                ,AttackHeight = AttackHeight.Torso
+                ,Direction = Direction.ToRight
+                ,Speed = 0f
+        };
+        _gameEvent.Raise(this, package);
+    }
 
 
 }
