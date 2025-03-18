@@ -1,16 +1,19 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [Header("State Manager")]
+    [SerializeField]
+    private StateManager _stateManager;
 
-    // Update is called once per frame
-    void Update()
+    [Header("Variables")]
+    [SerializeField]
+    private AimingInputReference _AimInputRef;
+
+    public void ProcessAimInput(InputAction.CallbackContext ctx)
     {
-        
+        _AimInputRef.variable.value = ctx.ReadValue<Vector2>();
+        _AimInputRef.variable.State = _stateManager.AttackState;
     }
 }
