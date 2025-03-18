@@ -6,6 +6,19 @@ public class StateManager : MonoBehaviour
     public AttackHeight AttackHeight;
 }
 
+public enum Orientation 
+{ 
+    North,
+    NorthEast,
+    East,
+    SouthEast,
+    South,
+    SouthWest,
+    West,
+    NorthWest
+}
+
+
 public enum AttackHeight
 {
     Head,

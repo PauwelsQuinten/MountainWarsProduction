@@ -5,6 +5,7 @@ using UnityEngine;
 public class AimingInputVariable : ScriptableObject
 {
     public event EventHandler<AimInputEventArgs> ValueChanged;
+    public StateManager StateManager;
 
     [SerializeField]
     private Vector2 _value;
