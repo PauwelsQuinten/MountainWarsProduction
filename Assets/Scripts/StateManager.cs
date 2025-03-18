@@ -3,14 +3,23 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
     public AttackState AttackState;
+    public AttackHeight AttackHeight;
 }
+
+public enum AttackHeight
+{
+    Head,
+    Torso
+}
+
 
 public enum AttackState 
 { 
     Idle,
     Attack,
     Block,
-    Parrry
+    Parrry,
+    blockAttack
 }
 
 public enum CurrentWeapon 
