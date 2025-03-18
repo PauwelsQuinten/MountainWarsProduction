@@ -18,19 +18,23 @@ public class CharacterController : MonoBehaviour
     private void Start()
     {
         _AimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
+        _AimInputRef.variable.StateManager = _stateManager;
     }
 
     public void ProcessAimInput(InputAction.CallbackContext ctx)
     {
         _AimInputRef.variable.value = ctx.ReadValue<Vector2>();
-        _AimInputRef.variable.State = _stateManager.AttackState;
     }
 
     private void AimInputRef_ValueChanged(object sender, AimInputEventArgs e)
     {
-        if (_stateManager.AttackState == AttackState.Block || _stateManager.AttackState == AttackState.Parrry) return;
+        if (_stateManager.AttackState == AttackState.Block ||
+            _stateManager.AttackState == AttackState.Parrry || 
+            _stateManager.AttackState == AttackState.blockAttack) return;
+
         if (_stateManager.AttackState != AttackState.Idle && _AimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
         else if(_stateManager.AttackState != AttackState.Attack && _AimInputRef.Value != Vector2.zero) _stateManager.AttackState = AttackState.Attack;
+
         _AimInputRef.variable.State = _stateManager.AttackState;
     }
 
@@ -42,15 +46,18 @@ public class CharacterController : MonoBehaviour
 
     public void ProccesSetBlockInput(InputAction.CallbackContext ctx)
     {
-        if (ctx.action.WasPressedThisFrame())
+        if (_stateManager.AttackState != AttackState.blockAttack) 
         {
-            _stateManager.AttackState = AttackState.Block;
-        }
+            if (ctx.action.WasPressedThisFrame())
+            {
+                _stateManager.AttackState = AttackState.Block;
+            }
 
-        if (ctx.action.WasReleasedThisFrame())
-        {
-            _stateManager.AttackState = AttackState.Idle;
-        }
+            if (ctx.action.WasReleasedThisFrame())
+            {
+                _stateManager.AttackState = AttackState.Idle;
+            }
+        } else _stateManager.AttackState = AttackState.Idle;
 
         _AimInputRef.variable.State = _stateManager.AttackState;
     }
@@ -76,7 +83,7 @@ public class CharacterController : MonoBehaviour
         //TODO add doge event
     }
 
-    public void ProccesPickUpInput(InputAction.CallbackContext ctx)
+    public void ProccesInteractInput(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
         //TODO add dodge event
