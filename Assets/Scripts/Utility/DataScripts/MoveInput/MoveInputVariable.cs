@@ -6,6 +6,7 @@ public class MovingInputVariable : ScriptableObject
 {
     public event EventHandler<EventArgs> ValueChanged;
     public StateManager StateManager;
+    public float SpeedMultiplier;
 
     [SerializeField]
     private Vector2 _value;

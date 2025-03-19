@@ -17,6 +17,8 @@ public class CharacterController : MonoBehaviour
 
     private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
+
+    private bool _wasSprinting;
     private void Start()
     {
         _aimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
@@ -85,8 +87,19 @@ public class CharacterController : MonoBehaviour
 
     public void ProccesDodgeInput(InputAction.CallbackContext ctx)
     {
-        if (!ctx.performed) return;
-        //TODO add doge event
+        if (ctx.performed)
+        {
+            _wasSprinting = true;
+            _moveInputRef.variable.SpeedMultiplier = 1.5f;
+        }
+        if (ctx.canceled && _wasSprinting)
+        {
+            _wasSprinting = false;
+            _moveInputRef.variable.SpeedMultiplier = 1;
+            return;
+        }
+
+            //TODO add doge event
     }
 
     public void ProccesInteractInput(InputAction.CallbackContext ctx)

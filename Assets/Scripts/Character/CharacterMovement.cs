@@ -6,6 +6,8 @@ public class CharacterMovement : MonoBehaviour
 {
     [SerializeField]
     private MovingInputReference _moveInput;
+    [SerializeField]
+    private float _speed;
 
     private Rigidbody2D _rb;
     private StateManager _stateManager;
@@ -21,7 +23,10 @@ public class CharacterMovement : MonoBehaviour
     private void MoveInput_ValueChanged(object sender, EventArgs e)
     {
         _movedirection = _moveInput.Value;
+    }
 
-        _rb.MovePosition(new Vector2(transform.position.x, transform.position.y) + (_movedirection * 5) * Time.deltaTime);
+    private void FixedUpdate()
+    {
+        _rb.MovePosition(new Vector2(transform.position.x, transform.position.y) + (_movedirection * (_speed * _moveInput.variable.SpeedMultiplier)) * Time.deltaTime);
     }
 }
