@@ -629,6 +629,7 @@ MonoBehaviour:
     useConstant: 0
     constantValue: {x: 0, y: 0}
     variable: {fileID: 11400000, guid: c55f2ba539c90fe47aa63c8b3747c837, type: 2}
+  _speed: 5
 --- !u!50 &837515122
 Rigidbody2D:
   serializedVersion: 5

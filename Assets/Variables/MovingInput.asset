@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: MovingInput
   m_EditorClassIdentifier: 
   StateManager: {fileID: 0}
+  SpeedMultiplier: 1
   _value: {x: 0, y: 0}
