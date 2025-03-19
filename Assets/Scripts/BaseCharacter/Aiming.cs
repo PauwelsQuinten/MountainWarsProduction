@@ -1,6 +1,7 @@
 using TMPro;
 using System;
 using UnityEngine;
+using System.Collections;
 
 public enum AimingInputState
 {
@@ -10,6 +11,11 @@ public enum AimingInputState
 public enum Direction
 {
     ToRight, ToLeft, ToCenter
+}
+
+public enum AttackSignal
+{
+    Idle, Stab, Feint, Swing
 }
 
 public class Aiming : MonoBehaviour
@@ -22,8 +28,13 @@ public class Aiming : MonoBehaviour
     private Vector2 _vec2Start = Vector2.zero;
     private AttackState _enmCurrentAttackState = AttackState.Idle;
     private AimingInputState _enmAimingInput = AimingInputState.Idle;
+    private AttackSignal _enmAttackSignal = AttackSignal.Swing;
     private const float F_MIN_DIFF_BETWEEN_INPUT = 0.0225f;
     private const float F_MAX_TIME_NOT_MOVING = 0.20f;
+    private const float F_MIN_ACCEPTED_VALUE = 0.40f;
+    private const float F_TIME_BETWEEN_SWING = 0.40f;
+    private const float F_TIME_BETWEEN_STAB = 0.20f;
+    private const float F_MAX_ALLOWED_ANGLE_ON_ORIENTATION = 17f;
 
     private float _fNotMovingTime = 0f;
     private float _fMovingTime = 0f;
@@ -66,20 +77,42 @@ public class Aiming : MonoBehaviour
 
     private void OnInputChanged()
     {
-        if (_refAimingInput.variable.value == Vector2.zero)
-            _enmAimingInput = AimingInputState.Idle;
+        if (_enmAimingInput == AimingInputState.Reset)
+            return;
 
-        else if (DetectAnalogMovement())
+        float inputLength = _refAimingInput.variable.value.magnitude;
+
+        if (_refAimingInput.variable.value == Vector2.zero || inputLength < F_MIN_ACCEPTED_VALUE)
         {
+            _enmAimingInput = AimingInputState.Idle;
+            _enmAttackSignal = AttackSignal.Idle;
+        }
 
-            switch(_enmAimingInput)
+
+        else if (inputLength >= 0.9f 
+            && _refAimingInput.variable.StateManager.Orientation == CalculateOrientationOfInput(_refAimingInput.variable.value)
+            && _refAimingInput.variable.State == AttackState.Attack
+            && _enmAttackSignal == AttackSignal.Idle
+            && CalculateAngleLengthDegree() < F_MAX_ALLOWED_ANGLE_ON_ORIENTATION)
+        {
+            _enmAttackSignal = AttackSignal.Stab;
+            StartCoroutine(ResetAttack(F_TIME_BETWEEN_STAB));
+
+            Debug.Log("Stab");
+            //SendPackage(_refAimingInput.variable.State);
+        }
+
+
+        else if (DetectAnalogMovement() && _enmAttackSignal == AttackSignal.Idle)
+        {
+            switch (_enmAimingInput)
             {
                 case AimingInputState.Idle:
                 case AimingInputState.Hold:
                     _vec2Start = _refAimingInput.variable.value;
                     _enmAimingInput = AimingInputState.Moving;
                     _fMovingTime = 0f;
-
+                    _vec2previousDirection = Vector2.zero;
                     break;
             }
         }
@@ -92,7 +125,6 @@ public class Aiming : MonoBehaviour
         {
             _enmCurrentAttackState = _refAimingInput.variable.State;
         }
-
 
     }
 
@@ -113,6 +145,8 @@ public class Aiming : MonoBehaviour
     {
         switch( _enmAimingInput )
         {
+            case AimingInputState.Reset:
+                return;
             case AimingInputState.Idle:
             case AimingInputState.Hold:
                  _fNotMovingTime = 0f;
@@ -122,6 +156,7 @@ public class Aiming : MonoBehaviour
                 if (!DetectAnalogMovement())
                 {
                     _fNotMovingTime += Time.deltaTime;
+                    //Debug.Log($"no movement detected : {_fNotMovingTime}");
                 }
                 else
                     _fNotMovingTime = 0f;
@@ -130,33 +165,51 @@ public class Aiming : MonoBehaviour
 
         if (_fNotMovingTime >= F_MAX_TIME_NOT_MOVING)
         {
-            _enmAimingInput = AimingInputState.Hold;
             _fNotMovingTime = 0f;
-            //var dir = CalculateSwingDirection();
-            //Debug.Log($"{dir}");
-            //var angl = CalculateAngleLength();
-            //Debug.Log($"distance : {angl}");
-            //var speed = CalculateSwingSpeed(angl);
-            //Debug.Log($"speed : {speed}");
-            //var feint = IsFeintMovement();
-            //Debug.Log($"speed : {feint}");
-            if (_refAimingInput.variable.State == AttackState.Attack)
-                SendPackage();
+
+            switch(_refAimingInput.variable.State)
+            {
+                case AttackState.Attack:
+                    _enmAimingInput = AimingInputState.Reset;
+                    StartCoroutine(ResetAttack(F_TIME_BETWEEN_SWING));
+                    break;
+
+                case AttackState.Block:
+                    _enmAimingInput = AimingInputState.Hold;
+
+                    break;
+
+                default:
+                    break;
+            }
+            
+            var dir = CalculateSwingDirection();
+            Debug.Log($"{dir}");
+            var angl = CalculateAngleLengthDegree();
+            Debug.Log($"distance : {angl}");
+            var speed = CalculateSwingSpeed(angl);
+            Debug.Log($"speed : {speed}");
+            var feint = IsFeintMovement();
+            Debug.Log($"signal : {feint}");
+             
+             //SendPackage(_refAimingInput.variable.State);
             _vec2Start = _refAimingInput.variable.value;
             _fMovingTime = 0f;
+
+           
         }
 
     }
 
-    private void SendPackage()
+    private void SendPackage(AttackState attackState)
     {
         Direction direction = CalculateSwingDirection();
-        float distance = CalculateAngleLength();
+        float distance = CalculateAngleLengthDegree();
         var package = new AimingOutputArgs
         {
             AimingInputState = _enmAimingInput
                 ,
-            AngleTravelled = CalculateAngleLength()
+            AngleTravelled = CalculateAngleLengthDegree()
                 ,
             AttackHeight = _refAimingInput.variable.StateManager.AttackHeight
                 ,
@@ -164,7 +217,7 @@ public class Aiming : MonoBehaviour
                 ,
             Speed = CalculateSwingSpeed(distance)
                 ,
-            IsFeint = IsFeintMovement()
+            AttackSignal = _enmAttackSignal
         };
         _gameEvent.Raise(this, package);
     }
@@ -177,9 +230,9 @@ public class Aiming : MonoBehaviour
         return cross > 0 ? Direction.ToLeft : Direction.ToRight;
     }
 
-    private float CalculateAngleLength()
+    private float CalculateAngleLengthDegree()
     {
-        Debug.Log($"Distance calculation. start = {_vec2Start}, end = {_refAimingInput.variable.value}");
+        //Debug.Log($"Distance calculation. start = {_vec2Start}, end = {_refAimingInput.variable.value}");
         return Vector2.Angle(_vec2Start, _refAimingInput.variable.value);
     }
 
@@ -187,19 +240,43 @@ public class Aiming : MonoBehaviour
     {
         _fMovingTime += Time.deltaTime;
     }
+
      private float CalculateSwingSpeed(float length)
     {
         return (length *1/ _fMovingTime) * 0.01f;
     }
-
-    private bool IsFeintMovement()
-    {
-        float orientRad = (int)_refAimingInput.variable.StateManager.Orientation * Mathf.Deg2Rad;
-        Vector2 orientVec = 
-            new Vector2(Mathf.Cos(orientRad), Mathf.Sin(orientRad));
-
-        return !(Vector2.Dot((orientVec - _vec2Start).normalized, (_refAimingInput.variable.value - orientVec).normalized) < 0f
-            && Vector2.Dot((_vec2Start - orientVec).normalized, (_refAimingInput.variable.value - _vec2Start).normalized) < 0f);
-    }
     
+     private float CalculateAngleOfInput(Vector2 direction)
+    {
+        return Mathf.Atan2(direction.y, direction.x);
+    }
+     private Orientation CalculateOrientationOfInput(Vector2 direction)
+    {
+        //Debug.Log($"{Mathf.Atan2(_refAimingInput.variable.value.y, _refAimingInput.variable.value.x)}");
+        float angle = CalculateAngleOfInput(direction) * Mathf.Rad2Deg;
+        if (angle == 0)
+            return Orientation.East;
+
+        int newAngle = (int) angle / 45;
+
+        return (Orientation)(newAngle * 45) ;
+    }
+
+    private AttackSignal IsFeintMovement()
+    {
+        var startAngleRad = CalculateAngleOfInput(_vec2Start);
+        var endAngleRad = CalculateAngleOfInput(_refAimingInput.variable.value);
+        var orientAngleRad = (int)_refAimingInput.variable.StateManager.Orientation * Mathf.Deg2Rad;
+
+        if (orientAngleRad > startAngleRad && orientAngleRad < endAngleRad)
+            return AttackSignal.Feint;
+        return AttackSignal.Swing;
+    }
+
+    private IEnumerator ResetAttack(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _enmAimingInput = AimingInputState.Idle;
+    }
+
 }
