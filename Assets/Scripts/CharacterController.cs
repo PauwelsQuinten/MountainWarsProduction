@@ -11,19 +11,22 @@ public class CharacterController : MonoBehaviour
 
     [Header("Variables")]
     [SerializeField]
-    private AimingInputReference _AimInputRef;
+    private AimingInputReference _aimInputRef;
+    [SerializeField]
+    private MovingInputReference _moveInputRef;
 
     private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
     private void Start()
     {
-        _AimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
-        _AimInputRef.variable.StateManager = _stateManager;
+        _aimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
+        _aimInputRef.variable.StateManager = _stateManager;
+        _moveInputRef.variable.StateManager = _stateManager;
     }
 
     public void ProcessAimInput(InputAction.CallbackContext ctx)
     {
-        _AimInputRef.variable.value = ctx.ReadValue<Vector2>();
+        _aimInputRef.variable.value = ctx.ReadValue<Vector2>();
     }
 
     private void AimInputRef_ValueChanged(object sender, AimInputEventArgs e)
@@ -32,20 +35,19 @@ public class CharacterController : MonoBehaviour
             _stateManager.AttackState == AttackState.Parrry ||
             _stateManager.AttackState == AttackState.blockAttack)
         {
-            _AimInputRef.variable.State = _stateManager.AttackState;
+            _aimInputRef.variable.State = _stateManager.AttackState;
             return;
         }
 
-            if (_stateManager.AttackState != AttackState.Idle && _AimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
-        else if(_stateManager.AttackState != AttackState.Attack && _AimInputRef.Value != Vector2.zero) _stateManager.AttackState = AttackState.Attack;
+            if (_stateManager.AttackState != AttackState.Idle && _aimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
+        else if(_stateManager.AttackState != AttackState.Attack && _aimInputRef.Value != Vector2.zero) _stateManager.AttackState = AttackState.Attack;
 
-        _AimInputRef.variable.State = _stateManager.AttackState;
+        _aimInputRef.variable.State = _stateManager.AttackState;
     }
 
     public void ProccesMoveInput(InputAction.CallbackContext ctx)
     {
-        _moveInput = ctx.ReadValue<Vector2>();
-        //TODO call move funtion trough event?
+        _moveInputRef.variable.value = ctx.ReadValue<Vector2>();
     }
 
     public void ProccesSetBlockInput(InputAction.CallbackContext ctx)
@@ -63,7 +65,7 @@ public class CharacterController : MonoBehaviour
             }
         } else if(ctx.performed) _stateManager.AttackState = AttackState.Idle;
 
-        _AimInputRef.variable.State = _stateManager.AttackState;
+        _aimInputRef.variable.State = _stateManager.AttackState;
     }
 
     public void ProccesSetParryInput(InputAction.CallbackContext ctx)
@@ -78,7 +80,7 @@ public class CharacterController : MonoBehaviour
             _stateManager.AttackState = AttackState.Idle;
         }
 
-        _AimInputRef.variable.State = _stateManager.AttackState;
+        _aimInputRef.variable.State = _stateManager.AttackState;
     }
 
     public void ProccesDodgeInput(InputAction.CallbackContext ctx)
@@ -107,7 +109,7 @@ public class CharacterController : MonoBehaviour
         if(!ctx.performed) return;
         if (_stateManager.AttackState != AttackState.Block) return;
         _stateManager.AttackState = AttackState.blockAttack;
-        _AimInputRef.variable.State = _stateManager.AttackState;
+        _aimInputRef.variable.State = _stateManager.AttackState;
     }
 
     private IEnumerator ResetAttackHeight()
