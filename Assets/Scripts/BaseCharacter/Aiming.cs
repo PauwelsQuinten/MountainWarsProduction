@@ -132,14 +132,16 @@ public class Aiming : MonoBehaviour
         {
             _enmAimingInput = AimingInputState.Hold;
             _fNotMovingTime = 0f;
-            var dir = CalculateStartDirection();
-            Debug.Log($"{dir}");
-            var angl = CalculateAngleLength();
-            Debug.Log($"distance : {angl}");
-            var speed = CalculateSwingSpeed(angl);
-            Debug.Log($"speed : {speed}");
-            //if (_refAimingInput.variable.State == AttackState.Attack)
-            //    SendPackage();
+            //var dir = CalculateSwingDirection();
+            //Debug.Log($"{dir}");
+            //var angl = CalculateAngleLength();
+            //Debug.Log($"distance : {angl}");
+            //var speed = CalculateSwingSpeed(angl);
+            //Debug.Log($"speed : {speed}");
+            //var feint = IsFeintMovement();
+            //Debug.Log($"speed : {feint}");
+            if (_refAimingInput.variable.State == AttackState.Attack)
+                SendPackage();
             _vec2Start = _refAimingInput.variable.value;
             _fMovingTime = 0f;
         }
@@ -148,24 +150,26 @@ public class Aiming : MonoBehaviour
 
     private void SendPackage()
     {
-        Direction direction = CalculateStartDirection();
+        Direction direction = CalculateSwingDirection();
+        float distance = CalculateAngleLength();
         var package = new AimingOutputArgs
         {
-            AimingInputState =
-                _enmAimingInput
+            AimingInputState = _enmAimingInput
                 ,
             AngleTravelled = CalculateAngleLength()
                 ,
             AttackHeight = _refAimingInput.variable.StateManager.AttackHeight
                 ,
-            Direction = CalculateStartDirection()
+            Direction = CalculateSwingDirection()
                 ,
-            Speed = 0f
+            Speed = CalculateSwingSpeed(distance)
+                ,
+            IsFeint = IsFeintMovement()
         };
         _gameEvent.Raise(this, package);
     }
 
-    private Direction CalculateStartDirection()
+    private Direction CalculateSwingDirection()
     {
         float cross = _vec2Start.x * _refAimingInput.variable.value.y - _vec2Start.y * _refAimingInput.variable.value.x;
         if (cross == 0f)
@@ -175,6 +179,7 @@ public class Aiming : MonoBehaviour
 
     private float CalculateAngleLength()
     {
+        Debug.Log($"Distance calculation. start = {_vec2Start}, end = {_refAimingInput.variable.value}");
         return Vector2.Angle(_vec2Start, _refAimingInput.variable.value);
     }
 
@@ -185,6 +190,16 @@ public class Aiming : MonoBehaviour
      private float CalculateSwingSpeed(float length)
     {
         return (length *1/ _fMovingTime) * 0.01f;
+    }
+
+    private bool IsFeintMovement()
+    {
+        float orientRad = (int)_refAimingInput.variable.StateManager.Orientation * Mathf.Deg2Rad;
+        Vector2 orientVec = 
+            new Vector2(Mathf.Cos(orientRad), Mathf.Sin(orientRad));
+
+        return !(Vector2.Dot((orientVec - _vec2Start).normalized, (_refAimingInput.variable.value - orientVec).normalized) < 0f
+            && Vector2.Dot((_vec2Start - orientVec).normalized, (_refAimingInput.variable.value - _vec2Start).normalized) < 0f);
     }
     
 }

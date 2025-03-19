@@ -8,6 +8,7 @@ namespace UnityEngine
         public AttackHeight AttackHeight;
         public float Speed;
         public float AngleTravelled;
+        public bool IsFeint;
     }
 
 
