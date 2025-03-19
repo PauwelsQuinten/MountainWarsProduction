@@ -2,14 +2,14 @@ namespace UnityEngine
 {
     public enum Orientation
     {
-        North,
-        NorthEast,
-        East,
-        SouthEast,
-        South,
-        SouthWest,
-        West,
-        NorthWest
+        North = 90,
+        NorthEast = 45,
+        East = 0,
+        SouthEast = -45,
+        South = -90,
+        SouthWest = -135,
+        West = 180,
+        NorthWest = 135
     }
 
 
