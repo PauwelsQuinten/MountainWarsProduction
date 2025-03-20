@@ -468,10 +468,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1810299841}
-  - component: {fileID: 1810299840}
   - component: {fileID: 1810299842}
   - component: {fileID: 1810299843}
+  - component: {fileID: 1810299840}
   - component: {fileID: 1810299844}
+  - component: {fileID: 1810299846}
+  - component: {fileID: 1810299845}
   m_Layer: 0
   m_Name: AimingTest
   m_TagString: Untagged
@@ -495,7 +497,7 @@ MonoBehaviour:
     useConstant: 0
     constantValue: {x: 0, y: 0}
     variable: {fileID: 11400000, guid: c07edaff124f1b04e8b8a49de23949a5, type: 2}
-  _gameEvent: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  _doAttack: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   _textMeshPro: {fileID: 1851133575}
   _textMeshPro2: {fileID: 465747109}
 --- !u!4 &1810299841
@@ -664,7 +666,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackState: 0
   AttackHeight: 0
-  Orientation: 0
+  Orientation: 90
+--- !u!114 &1810299845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810299839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beea91935ee6d2746a0a632c4f077ee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Events:
+  - {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  Responses:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1810299846}
+        m_TargetAssemblyTypeName: Attacking, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1810299846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810299839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f52033f6173df4ca5a0f6455d590ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minAttackAngle: 15
+  _overCommitAngle: 140
+  _basePower: 5
+  _chargeSpeed: 0
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0

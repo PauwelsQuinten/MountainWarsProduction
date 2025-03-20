@@ -12,7 +12,6 @@ namespace UnityEngine
         NorthWest = 135
     }
 
-
     public enum AttackHeight
     {
         Head,
@@ -34,5 +33,35 @@ namespace UnityEngine
         Fist,
         Sword,
         Shield
+    }
+
+    public enum AimingInputState
+    {
+        Idle, 
+        Moving, 
+        Hold, 
+        Reset
+    }
+
+    public enum Direction
+    {
+        ToRight, 
+        ToLeft, 
+        ToCenter
+    }
+
+    public enum AttackSignal
+    {
+        Idle, 
+        Stab, 
+        Feint, 
+        Swing
+    }
+
+    public enum AttackType
+    {
+        Stab,
+        HorizontalSlashToLeft,
+        HorizontalSlashToRight,
     }
 }

@@ -3,25 +3,10 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-public enum AimingInputState
-{
-    Idle, Moving, Hold, Reset
-}
-
-public enum Direction
-{
-    ToRight, ToLeft, ToCenter
-}
-
-public enum AttackSignal
-{
-    Idle, Stab, Feint, Swing
-}
-
 public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
-    [SerializeField] private GameEvent _gameEvent;
+    [SerializeField] private GameEvent _doAttack;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
     private Vector2 _vec2previousDirection = Vector2.zero;
@@ -71,7 +56,6 @@ public class Aiming : MonoBehaviour
                 break;
             default:
                 break;
-
         }
     }
 
@@ -88,7 +72,6 @@ public class Aiming : MonoBehaviour
             _enmAttackSignal = AttackSignal.Idle;
         }
 
-
         else if (inputLength >= 0.9f 
             && _refAimingInput.variable.StateManager.Orientation == CalculateOrientationOfInput(_refAimingInput.variable.value)
             && _refAimingInput.variable.State == AttackState.Attack
@@ -98,10 +81,8 @@ public class Aiming : MonoBehaviour
             _enmAttackSignal = AttackSignal.Stab;
             StartCoroutine(ResetAttack(F_TIME_BETWEEN_STAB));
 
-            Debug.Log("Stab");
-            //SendPackage(_refAimingInput.variable.State);
+            SendPackage(_refAimingInput.variable.State);
         }
-
 
         else if (DetectAnalogMovement() && _enmAttackSignal == AttackSignal.Idle)
         {
@@ -116,7 +97,6 @@ public class Aiming : MonoBehaviour
                     break;
             }
         }
-      
     }
 
     private void OnStateChanged()
@@ -125,7 +105,6 @@ public class Aiming : MonoBehaviour
         {
             _enmCurrentAttackState = _refAimingInput.variable.State;
         }
-
     }
 
 
@@ -184,19 +163,13 @@ public class Aiming : MonoBehaviour
             }
             
             var dir = CalculateSwingDirection();
-            Debug.Log($"{dir}");
             var angl = CalculateAngleLengthDegree();
-            Debug.Log($"distance : {angl}");
             var speed = CalculateSwingSpeed(angl);
-            Debug.Log($"speed : {speed}");
             var feint = IsFeintMovement();
-            Debug.Log($"signal : {feint}");
              
-             //SendPackage(_refAimingInput.variable.State);
+             SendPackage(_refAimingInput.variable.State);
             _vec2Start = _refAimingInput.variable.value;
             _fMovingTime = 0f;
-
-           
         }
 
     }
@@ -219,7 +192,7 @@ public class Aiming : MonoBehaviour
                 ,
             AttackSignal = _enmAttackSignal
         };
-        _gameEvent.Raise(this, package);
+        _doAttack.Raise(this, package);
     }
 
     private Direction CalculateSwingDirection()
@@ -241,16 +214,16 @@ public class Aiming : MonoBehaviour
         _fMovingTime += Time.deltaTime;
     }
 
-     private float CalculateSwingSpeed(float length)
+    private float CalculateSwingSpeed(float length)
     {
         return (length *1/ _fMovingTime) * 0.01f;
     }
     
-     private float CalculateAngleOfInput(Vector2 direction)
+    private float CalculateAngleOfInput(Vector2 direction)
     {
         return Mathf.Atan2(direction.y, direction.x);
     }
-     private Orientation CalculateOrientationOfInput(Vector2 direction)
+    private Orientation CalculateOrientationOfInput(Vector2 direction)
     {
         //Debug.Log($"{Mathf.Atan2(_refAimingInput.variable.value.y, _refAimingInput.variable.value.x)}");
         float angle = CalculateAngleOfInput(direction) * Mathf.Rad2Deg;
@@ -278,5 +251,4 @@ public class Aiming : MonoBehaviour
         yield return new WaitForSeconds(time);
         _enmAimingInput = AimingInputState.Idle;
     }
-
 }
