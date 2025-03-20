@@ -15,9 +15,13 @@ public class Attacking : MonoBehaviour
     [SerializeField]
     private float _chargeSpeed;
 
+    [Header("Attack")]
+    [SerializeField]
+    private GameEvent _detectHit;
+
 
     private float _chargePower;
-    private float _attackPowr;
+    private float _attackPower;
     private AttackType _attackType;
     public void Attack(Component sender, object obj)
     {
@@ -32,8 +36,10 @@ public class Attacking : MonoBehaviour
             if (DidOverCommit(args.AngleTravelled)) return;
         }
 
-        _attackPowr = CalculatePower(args);
+        _attackPower = CalculatePower(args);
         _attackType = DetermineAttack(args);
+
+        _detectHit.Raise(this, new AttackEventArgs { AttackType = _attackType, AttackHeight = args.AttackHeight, AttackPower = _attackPower });
     }
 
     private bool DidFeint(AttackSignal signal)

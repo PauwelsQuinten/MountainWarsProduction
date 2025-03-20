@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
+    [Header("Input")]
     [SerializeField]
     private MovingInputReference _moveInput;
+
+    [Header("Movement")]
     [SerializeField]
     private float _speed;
 
