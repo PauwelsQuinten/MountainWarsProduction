@@ -12,7 +12,7 @@ public enum AimingInputState
 
 public enum Direction
 {
-    ToRight, ToLeft, ToCenter
+    ToRight, ToLeft, ToCenter, Wrong
 }
 
 public enum AttackSignal
@@ -24,6 +24,7 @@ public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
     [SerializeField] private GameEvent _gameEvent;
+    [SerializeField] private GameEvent _blockGameEvent;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
     [SerializeField] private TextMeshProUGUI _textMeshPro3;
@@ -153,6 +154,12 @@ public class Aiming : MonoBehaviour
                     _enmAimingInput = AimingInputState.Moving;
                     _vec2previousDirection = Vector2.zero;
                     _fMovingTime = 0f;
+                    if (_refAimingInput.variable.State == AttackState.Block)
+                    {
+                        SendPackage();
+                        Debug.Log("Block Moving");
+                    }
+
                     break;
             }
             _fNotMovingTime = 0f;
@@ -173,6 +180,7 @@ public class Aiming : MonoBehaviour
 
     }
 
+    
 
     //--------------------------------------------------------------
     //Helper Functions
@@ -253,23 +261,27 @@ public class Aiming : MonoBehaviour
                     //feinting or throw your swing attack
                     Swing(dir);
                 }
+
+                Debug.Log($"{dir}");
+                Debug.Log($"distance : {_traversedAngle}");
+                var speed = CalculateSwingSpeed(_traversedAngle);
+                Debug.Log($"speed : {speed}");
+                Debug.Log($"signal : {_enmAttackSignal}");
                 break;
-      
 
             case AttackState.Block:
                 _enmAimingInput = AimingInputState.Hold;
+                Debug.Log($"Hold");
+                Debug.Log($"{CalculateBlockDirection(_refAimingInput.variable.StateManager.Orientation)}");
 
+                SendPackage();
                 break;
 
             default:
                 break;
         }
 
-        Debug.Log($"{dir}");
-        Debug.Log($"distance : {_traversedAngle}");
-        var speed = CalculateSwingSpeed(_traversedAngle);
-        Debug.Log($"speed : {speed}");
-        Debug.Log($"signal : {_enmAttackSignal}");
+        
 
         //Reset values before next action
         _vec2Start = _refAimingInput.variable.value;
@@ -336,13 +348,15 @@ public class Aiming : MonoBehaviour
                 ,
             Direction = CalculateSwingDirection(distance)
                 ,
+            BlockDirection = CalculateBlockDirection(_refAimingInput.variable.StateManager.Orientation)
+                ,
             Speed = CalculateSwingSpeed(distance)
                 ,
             AttackSignal = _enmAttackSignal
         };
         _gameEvent.Raise(this, package);
     }
-
+    
     private Direction CalculateSwingDirection(float angleDegree)
     {
         Vector2 inputVec = Vector2.zero;
@@ -398,14 +412,14 @@ public class Aiming : MonoBehaviour
         return (length *1/ _fMovingTime) * 0.01f;
     }
     
-     private float CalculateAngleOfInput(Vector2 direction)
+     private float CalculateAngleRadOfInput(Vector2 direction)
     {
         return Mathf.Atan2(direction.y, direction.x);
     }
     private Orientation CalculateOrientationOfInput(Vector2 direction)
     {
         //Debug.Log($"{Mathf.Atan2(_refAimingInput.variable.value.y, _refAimingInput.variable.value.x)}");
-        float angle = CalculateAngleOfInput(direction) * Mathf.Rad2Deg;
+        float angle = CalculateAngleRadOfInput(direction) * Mathf.Rad2Deg;
         if (angle == 0)
             return Orientation.East;
 
@@ -413,6 +427,23 @@ public class Aiming : MonoBehaviour
         newAngle = (newAngle == -4) ? 4 : newAngle;       
 
         return (Orientation)(newAngle * 45) ;
+    }
+
+    private Direction CalculateBlockDirection(Orientation orientation)
+    {
+        
+        int orient = (int)orientation;
+        float input = CalculateAngleRadOfInput(_refAimingInput.variable.value) * Mathf.Rad2Deg;
+        int diff = (int)input - orient;
+        diff = diff < -180? 360 + diff  : diff;
+
+        if (diff > 30 && diff < 100)
+            return Direction.ToLeft;
+        else if (diff < -30 && diff > -100)
+            return Direction.ToRight;
+        else if (diff > -30 && diff < 30)
+            return Direction.ToCenter;
+        return Direction.Wrong;
     }
 
     private Vector2 CalculateVectorFromOrientation(Orientation orientation)
@@ -431,10 +462,10 @@ public class Aiming : MonoBehaviour
 
         var orientAngleRad = (int)_refAimingInput.variable.StateManager.Orientation * Mathf.Deg2Rad;
 
-        var startAngleRad = CalculateAngleOfInput(_vec2Start) - orientAngleRad;
+        var startAngleRad = CalculateAngleRadOfInput(_vec2Start) - orientAngleRad;
         startAngleRad = ClampAngle(startAngleRad);
 
-        var endAngleRad = CalculateAngleOfInput(inputVec) - orientAngleRad;
+        var endAngleRad = CalculateAngleRadOfInput(inputVec) - orientAngleRad;
         endAngleRad = ClampAngle(endAngleRad);
 
 

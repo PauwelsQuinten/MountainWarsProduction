@@ -768,6 +768,7 @@ MonoBehaviour:
     constantValue: {x: 0, y: 0}
     variable: {fileID: 11400000, guid: c07edaff124f1b04e8b8a49de23949a5, type: 2}
   _gameEvent: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  _blockGameEvent: {fileID: 0}
   _textMeshPro: {fileID: 1851133575}
   _textMeshPro2: {fileID: 465747109}
   _textMeshPro3: {fileID: 1227722582}
@@ -936,9 +937,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2909b8547fd4161429a8659c53b32d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackState: 0
+  AttackState: 2
   AttackHeight: 0
-  Orientation: 0
+  Orientation: 180
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0
