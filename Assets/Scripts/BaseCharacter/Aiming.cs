@@ -85,16 +85,19 @@ public class Aiming : MonoBehaviour
 
     private void OnInputChanged()
     {
+        float inputLength = _refAimingInput.variable.value.magnitude;
+
         //Do nothing while it needs to reset himself
         if (_enmAimingInput == AimingInputState.Reset)
         {
+            if (inputLength < F_MIN_ACCEPTED_VALUE)
+                _vec2Start = Vector2.zero;
+
             _previousLength = 1.1f;
             return;
         }
 
-
         //Set to Idle when no input or very small
-        float inputLength = _refAimingInput.variable.value.magnitude;
 
         if (_refAimingInput.variable.value == Vector2.zero || inputLength < F_MIN_ACCEPTED_VALUE)
         {
@@ -118,7 +121,7 @@ public class Aiming : MonoBehaviour
             
             _enmAimingInput = AimingInputState.Idle;
             _enmAttackSignal = AttackSignal.Idle;
-                        
+
         }
 
 
@@ -127,6 +130,8 @@ public class Aiming : MonoBehaviour
         {
             _enmAttackSignal = AttackSignal.Stab;
             _enmAimingInput = AimingInputState.Reset;
+            _vec2Start = Vector2.zero;
+            _traversedAngle = 0f;
             StartCoroutine(ResetAttack(F_TIME_BETWEEN_STAB));
             Debug.Log("Stab");
             SendPackage();
@@ -136,7 +141,8 @@ public class Aiming : MonoBehaviour
         //When it is not a Stab and input is big enough, set to moving
         else if (DetectAnalogMovement(false)/* && _enmAttackSignal == AttackSignal.Idle*/)
         {
-            switch(_enmAimingInput)
+
+            switch (_enmAimingInput)
             {
                 case AimingInputState.Idle:
                 case AimingInputState.Hold:
@@ -301,11 +307,15 @@ public class Aiming : MonoBehaviour
 
     private bool IsStabMovement(float inputLength)
     {
-        return inputLength >= 0.9f && inputLength > _previousLength
+        if (inputLength >= 0.9f && inputLength > _previousLength
                     && _refAimingInput.variable.StateManager.Orientation == CalculateOrientationOfInput(_refAimingInput.variable.value)
                     && _refAimingInput.variable.State == AttackState.Attack
                     && _enmAttackSignal == AttackSignal.Idle
-                    && _traversedAngle < F_MAX_ALLOWED_ANGLE_ON_ORIENTATION;
+                    && _traversedAngle < F_MAX_ALLOWED_ANGLE_ON_ORIENTATION)
+            return true;
+        else
+            Debug.Log($"{CalculateOrientationOfInput(_refAimingInput.variable.value)}, {_traversedAngle}");
+        return false;
     }
 
 
