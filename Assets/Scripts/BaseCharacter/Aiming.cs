@@ -27,6 +27,7 @@ public class Aiming : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
     [SerializeField] private TextMeshProUGUI _textMeshPro3;
+    [SerializeField] private TextMeshProUGUI _textMeshPro4;
     private Vector2 _vec2previousDirection = Vector2.zero;
     private Vector2 _vec2Start = Vector2.zero;
     private AttackState _enmCurrentAttackState = AttackState.Idle;
@@ -63,6 +64,7 @@ public class Aiming : MonoBehaviour
             //Debug.Log($"{_enmAimingInput}");
             _textMeshPro.text = $"{_enmAimingInput}";
             _textMeshPro3.text = $"storedVec : {_vec2Start}";
+            _textMeshPro4.text = $"traversed angle : {_traversedAngle}";
         }
 
     }
@@ -121,7 +123,8 @@ public class Aiming : MonoBehaviour
             
             _enmAimingInput = AimingInputState.Idle;
             _enmAttackSignal = AttackSignal.Idle;
-
+            _vec2Start = Vector2.zero;
+            _traversedAngle = 0f;
         }
 
 
@@ -307,15 +310,15 @@ public class Aiming : MonoBehaviour
 
     private bool IsStabMovement(float inputLength)
     {
-        if (inputLength >= 0.9f && inputLength > _previousLength
+        return (inputLength >= 0.9f && inputLength > _previousLength
                     && _refAimingInput.variable.StateManager.Orientation == CalculateOrientationOfInput(_refAimingInput.variable.value)
                     && _refAimingInput.variable.State == AttackState.Attack
                     && _enmAttackSignal == AttackSignal.Idle
-                    && _traversedAngle < F_MAX_ALLOWED_ANGLE_ON_ORIENTATION)
-            return true;
+                    && _traversedAngle < F_MAX_ALLOWED_ANGLE_ON_ORIENTATION) ;
+           /* return true;
         else
             Debug.Log($"{CalculateOrientationOfInput(_refAimingInput.variable.value)}, {_traversedAngle}");
-        return false;
+        return false;*/
     }
 
 
@@ -342,7 +345,13 @@ public class Aiming : MonoBehaviour
 
     private Direction CalculateSwingDirection(float angleDegree)
     {
-        float cross = _vec2Start.x * _refAimingInput.variable.value.y - _vec2Start.y * _refAimingInput.variable.value.x;
+        Vector2 inputVec = Vector2.zero;
+        if (_refAimingInput.variable.value == Vector2.zero)
+            inputVec = _vec2previousDirection;
+        else 
+            inputVec = _refAimingInput.variable.value;
+
+        float cross = _vec2Start.x * inputVec.y - _vec2Start.y * inputVec.x;
         if (cross == 0f)
             return Direction.ToCenter;
         
@@ -414,12 +423,18 @@ public class Aiming : MonoBehaviour
 
     private AttackSignal IsFeintMovement(Direction direction)
     {
+        Vector2 inputVec = Vector2.zero;
+        if (_refAimingInput.variable.value == Vector2.zero)
+            inputVec = _vec2previousDirection;
+        else
+            inputVec = _refAimingInput.variable.value;
+
         var orientAngleRad = (int)_refAimingInput.variable.StateManager.Orientation * Mathf.Deg2Rad;
 
         var startAngleRad = CalculateAngleOfInput(_vec2Start) - orientAngleRad;
         startAngleRad = ClampAngle(startAngleRad);
 
-        var endAngleRad = CalculateAngleOfInput(_refAimingInput.variable.value) - orientAngleRad;
+        var endAngleRad = CalculateAngleOfInput(inputVec) - orientAngleRad;
         endAngleRad = ClampAngle(endAngleRad);
 
 
