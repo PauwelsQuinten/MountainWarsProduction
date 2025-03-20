@@ -1,33 +1,52 @@
+using System;
 using FMOD.Studio;
 using UnityEngine;
 using FMODUnity;
 
 public class FMODAudioHandler : MonoBehaviour
 {
-    private EventInstance _footstepsSFXInstance;
     private PARAMETER_ID _surfaceTypeID;
-
     // Global Parameters
 
     // Events
     [SerializeField] private EventReference _footstepsSFX;
-    public EventReference FootstepsSFX => _footstepsSFX;
-
-    [SerializeField] private EventReference _attackChargeSFX;
-    public EventReference AttackChargeSFX => _attackChargeSFX;
-
-    [SerializeField] private EventReference _swordSwooshSFX;
-    public EventReference SwordSwooshSFX => _swordSwooshSFX;
-
-    [SerializeField] private EventReference _swordHitSFX;
-    public EventReference SwordHitSFX => _swordHitSFX;
-
+    private EventInstance _footstepsSFXInstance;
     
-    public void TestFunction(Component sender, object obj)
+    [SerializeField] private EventReference _attackChargeSFX;
+     private EventInstance _attackChargeSFXInstance;
+     
+    [SerializeField] private EventReference _swordSwooshSFX;
+    private EventInstance _swordSwooshSFXInstance;
+    
+    [SerializeField] private EventReference _swordHitSFX;
+    private EventInstance _swordHitSFXInstance;
+    
+
+    // AimingOutputArgs args = (AimingOutputArgs)obj;
+    // float AttackSpeed = args.AngleTravelled;
+    public void PlayFootstepsSFX(Component sender, object obj)
     {
-        
+        _footstepsSFXInstance = RuntimeManager.CreateInstance(_footstepsSFX);
+        _footstepsSFXInstance.start();
+    }
+
+    public void PlayAttackChargeSFX(Component sender, object obj)
+    {
+        _attackChargeSFXInstance = RuntimeManager.CreateInstance(_attackChargeSFX);
+        _attackChargeSFXInstance.start();
     }
     
+    public void PlaySwordSwooshSFX(Component sender, object obj)
+    {
+        _swordSwooshSFXInstance = RuntimeManager.CreateInstance(_swordSwooshSFX);
+        _swordSwooshSFXInstance.start();
+    } 
+    public void PlaySwordHitSFX(Component sender, object obj)
+    {
+        _swordHitSFXInstance = RuntimeManager.CreateInstance(_swordHitSFX);
+        _swordHitSFXInstance.start();
+
+    }
     
     private void GetParameterID(EventInstance eventInstance, string parameterName, out PARAMETER_ID parameterID)
     {
@@ -42,5 +61,4 @@ public class FMODAudioHandler : MonoBehaviour
         // Set the parameter value by ID
         eventInstance.setParameterByID(parameterID, desiredParameterValue);
     }
-
 }
