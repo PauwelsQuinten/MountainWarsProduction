@@ -72,7 +72,7 @@ public class Attacking : MonoBehaviour
         float power = 0;
         if (aimOutput.Speed != 0) power = _basePower / aimOutput.Speed + _chargePower;
         else power = _basePower + _chargePower;
-
+Debug.Log(swingAngle + power);
         return swingAngle + power;
     }
 
