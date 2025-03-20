@@ -33,7 +33,7 @@ public class Aiming : MonoBehaviour
     private AttackState _enmCurrentAttackState = AttackState.Idle;
     private AimingInputState _enmAimingInput = AimingInputState.Idle;
     private AttackSignal _enmAttackSignal = AttackSignal.Swing;
-    private const float F_MIN_DIFF_BETWEEN_INPUT = 0.02f;
+    private const float F_MIN_DIFF_BETWEEN_INPUT = 0.04f;
     private const float F_MAX_TIME_NOT_MOVING = 0.1f;
     private const float F_MIN_ACCEPTED_VALUE = 0.40f;
     private const float F_TIME_BETWEEN_SWING = 0.40f;
