@@ -38,7 +38,6 @@ public class Attacking : MonoBehaviour
 
         _attackPower = CalculatePower(args);
         _attackType = DetermineAttack(args);
-
         _detectHit.Raise(this, new AttackEventArgs { AttackType = _attackType, AttackHeight = args.AttackHeight, AttackPower = _attackPower });
     }
 

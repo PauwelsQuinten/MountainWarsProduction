@@ -1,40 +1,44 @@
 using FMOD.Studio;
 using UnityEngine;
 using FMODUnity;
+
 public class FMODAudioHandler : MonoBehaviour
 {
-    public static FMODAudioHandler Instance { get; private set; }
-    
-    private EventInstance _footstepsSFXInstance;
+    private AimingOutputArgs _aimingEventArgs;
+
     private PARAMETER_ID _surfaceTypeID;
-    private void Awake()
+    
+    private PARAMETER_ID _attacksStrengthID;
+    private float _attacksStrengthIDValue;
+
+    private PARAMETER_ID _swordHitSurfaceID;
+    private float _swordHitSurfaceIDValue;
+
+
+    private float volume;
+    // Events
+    [SerializeField] private EventReference _footstepsSFX;
+    private EventInstance _footstepsSFXInstance;
+    [SerializeField] private EventReference _attackChargeSFX;
+    private EventInstance _attackChargeSFXInstance;
+    [SerializeField] private EventReference _swordSwooshSFX;
+    private EventInstance _swordSwooshSFXInstance;
+    [SerializeField] private EventReference _swordHitSFX;
+    private EventInstance _swordHitSFXInstance;
+
+    private void Start()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        // Get the parameter ID for SurfaceType
+        GetParameterID(_footstepsSFXInstance, "SurfaceType", out _surfaceTypeID);
+
+        // Get the parameter ID for SwordHitSurface
+        
+        // Get the parameter ID for AttacksStrength
+        RuntimeManager.StudioSystem.getParameterDescriptionByName("AttackStrength", out PARAMETER_DESCRIPTION attacksStrengthDescription);
+        _attacksStrengthID = attacksStrengthDescription.id;
     }
 
-    //Global Parameters
-
-    //Events
-    [SerializeField] private EventReference _footstepsSFX;
-    public EventReference FootstepsSFX => _footstepsSFX;
-    
-    [SerializeField] private EventReference _attackChargeSFX;
-    public EventReference AttackChargeSFX => _attackChargeSFX;
-    
-    [SerializeField] private EventReference _swordSwooshSFX;
-    public EventReference SwordSwooshSFX => _swordSwooshSFX;
-    
-    [SerializeField] private EventReference _swordHitSFX;
-    public EventReference SwordHitSFX => _swordHitSFX;
-    
-    public static void GetParameterID(EventInstance eventInstance, string parameterName, out PARAMETER_ID parameterID)
+    private void GetParameterID(EventInstance eventInstance, string parameterName, out PARAMETER_ID parameterID)
     {
         // Get the parameter ID
         eventInstance.getDescription(out EventDescription eventDescription);
@@ -42,9 +46,50 @@ public class FMODAudioHandler : MonoBehaviour
         parameterID = parameterDescription.id;
     }
 
-    public static void SetParameterByID(EventInstance eventInstance, PARAMETER_ID parameterID, float desiredParameterValue)
+    private void SetParameterByID(EventInstance eventInstance, PARAMETER_ID parameterID, float desiredParameterValue)
     {
         // Set the parameter value by ID
         eventInstance.setParameterByID(parameterID, desiredParameterValue);
+    }
+
+    private void SetGlobalParameterByID(PARAMETER_ID parameterID, float desiredParameterValue)
+    {
+        // Set the global parameter value by ID
+        RuntimeManager.StudioSystem.setParameterByID(parameterID, desiredParameterValue);
+    }
+
+    public void PlayFootstepsSFX(Component sender, object obj)
+    {
+        _footstepsSFXInstance = RuntimeManager.CreateInstance(_footstepsSFX);
+        _footstepsSFXInstance.start();
+        _footstepsSFXInstance.release();
+
+    }
+
+    public void PlaySwordHitSFX(Component sender, object obj)
+    {
+        _swordHitSFXInstance = RuntimeManager.CreateInstance(_swordHitSFX);
+        GetParameterID(_swordHitSFXInstance, "SwordHitSurface", out _swordHitSurfaceID);
+        if (_aimingEventArgs == null)
+        {
+            _aimingEventArgs = obj as AimingOutputArgs;
+        }
+        SetGlobalParameterByID(_attacksStrengthID, _aimingEventArgs.Speed);
+        SetParameterByID(_swordHitSFXInstance, _swordHitSurfaceID, _swordHitSurfaceIDValue);
+        _swordHitSFXInstance.start();
+        _swordSwooshSFXInstance.release();
+    }
+
+    public void PlaySwordSwooshSFX(Component sender, object obj)
+    {
+        _swordSwooshSFXInstance = RuntimeManager.CreateInstance(_swordSwooshSFX);
+        if (_aimingEventArgs == null)
+        {
+            _aimingEventArgs = obj as AimingOutputArgs;
+        }
+        SetGlobalParameterByID(_attacksStrengthID, _aimingEventArgs.Speed);
+
+        _swordSwooshSFXInstance.start();
+        _swordSwooshSFXInstance.release();
     }
 }
