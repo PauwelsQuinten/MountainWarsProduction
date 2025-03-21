@@ -81,7 +81,6 @@ public class Aiming : MonoBehaviour
                 break;
             default:
                 break;
-
         }
     }
 
@@ -172,7 +171,6 @@ public class Aiming : MonoBehaviour
         {
             _enmCurrentAttackState = _refAimingInput.variable.State;
         }
-
     }
 
     
@@ -357,7 +355,7 @@ public class Aiming : MonoBehaviour
                 ,
             AttackSignal = _enmAttackSignal
         };
-        _gameEvent.Raise(this, package);
+        _doAttack.Raise(this, package);
     }
     
     private Direction CalculateSwingDirection(float angleDegree)
@@ -410,7 +408,7 @@ public class Aiming : MonoBehaviour
         _fMovingTime += Time.deltaTime;
     }
 
-     private float CalculateSwingSpeed(float length)
+    private float CalculateSwingSpeed(float length)
     {
         return (length *1/ _fMovingTime) * 0.01f;
     }
