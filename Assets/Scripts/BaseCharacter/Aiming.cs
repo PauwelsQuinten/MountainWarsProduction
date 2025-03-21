@@ -59,10 +59,9 @@ public class Aiming : MonoBehaviour
         CheckIfHoldingPosition();
         UpdateMovingTime();
 
-        if (_textMeshPro && _textMeshPro2 /*&& _enmAimingInput != AimingInputState.Idle*/)
+        if (_textMeshPro && _textMeshPro2 && _textMeshPro3 && _textMeshPro4)
         {
             _textMeshPro2.text = $"{_refAimingInput.variable.value}";
-            //Debug.Log($"{_enmAimingInput}");
             _textMeshPro.text = $"{_enmAimingInput}";
             _textMeshPro3.text = $"storedVec : {_vec2Start}";
             _textMeshPro4.text = $"traversed angle : {_traversedAngle}";
@@ -112,11 +111,7 @@ public class Aiming : MonoBehaviour
                 _previousLength = 1.1f; //Set to higher then max magnitude, this is so that Stab can not be activated without any extra movement after swing
                 SendPackage();
 
-                Debug.Log($"a{dir}");
-                Debug.Log($"adistance : {_traversedAngle}");
-                var speed = CalculateSwingSpeed(_traversedAngle);
-                Debug.Log($"aspeed : {speed}");
-                Debug.Log($"asignal : {_enmAttackSignal}");
+                //DebugLines(dir);
                 _vec2Start = Vector2.zero;
                 _fMovingTime = 0f;
                 _traversedAngle = 0f;
@@ -137,7 +132,7 @@ public class Aiming : MonoBehaviour
             _vec2Start = Vector2.zero;
             _traversedAngle = 0f;
             StartCoroutine(ResetAttack(F_TIME_BETWEEN_STAB));
-            Debug.Log("Stab");
+            //Debug.Log("Stab");
             SendPackage();
         }
 
@@ -154,10 +149,10 @@ public class Aiming : MonoBehaviour
                     _enmAimingInput = AimingInputState.Moving;
                     _vec2previousDirection = Vector2.zero;
                     _fMovingTime = 0f;
-                    if (_refAimingInput.variable.State == AttackState.Block)
+                    if (_refAimingInput.variable.State == AttackState.ShieldDefence)
                     {
                         SendPackage();
-                        Debug.Log("Block Moving");
+                        //Debug.Log("ShieldDefence Moving");
                     }
 
                     break;
@@ -225,8 +220,9 @@ public class Aiming : MonoBehaviour
         {
             case AttackState.Idle:
             case AttackState.Attack:
+            case AttackState.BlockAttack:
                 //Check if you are stabing , return from function afterwards
-                if (_traversedAngle < F_MIN_ACCEPTED_MOVEMENT_ANGLE )
+                if (_traversedAngle < F_MIN_ACCEPTED_MOVEMENT_ANGLE)
                 {
                     if (IsStabMovement(_refAimingInput.variable.value.magnitude))
                     {
@@ -237,18 +233,18 @@ public class Aiming : MonoBehaviour
                         SendPackage();
 
                         _traversedAngle = 0f;
-                        Debug.Log($"HStab");
+                        //Debug.Log($"HStab");
                         return;
                     }
                     //Charging for next attack, reset _startVec so it wont interfere when going to stab
                     Vector2 orient = CalculateVectorFromOrientation(_refAimingInput.variable.StateManager.Orientation);
-                    if (AreVectorWithinAngle(-orient,  _refAimingInput.variable.value, 30))
+                    if (AreVectorWithinAngle(-orient, _refAimingInput.variable.value, 30))
                     {
                         _enmAttackSignal = AttackSignal.Charge;
                         _enmAimingInput = AimingInputState.Hold;
 
                         _traversedAngle = 0f;
-                        Debug.Log($"Charge");
+                        //Debug.Log($"Charge");
                         return;
                     }
                     //_enmAttackSignal = AttackSignal.Idle;
@@ -262,17 +258,13 @@ public class Aiming : MonoBehaviour
                     Swing(dir);
                 }
 
-                Debug.Log($"{dir}");
-                Debug.Log($"distance : {_traversedAngle}");
-                var speed = CalculateSwingSpeed(_traversedAngle);
-                Debug.Log($"speed : {speed}");
-                Debug.Log($"signal : {_enmAttackSignal}");
+                //DebugLines(dir);
                 break;
 
-            case AttackState.Block:
+            case AttackState.ShieldDefence:
+            case AttackState.SwordDefence:
                 _enmAimingInput = AimingInputState.Hold;
-                Debug.Log($"Hold");
-                Debug.Log($"{CalculateBlockDirection(_refAimingInput.variable.StateManager.Orientation)}");
+                //DebugLines(dir);
 
                 SendPackage();
                 break;
@@ -287,6 +279,17 @@ public class Aiming : MonoBehaviour
         _vec2Start = _refAimingInput.variable.value;
         _traversedAngle = 0f;
         _fMovingTime = 0f;
+
+    }
+
+    private void DebugLines(Direction dir)
+    {
+        Debug.Log($"{dir}");
+        Debug.Log($"distance : {_traversedAngle}");
+        var speed = CalculateSwingSpeed(_traversedAngle);
+        Debug.Log($"speed : {speed}");
+        Debug.Log($"signal : {_enmAttackSignal}");
+        Debug.Log($"{CalculateBlockDirection(_refAimingInput.variable.StateManager.Orientation)}");
 
     }
 

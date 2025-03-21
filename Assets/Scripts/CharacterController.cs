@@ -33,9 +33,9 @@ public class CharacterController : MonoBehaviour
 
     private void AimInputRef_ValueChanged(object sender, AimInputEventArgs e)
     {
-        if (_stateManager.AttackState == AttackState.Block ||
-            _stateManager.AttackState == AttackState.Parrry ||
-            _stateManager.AttackState == AttackState.blockAttack)
+        if (_stateManager.AttackState == AttackState.ShieldDefence ||
+            _stateManager.AttackState == AttackState.SwordDefence ||
+            _stateManager.AttackState == AttackState.BlockAttack)
         {
             _aimInputRef.variable.State = _stateManager.AttackState;
             return;
@@ -54,11 +54,11 @@ public class CharacterController : MonoBehaviour
 
     public void ProccesSetBlockInput(InputAction.CallbackContext ctx)
     {
-        if (_stateManager.AttackState != AttackState.blockAttack) 
+        if (_stateManager.AttackState != AttackState.BlockAttack) 
         {
             if (ctx.action.WasPressedThisFrame())
             {
-                _stateManager.AttackState = AttackState.Block;
+                _stateManager.AttackState = AttackState.ShieldDefence;
             }
 
             if (ctx.action.WasReleasedThisFrame())
@@ -74,7 +74,7 @@ public class CharacterController : MonoBehaviour
     {
         if (ctx.action.WasPressedThisFrame())
         {
-            _stateManager.AttackState = AttackState.Parrry;
+            _stateManager.AttackState = AttackState.SwordDefence;
         }
 
         if (ctx.action.WasReleasedThisFrame())
@@ -120,8 +120,8 @@ public class CharacterController : MonoBehaviour
     public void ProssesLockShieldInput(InputAction.CallbackContext ctx)
     {
         if(!ctx.performed) return;
-        if (_stateManager.AttackState != AttackState.Block) return;
-        _stateManager.AttackState = AttackState.blockAttack;
+        if (_stateManager.AttackState != AttackState.ShieldDefence) return;
+        _stateManager.AttackState = AttackState.BlockAttack;
         _aimInputRef.variable.State = _stateManager.AttackState;
     }
 

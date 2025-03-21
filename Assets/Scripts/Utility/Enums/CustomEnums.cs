@@ -24,9 +24,9 @@ namespace UnityEngine
     {
         Idle,
         Attack,
-        Block,
-        Parrry,
-        blockAttack
+        ShieldDefence,
+        SwordDefence,
+        BlockAttack
     }
 
     public enum CurrentWeapon
