@@ -4,6 +4,7 @@ namespace UnityEngine
     public class AimingOutputArgs : EventArgs
     {
         public Direction Direction;
+        public Direction BlockDirection;
         public AimingInputState AimingInputState;
         public AttackHeight AttackHeight;
         public float Speed;
