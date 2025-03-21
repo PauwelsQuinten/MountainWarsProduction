@@ -25,7 +25,7 @@ namespace UnityEngine
         Attack,
         ShieldDefence,
         SwordDefence,
-        BlockAttack
+        LockShield
     }
 
     public enum CurrentWeapon
@@ -53,9 +53,9 @@ namespace UnityEngine
 
     public enum AttackSignal
     {
-        Idle, 
-        Stab, 
-        Feint, 
+        Idle,
+        Stab,
+        Feint,
         Swing,
         Charge
     }
