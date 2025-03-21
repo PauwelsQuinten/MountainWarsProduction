@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b784d3553d8fc874dbe416aceb2f41c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitParts: 
 --- !u!1 &1088028340
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,9 +482,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1088028347}
   - component: {fileID: 1088028345}
-  - component: {fileID: 1088028343}
-  - component: {fileID: 1088028342}
   - component: {fileID: 1088028348}
+  - component: {fileID: 1088028350}
+  - component: {fileID: 1088028349}
   - component: {fileID: 1088028341}
   m_Layer: 3
   m_Name: Enemy
@@ -513,7 +512,7 @@ MonoBehaviour:
   Responses:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088028342}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Attacking, Assembly-CSharp
         m_MethodName: Attack
         m_Mode: 0
@@ -527,7 +526,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1088028348}
         m_TargetAssemblyTypeName: Blocking, Assembly-CSharp
-        m_MethodName: Block
+        m_MethodName: BlockMovement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -565,48 +564,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1088028342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1088028340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24f52033f6173df4ca5a0f6455d590ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _minAttackAngle: 15
-  _overCommitAngle: 140
-  _basePower: 5
-  _chargeSpeed: 0
-  _attackRange: 0
-  _detectHit: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
-  _characterLayer:
-    serializedVersion: 2
-    m_Bits: 0
---- !u!114 &1088028343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1088028340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e1627f2a97e5b45a3be4320c6dddf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _refAimingInput:
-    useConstant: 0
-    constantValue: {x: 0, y: 0}
-    variable: {fileID: 11400000, guid: c07edaff124f1b04e8b8a49de23949a5, type: 2}
-  _AimOutputEvent: {fileID: 11400000, guid: 3ce36d1a0cee9b64db3b05b01a8aece3, type: 2}
-  _textMeshPro: {fileID: 1851133575}
-  _textMeshPro2: {fileID: 465747109}
-  _textMeshPro3: {fileID: 0}
-  _textMeshPro4: {fileID: 0}
 --- !u!114 &1088028345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackState: 0
   AttackHeight: 0
-  Orientation: 90
+  Orientation: -90
 --- !u!4 &1088028347
 Transform:
   m_ObjectHideFlags: 0
@@ -649,7 +606,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20b34aa3e83034996fae4520c0383b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockEvent: {fileID: 0}
+  _blockEvent: {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
+--- !u!114 &1088028349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088028340}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3453aa9a175eb448269cd46ff71089, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackEvent: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  _timeInterval: 1
+  _attackType: 1
+  _attackHeight: 1
+  _attackPower: 1
+--- !u!114 &1088028350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088028340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f52033f6173df4ca5a0f6455d590ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minAttackAngle: 15
+  _overCommitAngle: 140
+  _basePower: 5
+  _chargeSpeed: 0
+  _attackRange: 0
+  _detectHit: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  _characterLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1810299839
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,11 +792,35 @@ MonoBehaviour:
     m_ActionId: 49ef7c84-7397-4525-ac1d-00db66b25eb7
     m_ActionName: 'Player/Move[/DualShock4GamepadHID/leftStick]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1810299843}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: ProccesSetBlockInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 031d993e-c6ee-4ad1-8d7e-b26405e28f91
     m_ActionName: 'Player/SetBlock[/DualShock4GamepadHID/leftTrigger]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1810299843}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: ProccesSetParryInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 785d3d06-eb05-4a65-8cc1-f54f5565ce01
     m_ActionName: 'Player/SetParry[/DualShock4GamepadHID/rightTrigger]'
   - m_PersistentCalls:
@@ -817,7 +836,19 @@ MonoBehaviour:
     m_ActionId: 3a54fd58-1eb7-4182-aba2-342986c80ffa
     m_ActionName: 'Player/Interact[/DualShock4GamepadHID/buttonWest]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1810299843}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: ProssesLockShieldInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 04db0192-d027-4b9b-9a3c-c68405389c53
     m_ActionName: 'Player/LockShield[/DualShock4GamepadHID/rightStickPress]'
   m_NeverAutoSwitchControlSchemes: 0
@@ -880,7 +911,7 @@ MonoBehaviour:
   Responses:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1810299839}
+      - m_Target: {fileID: 1810299846}
         m_TargetAssemblyTypeName: Attacking, Assembly-CSharp
         m_MethodName: Attack
         m_Mode: 0
@@ -906,7 +937,7 @@ MonoBehaviour:
         m_CallState: 2
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1810299839}
+      - m_Target: {fileID: 1810299847}
         m_TargetAssemblyTypeName: Blocking, Assembly-CSharp
         m_MethodName: CheckBlock
         m_Mode: 0
@@ -965,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20b34aa3e83034996fae4520c0383b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockEvent: {fileID: 0}
+  _blockEvent: {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0

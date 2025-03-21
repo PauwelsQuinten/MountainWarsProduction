@@ -45,6 +45,7 @@ namespace UnityEngine
 
     public enum Direction
     {
+        Idle,
         ToRight, 
         ToLeft, 
         ToCenter,
@@ -69,7 +70,16 @@ namespace UnityEngine
 
     public enum BlockResult
     {
+        //When no defence and clean hit
+        //Take full damage and stamina loss
         Hit,
+        //This will happen when you block with sword in right direction
+        //This will half the damage taken.
+        SwordBlock,
+        //This will happen when you block with sword a stab from center position
+        //Take 3/4 of the damage
+        SwordHalfBlock,
+        
         //This will happen when you are holding the shield up in center position while the attack comes either from left or right.
         //this will not cause damage but will cut down your Stamina more. 
         HalfBlocked, 
@@ -78,6 +88,13 @@ namespace UnityEngine
         FullyBlocked,
         //This will take the least amount of Stamina and create the biggest opening to attack the opponent afterwards
         Parried
+    }
+    
+    public enum BlockMedium
+    {
+        Shield,
+        Sword,
+        Nothing
     }
 
 }
