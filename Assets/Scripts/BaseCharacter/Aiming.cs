@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
-    [SerializeField] private GameEvent _doAttack;
+    [SerializeField] private GameEvent _AimOutputEvent;
     [SerializeField] private GameEvent _blockGameEvent;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
@@ -340,7 +340,7 @@ public class Aiming : MonoBehaviour
                 ,
             AttackSignal = _enmAttackSignal
         };
-        _doAttack.Raise(this, package);
+        _AimOutputEvent.Raise(this, package);
     }
     
     private Direction CalculateSwingDirection(float angleDegree)
