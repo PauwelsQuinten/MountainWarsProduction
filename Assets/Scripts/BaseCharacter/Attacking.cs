@@ -30,6 +30,7 @@ public class Attacking : MonoBehaviour
     private float _chargePower;
     private float _attackPower;
     private AttackType _attackType;
+    private bool _wasCharging;
     public void Attack(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
@@ -38,6 +39,10 @@ public class Attacking : MonoBehaviour
         if (args == null) return;
 
         if (DidFeint(args.AttackSignal)) return;
+
+        CalculateChargePower();
+
+        if (args.AttackSignal != AttackSignal.Stab || args.AttackSignal != AttackSignal.Swing) return;
 
         if(args.AttackSignal != AttackSignal.Stab)
         {
@@ -70,10 +75,9 @@ public class Attacking : MonoBehaviour
         return false;
     }
 
-    private float CalculateChargePower(AttackSignal signal)
+    private void CalculateChargePower()
     {
         _chargePower += _chargeSpeed * Time.deltaTime;
-        return 0;
     }
 
     private float CalculatePower(AimingOutputArgs aimOutput)
@@ -82,7 +86,6 @@ public class Attacking : MonoBehaviour
         float power = 0;
         if (aimOutput.Speed != 0) power = _basePower / aimOutput.Speed + _chargePower;
         else power = _basePower + _chargePower;
-Debug.Log(swingAngle + power);
         return swingAngle + power;
     }
 
