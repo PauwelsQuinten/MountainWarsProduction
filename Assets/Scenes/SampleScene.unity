@@ -433,7 +433,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 690475315}
         m_TargetAssemblyTypeName: FMODAudioHandler, Assembly-CSharp
-        m_MethodName: PlaySwordHitSFX
+        m_MethodName: PlayWeaponHitSFX
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -447,7 +447,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 690475315}
         m_TargetAssemblyTypeName: FMODAudioHandler, Assembly-CSharp
-        m_MethodName: PlaySwordHitSFX
+        m_MethodName: PlayWeaponHitSFX
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
