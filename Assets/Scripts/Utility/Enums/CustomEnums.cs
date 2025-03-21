@@ -64,4 +64,12 @@ namespace UnityEngine
         HorizontalSlashToLeft,
         HorizontalSlashToRight,
     }
+
+    public enum Bodyparts
+    {
+        Head,
+        Torso,
+        LeftArm,
+        RightArm,
+    }
 }
