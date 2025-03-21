@@ -20,7 +20,7 @@ public class Attacking : MonoBehaviour
     [SerializeField]
     private float _attackRange;
     [SerializeField]
-    private GameEvent _detectHit;
+    private GameEvent _doAttack;
 
     [Header("Enemy")]
     [SerializeField]
@@ -30,7 +30,10 @@ public class Attacking : MonoBehaviour
     private float _chargePower;
     private float _attackPower;
     private AttackType _attackType;
+
     private bool _wasCharging;
+    private float _startChargeTime;
+    private float _endChargeTime;
     public void Attack(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
@@ -38,9 +41,10 @@ public class Attacking : MonoBehaviour
         AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
 
+        CalculateChargePower(args);
+
         if (DidFeint(args.AttackSignal)) return;
 
-        CalculateChargePower();
 
         if (args.AttackSignal != AttackSignal.Stab || args.AttackSignal != AttackSignal.Swing) return;
 
@@ -54,7 +58,7 @@ public class Attacking : MonoBehaviour
         _attackType = DetermineAttack(args);
 
         if (!IsEnemyInRange()) return;
-        _detectHit.Raise(this, new AttackEventArgs { AttackType = _attackType, AttackHeight = args.AttackHeight, AttackPower = _attackPower});
+        _doAttack.Raise(this, new AttackEventArgs { AttackType = _attackType, AttackHeight = args.AttackHeight, AttackPower = _attackPower});
     }
 
     private bool DidFeint(AttackSignal signal)
@@ -75,9 +79,21 @@ public class Attacking : MonoBehaviour
         return false;
     }
 
-    private void CalculateChargePower()
+    private void CalculateChargePower(AimingOutputArgs args)
     {
-        _chargePower += _chargeSpeed * Time.deltaTime;
+        if(args.AttackSignal == AttackSignal.Charge && !_wasCharging)
+        {
+            _wasCharging = true;
+            _startChargeTime = Time.time;
+        }
+        else if (args.AttackSignal != AttackSignal.Charge && _wasCharging)
+        {
+            _endChargeTime = Time.time;
+            _chargePower = _chargeSpeed * (_endChargeTime - _startChargeTime);
+            _startChargeTime = 0;
+            _endChargeTime = 0;
+            _wasCharging = false;
+        }
     }
 
     private float CalculatePower(AimingOutputArgs aimOutput)

@@ -19,6 +19,7 @@ public class CharacterController : MonoBehaviour
     private Coroutine _resetAttackheight;
 
     private bool _wasSprinting;
+    private bool _isHoldingShield;
     private void Start()
     {
         _aimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
@@ -35,13 +36,13 @@ public class CharacterController : MonoBehaviour
     {
         if (_stateManager.AttackState == AttackState.ShieldDefence ||
             _stateManager.AttackState == AttackState.SwordDefence ||
-            _stateManager.AttackState == AttackState.BlockAttack)
+            _stateManager.AttackState == AttackState.LockShield)
         {
             _aimInputRef.variable.State = _stateManager.AttackState;
             return;
         }
 
-            if (_stateManager.AttackState != AttackState.Idle && _aimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
+        if (_stateManager.AttackState != AttackState.Idle && _aimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
         else if(_stateManager.AttackState != AttackState.Attack && _aimInputRef.Value != Vector2.zero) _stateManager.AttackState = AttackState.Attack;
 
         _aimInputRef.variable.State = _stateManager.AttackState;
@@ -54,7 +55,7 @@ public class CharacterController : MonoBehaviour
 
     public void ProccesSetBlockInput(InputAction.CallbackContext ctx)
     {
-        if (_stateManager.AttackState != AttackState.BlockAttack) 
+        if (_stateManager.AttackState != AttackState.LockShield)
         {
             if (ctx.action.WasPressedThisFrame())
             {
@@ -65,21 +66,31 @@ public class CharacterController : MonoBehaviour
             {
                 _stateManager.AttackState = AttackState.Idle;
             }
-        } else if(ctx.performed) _stateManager.AttackState = AttackState.Idle;
+        }
+        else if (ctx.performed)
+        {
+            _stateManager.AttackState = AttackState.Idle;
+            _isHoldingShield = false;
+            _stateManager.IsHoldingShield = _isHoldingShield;
+        }
 
-        _aimInputRef.variable.State = _stateManager.AttackState;
+            _aimInputRef.variable.State = _stateManager.AttackState;
     }
 
     public void ProccesSetParryInput(InputAction.CallbackContext ctx)
     {
         if (ctx.action.WasPressedThisFrame())
         {
+            if (_stateManager.AttackState == AttackState.LockShield) _isHoldingShield = true;
+
+            _stateManager.IsHoldingShield = _isHoldingShield;
             _stateManager.AttackState = AttackState.SwordDefence;
         }
 
         if (ctx.action.WasReleasedThisFrame())
         {
-            _stateManager.AttackState = AttackState.Idle;
+            if (_isHoldingShield) _stateManager.AttackState = AttackState.LockShield;
+            else _stateManager.AttackState = AttackState.Idle;
         }
 
         _aimInputRef.variable.State = _stateManager.AttackState;
@@ -105,7 +116,7 @@ public class CharacterController : MonoBehaviour
     public void ProccesInteractInput(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
-        //TODO add dodge event
+        //TODO add intract event
     }
 
     public void ProccesAtackHeightInput(InputAction.CallbackContext ctx)
@@ -121,7 +132,9 @@ public class CharacterController : MonoBehaviour
     {
         if(!ctx.performed) return;
         if (_stateManager.AttackState != AttackState.ShieldDefence) return;
-        _stateManager.AttackState = AttackState.BlockAttack;
+        _isHoldingShield = true;
+        _stateManager.IsHoldingShield = _isHoldingShield;
+        _stateManager.AttackState = AttackState.LockShield;
         _aimInputRef.variable.State = _stateManager.AttackState;
     }
 

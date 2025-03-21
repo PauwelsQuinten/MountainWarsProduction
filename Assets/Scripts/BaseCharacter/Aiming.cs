@@ -212,7 +212,7 @@ public class Aiming : MonoBehaviour
         {
             case AttackState.Idle:
             case AttackState.Attack:
-            case AttackState.BlockAttack:
+            case AttackState.LockShield:
                 //Check if you are stabing , return from function afterwards
                 if (_traversedAngle < F_MIN_ACCEPTED_MOVEMENT_ANGLE)
                 {
@@ -501,10 +501,10 @@ public class Aiming : MonoBehaviour
     private bool AreVectorWithinAngle(Vector2 one, Vector2 two, float angleDegree)
     {
         Vector2 nOne = one.normalized;
-        Vector2 ntwo = two.normalized;
-        float dot = Vector2.Dot(nOne, ntwo);
+        Vector2 nTwo = two.normalized;
+        float dot = Vector2.Dot(nOne, nTwo);
+
 
         return Mathf.Acos(dot) < angleDegree * Mathf.Deg2Rad;
     }
-
 }

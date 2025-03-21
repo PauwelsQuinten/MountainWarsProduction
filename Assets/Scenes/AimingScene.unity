@@ -983,7 +983,7 @@ MonoBehaviour:
   _detectHit: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   _characterLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!114 &1810299847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1380,6 +1380,5 @@ SceneRoots:
   - {fileID: 1868469813}
   - {fileID: 938600141}
   - {fileID: 1810299841}
-  - {fileID: 1088028347}
   - {fileID: 2122913676}
   - {fileID: 1007054171}
