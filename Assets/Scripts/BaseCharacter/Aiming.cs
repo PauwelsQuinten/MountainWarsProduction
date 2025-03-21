@@ -225,6 +225,7 @@ public class Aiming : MonoBehaviour
                     {
                         _enmAttackSignal = AttackSignal.Charge;
                         _enmAimingInput = AimingInputState.Hold;
+                        SendPackage();
 
                         _traversedAngle = 0f;
                         //Debug.Log($"Charge");
