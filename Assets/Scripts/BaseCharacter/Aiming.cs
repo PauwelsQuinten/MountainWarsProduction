@@ -9,7 +9,7 @@ public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
     [SerializeField] private GameEvent _AimOutputEvent;
-    [SerializeField] private GameEvent _blockGameEvent;
+    [Header("Visual")]
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
     [SerializeField] private TextMeshProUGUI _textMeshPro3;
