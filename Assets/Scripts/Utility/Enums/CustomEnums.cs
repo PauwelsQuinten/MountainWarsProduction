@@ -47,7 +47,8 @@ namespace UnityEngine
     {
         ToRight, 
         ToLeft, 
-        ToCenter
+        ToCenter,
+        Wrong
     }
 
     public enum AttackSignal
@@ -55,7 +56,8 @@ namespace UnityEngine
         Idle, 
         Stab, 
         Feint, 
-        Swing
+        Swing,
+        Charge
     }
 
     public enum AttackType

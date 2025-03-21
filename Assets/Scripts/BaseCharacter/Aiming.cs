@@ -5,25 +5,10 @@ using System.Collections;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
 
-public enum AimingInputState
-{
-    Idle, Moving, Hold, Reset
-}
-
-public enum Direction
-{
-    ToRight, ToLeft, ToCenter, Wrong
-}
-
-public enum AttackSignal
-{
-    Idle, Stab, Feint, Swing, Charge
-}
-
 public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
-    [SerializeField] private GameEvent _gameEvent;
+    [SerializeField] private GameEvent _doAttack;
     [SerializeField] private GameEvent _blockGameEvent;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
