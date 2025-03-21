@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b784d3553d8fc874dbe416aceb2f41c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitParts: 
 --- !u!1 &1810299839
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,12 +482,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1810299841}
   - component: {fileID: 1810299842}
+  - component: {fileID: 1810299844}
   - component: {fileID: 1810299843}
   - component: {fileID: 1810299840}
-  - component: {fileID: 1810299844}
   - component: {fileID: 1810299846}
+  - component: {fileID: 1810299847}
   - component: {fileID: 1810299845}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AimingTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,6 @@ MonoBehaviour:
     constantValue: {x: 0, y: 0}
     variable: {fileID: 11400000, guid: c07edaff124f1b04e8b8a49de23949a5, type: 2}
   _AimOutputEvent: {fileID: 11400000, guid: 3ce36d1a0cee9b64db3b05b01a8aece3, type: 2}
-  _blockGameEvent: {fileID: 0}
   _textMeshPro: {fileID: 1851133575}
   _textMeshPro2: {fileID: 465747109}
   _textMeshPro3: {fileID: 0}
@@ -733,7 +732,19 @@ MonoBehaviour:
   _detectHit: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   _characterLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
+--- !u!114 &1810299847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810299839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c20b34aa3e83034996fae4520c0383b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0

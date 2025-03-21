@@ -9,7 +9,7 @@ public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
     [SerializeField] private GameEvent _AimOutputEvent;
-    [SerializeField] private GameEvent _blockGameEvent;
+    [Header("Visual")]
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
     [SerializeField] private TextMeshProUGUI _textMeshPro3;
@@ -203,7 +203,7 @@ public class Aiming : MonoBehaviour
         {
             case AttackState.Idle:
             case AttackState.Attack:
-            case AttackState.BlockAttack:
+            case AttackState.LockShield:
                 //Check if you are stabing , return from function afterwards
                 if (_traversedAngle < F_MIN_ACCEPTED_MOVEMENT_ANGLE)
                 {
@@ -225,6 +225,7 @@ public class Aiming : MonoBehaviour
                     {
                         _enmAttackSignal = AttackSignal.Charge;
                         _enmAimingInput = AimingInputState.Hold;
+                        SendPackage();
 
                         _traversedAngle = 0f;
                         //Debug.Log($"Charge");
@@ -484,10 +485,10 @@ public class Aiming : MonoBehaviour
     private bool AreVectorWithinAngle(Vector2 one, Vector2 two, float angleDegree)
     {
         Vector2 nOne = one.normalized;
-        Vector2 ntwo = two.normalized;
-        float dot = Vector2.Dot(nOne, ntwo);
+        Vector2 nTwo = two.normalized;
+        float dot = Vector2.Dot(nOne, nTwo);
+
 
         return Mathf.Acos(dot) < angleDegree * Mathf.Deg2Rad;
     }
-
 }
