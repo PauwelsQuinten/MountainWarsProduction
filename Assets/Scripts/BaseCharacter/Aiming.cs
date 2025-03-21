@@ -9,7 +9,7 @@ public class Aiming : MonoBehaviour
 {
     [SerializeField] private AimingInputReference _refAimingInput;
     [SerializeField] private GameEvent _AimOutputEvent;
-    [SerializeField] private GameEvent _blockGameEvent;
+    [Header("Visual")]
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private TextMeshProUGUI _textMeshPro2;
     [SerializeField] private TextMeshProUGUI _textMeshPro3;
@@ -225,6 +225,7 @@ public class Aiming : MonoBehaviour
                     {
                         _enmAttackSignal = AttackSignal.Charge;
                         _enmAimingInput = AimingInputState.Hold;
+                        SendPackage();
 
                         _traversedAngle = 0f;
                         //Debug.Log($"Charge");
