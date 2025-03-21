@@ -10,6 +10,7 @@ namespace UnityEngine
         public float Speed;
         public float AngleTravelled;
         public AttackSignal AttackSignal;
+        public AttackState AttackState;
     }
     
 

@@ -66,4 +66,18 @@ namespace UnityEngine
         HorizontalSlashToLeft,
         HorizontalSlashToRight,
     }
+
+    public enum BlockResult
+    {
+        Hit,
+        //This will happen when you are holding the shield up in center position while the attack comes either from left or right.
+        //this will not cause damage but will cut down your Stamina more. 
+        HalfBlocked, 
+        //This will happen when you are holding the shield up in position of the attack.
+        //this will take less Stamina from you and cause a small knockback to the opponent. 
+        FullyBlocked,
+        //This will take the least amount of Stamina and create the biggest opening to attack the opponent afterwards
+        Parried
+    }
+
 }
