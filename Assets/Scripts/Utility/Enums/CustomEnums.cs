@@ -25,7 +25,7 @@ namespace UnityEngine
         Attack,
         ShieldDefence,
         SwordDefence,
-        LockShield
+        BlockAttack
     }
 
     public enum CurrentWeapon

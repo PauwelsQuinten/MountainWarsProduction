@@ -58,11 +58,11 @@ public class Aiming : MonoBehaviour
     {
         switch(e.ThisChanged)
         {
-            case AimInputEventArgs.WhatChanged.Input:
-                OnInputChanged();
-                break;
             case AimInputEventArgs.WhatChanged.State:
                 OnStateChanged();
+                break;
+            case AimInputEventArgs.WhatChanged.Input:
+                OnInputChanged();
                 break;
             default:
                 break;
@@ -155,6 +155,7 @@ public class Aiming : MonoBehaviour
         if (_enmCurrentAttackState == AttackState.ShieldDefence && _refAimingInput.variable.State == AttackState.BlockAttack)
         {
             SendPackage();
+            _previousLength = 1.1f;
         }
         else if (_enmCurrentAttackState ==  AttackState.BlockAttack && _refAimingInput.variable.State != AttackState.BlockAttack)
         {
@@ -212,7 +213,7 @@ public class Aiming : MonoBehaviour
         {
             case AttackState.Idle:
             case AttackState.Attack:
-            case AttackState.LockShield:
+            case AttackState.BlockAttack:
                 //Check if you are stabing , return from function afterwards
                 if (_traversedAngle < F_MIN_ACCEPTED_MOVEMENT_ANGLE)
                 {
@@ -225,7 +226,7 @@ public class Aiming : MonoBehaviour
                         SendPackage();
 
                         _traversedAngle = 0f;
-                        //Debug.Log($"HStab");
+                        Debug.Log($"HStab");
                         return;
                     }
                     //Charging for next attack, reset _startVec so it wont interfere when going to stab
@@ -320,7 +321,7 @@ public class Aiming : MonoBehaviour
 
     private bool IsStabMovement(float inputLength)
     {
-        return (inputLength >= 0.9f && inputLength > _previousLength
+        return (inputLength >= 0.9f && inputLength > _previousLength + 0.01f
                     && _refAimingInput.variable.StateManager.Orientation == CalculateOrientationOfInput(_refAimingInput.variable.value)
                     && (_refAimingInput.variable.State == AttackState.Attack || _refAimingInput.variable.State == AttackState.BlockAttack)
                     && _enmAttackSignal == AttackSignal.Idle

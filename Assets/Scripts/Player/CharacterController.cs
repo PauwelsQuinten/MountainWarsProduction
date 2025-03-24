@@ -36,7 +36,7 @@ public class CharacterController : MonoBehaviour
     {
         if (_stateManager.AttackState == AttackState.ShieldDefence ||
             _stateManager.AttackState == AttackState.SwordDefence ||
-            _stateManager.AttackState == AttackState.LockShield)
+            _stateManager.AttackState == AttackState.BlockAttack)
         {
             _aimInputRef.variable.State = _stateManager.AttackState;
             return;
@@ -55,7 +55,7 @@ public class CharacterController : MonoBehaviour
 
     public void ProccesSetBlockInput(InputAction.CallbackContext ctx)
     {
-        if (_stateManager.AttackState != AttackState.LockShield)
+        if (_stateManager.AttackState != AttackState.BlockAttack)
         {
             if (ctx.action.WasPressedThisFrame())
             {
@@ -81,7 +81,7 @@ public class CharacterController : MonoBehaviour
     {
         if (ctx.action.WasPressedThisFrame())
         {
-            if (_stateManager.AttackState == AttackState.LockShield) _isHoldingShield = true;
+            if (_stateManager.AttackState == AttackState.BlockAttack) _isHoldingShield = true;
 
             _stateManager.IsHoldingShield = _isHoldingShield;
             _stateManager.AttackState = AttackState.SwordDefence;
@@ -89,7 +89,7 @@ public class CharacterController : MonoBehaviour
 
         if (ctx.action.WasReleasedThisFrame())
         {
-            if (_isHoldingShield) _stateManager.AttackState = AttackState.LockShield;
+            if (_isHoldingShield) _stateManager.AttackState = AttackState.BlockAttack;
             else _stateManager.AttackState = AttackState.Idle;
         }
 
@@ -134,7 +134,7 @@ public class CharacterController : MonoBehaviour
         if (_stateManager.AttackState != AttackState.ShieldDefence) return;
         _isHoldingShield = true;
         _stateManager.IsHoldingShield = _isHoldingShield;
-        _stateManager.AttackState = AttackState.LockShield;
+        _stateManager.AttackState = AttackState.BlockAttack;
         _aimInputRef.variable.State = _stateManager.AttackState;
     }
 
