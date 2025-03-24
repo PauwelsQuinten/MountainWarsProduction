@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class HitDetection : MonoBehaviour
@@ -18,21 +19,21 @@ public class HitDetection : MonoBehaviour
         _DealDamage.Raise(this, new DamageEventArgs { AttackPower = args.AttackPower, HitParts = _hitParts});
     }
 
-    private List<Bodyparts> GetDamagedParts(AttackEventArgs args)
+    private List<BodyParts> GetDamagedParts(AttackEventArgs args)
     {
         _hitParts.Clear();
-        List<Bodyparts> parts = new List<Bodyparts>();
-        switch (args.AttackType) 
+        List<BodyParts> parts = new List<BodyParts>();
+        switch (args.AttackType)
         {
             case AttackType.Stab:
 
-                switch (args.AttackHeight) 
+                switch (args.AttackHeight)
                 {
                     case AttackHeight.Head:
-                        parts.Add(Bodyparts.Head);
+                        parts.Add(BodyParts.Head);
                         break;
                     case AttackHeight.Torso:
-                        parts.Add(Bodyparts.Torso);
+                        parts.Add(BodyParts.Torso);
                         break;
                 }
                 break;
@@ -41,7 +42,7 @@ public class HitDetection : MonoBehaviour
                 switch (args.AttackHeight)
                 {
                     case AttackHeight.Head:
-                        parts.Add(Bodyparts.Head);
+                        parts.Add(BodyParts.Head);
                         break;
                     case AttackHeight.Torso:
                         //TODO shield gets hit animation
@@ -53,10 +54,10 @@ public class HitDetection : MonoBehaviour
                 switch (args.AttackHeight)
                 {
                     case AttackHeight.Head:
-                        parts.Add(Bodyparts.Head);
+                        parts.Add(BodyParts.Head);
                         break;
                     case AttackHeight.Torso:
-                        parts.Add(Bodyparts.LeftArm);
+                        parts.Add(BodyParts.LeftArm);
                         break;
                 }
                 break;

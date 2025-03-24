@@ -25,7 +25,7 @@ namespace UnityEngine
         Attack,
         ShieldDefence,
         SwordDefence,
-        LockShield
+        BlockAttack
     }
 
     public enum CurrentWeapon
@@ -45,6 +45,7 @@ namespace UnityEngine
 
     public enum Direction
     {
+        Idle,
         ToRight, 
         ToLeft, 
         ToCenter,
@@ -67,11 +68,44 @@ namespace UnityEngine
         HorizontalSlashToRight,
     }
 
-    public enum Bodyparts
-    {
+    public enum BodyParts 
+    { 
         Head,
         Torso,
         LeftArm,
         RightArm,
+        LeftLeg,
+        RightLeg,
     }
+
+
+    public enum BlockResult
+    {
+        //When no defence and clean hit
+        //Take full damage and stamina loss
+        Hit,
+        //This will happen when you block with sword in right direction
+        //This will half the damage taken.
+        SwordBlock,
+        //This will happen when you block with sword a stab from center position
+        //Take 3/4 of the damage
+        SwordHalfBlock,
+        
+        //This will happen when you are holding the shield up in center position while the attack comes either from left or right.
+        //this will not cause damage but will cut down your Stamina more. 
+        HalfBlocked, 
+        //This will happen when you are holding the shield up in position of the attack.
+        //this will take less Stamina from you and cause a small knockback to the opponent. 
+        FullyBlocked,
+        //This will take the least amount of Stamina and create the biggest opening to attack the opponent afterwards
+        Parried
+    }
+    
+    public enum BlockMedium
+    {
+        Shield,
+        Sword,
+        Nothing
+    }
+
 }

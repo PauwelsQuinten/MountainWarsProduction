@@ -58,11 +58,11 @@ public class Aiming : MonoBehaviour
     {
         switch(e.ThisChanged)
         {
-            case AimInputEventArgs.WhatChanged.Input:
-                OnInputChanged();
-                break;
             case AimInputEventArgs.WhatChanged.State:
                 OnStateChanged();
+                break;
+            case AimInputEventArgs.WhatChanged.Input:
+                OnInputChanged();
                 break;
             default:
                 break;
@@ -83,8 +83,8 @@ public class Aiming : MonoBehaviour
             return;
         }
 
-        //Set to Idle when no input or very small
 
+        //Set to Idle when no input or very small
         if (_refAimingInput.variable.value == Vector2.zero || inputLength < F_MIN_ACCEPTED_VALUE)
         {
             if (_traversedAngle > F_MIN_ACCEPTED_MOVEMENT_ANGLE)
@@ -101,10 +101,22 @@ public class Aiming : MonoBehaviour
                 _traversedAngle = 0f;
             }
             
-            _enmAimingInput = AimingInputState.Idle;
-            _enmAttackSignal = AttackSignal.Idle;
-            _vec2Start = Vector2.zero;
-            _traversedAngle = 0f;
+            if (_enmAimingInput != AimingInputState.Idle)
+            {
+                _enmAimingInput = AimingInputState.Idle;
+                _enmAttackSignal = AttackSignal.Idle;
+                _vec2Start = Vector2.zero;
+                _traversedAngle = 0f;
+                SendPackage();
+            }
+            else
+            {
+                _enmAttackSignal = AttackSignal.Idle;
+                _vec2Start = Vector2.zero;
+                _traversedAngle = 0f;
+
+            }
+            
         }
 
 
@@ -116,7 +128,7 @@ public class Aiming : MonoBehaviour
             _vec2Start = Vector2.zero;
             _traversedAngle = 0f;
             StartCoroutine(ResetAttack(F_TIME_BETWEEN_STAB));
-            //Debug.Log("Stab");
+            Debug.Log($"Stab owner: {gameObject}");
             SendPackage();
         }
 
@@ -136,7 +148,7 @@ public class Aiming : MonoBehaviour
                     if (_refAimingInput.variable.State == AttackState.ShieldDefence)
                     {
                         SendPackage();
-                        //Debug.Log("ShieldDefence Moving");
+                        //Debug.Log("Shield Moving");
                     }
 
                     break;
@@ -152,6 +164,16 @@ public class Aiming : MonoBehaviour
     }
     private void OnStateChanged()
     {
+        if (_enmCurrentAttackState == AttackState.ShieldDefence && _refAimingInput.variable.State == AttackState.BlockAttack)
+        {
+            SendPackage();
+            _previousLength = 1.1f;
+        }
+        else if (_enmCurrentAttackState ==  AttackState.BlockAttack && _refAimingInput.variable.State != AttackState.BlockAttack)
+        {
+            SendPackage();
+        }
+
         if (_enmCurrentAttackState != _refAimingInput.variable.State)
         {
             _enmCurrentAttackState = _refAimingInput.variable.State;
@@ -203,7 +225,7 @@ public class Aiming : MonoBehaviour
         {
             case AttackState.Idle:
             case AttackState.Attack:
-            case AttackState.LockShield:
+            case AttackState.BlockAttack:
                 //Check if you are stabing , return from function afterwards
                 if (_traversedAngle < F_MIN_ACCEPTED_MOVEMENT_ANGLE)
                 {
@@ -216,7 +238,7 @@ public class Aiming : MonoBehaviour
                         SendPackage();
 
                         _traversedAngle = 0f;
-                        //Debug.Log($"HStab");
+                        Debug.Log($"HStab");
                         return;
                     }
                     //Charging for next attack, reset _startVec so it wont interfere when going to stab
@@ -240,6 +262,7 @@ public class Aiming : MonoBehaviour
                 {
                     //feinting or throw your swing attack
                     Swing(dir);
+
                 }
 
                 //DebugLines(dir);
@@ -249,6 +272,7 @@ public class Aiming : MonoBehaviour
             case AttackState.SwordDefence:
                 _enmAimingInput = AimingInputState.Hold;
                 //DebugLines(dir);
+                //Debug.Log("Block send");
 
                 SendPackage();
                 break;
@@ -309,9 +333,9 @@ public class Aiming : MonoBehaviour
 
     private bool IsStabMovement(float inputLength)
     {
-        return (inputLength >= 0.9f && inputLength > _previousLength
+        return (inputLength >= 0.9f && inputLength > _previousLength + 0.01f
                     && _refAimingInput.variable.StateManager.Orientation == CalculateOrientationOfInput(_refAimingInput.variable.value)
-                    && _refAimingInput.variable.State == AttackState.Attack
+                    && (_refAimingInput.variable.State == AttackState.Attack || _refAimingInput.variable.State == AttackState.BlockAttack)
                     && _enmAttackSignal == AttackSignal.Idle
                     && _traversedAngle < F_MAX_ALLOWED_ANGLE_ON_ORIENTATION) ;
            /* return true;
@@ -340,6 +364,8 @@ public class Aiming : MonoBehaviour
             Speed = CalculateSwingSpeed(distance)
                 ,
             AttackSignal = _enmAttackSignal
+                ,
+            AttackState = _refAimingInput.variable.State
         };
         _AimOutputEvent.Raise(this, package);
     }
@@ -424,12 +450,15 @@ public class Aiming : MonoBehaviour
         int diff = (int)input - orient;
         diff = diff < -180? 360 + diff  : diff;
 
-        if (diff > 30 && diff < 100)
+        /*if (_enmAimingInput == AimingInputState.Hold)
+            Debug.Log($"{diff}");*/
+
+        if (diff > -30 && diff < 30)
+            return Direction.ToCenter;
+        else if (diff > 30 && diff < 100)
             return Direction.ToLeft;
         else if (diff < -30 && diff > -100)
             return Direction.ToRight;
-        else if (diff > -30 && diff < 30)
-            return Direction.ToCenter;
         return Direction.Wrong;
     }
 
