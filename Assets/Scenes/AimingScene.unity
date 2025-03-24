@@ -593,8 +593,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackEvent: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
-  _timeInterval: 2
-  _attackType: 1
+  _timeInterval: 3
+  _attackType: 2
   _attackHeight: 1
   _attackPower: 1
 --- !u!114 &1088028350
@@ -898,6 +898,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
   - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
   - {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
+  - {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -1007,6 +1008,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1810299839}
+        m_TargetAssemblyTypeName: Blocking, Assembly-CSharp
+        m_MethodName: CheckBlock
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1810299846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1057,9 +1072,9 @@ MonoBehaviour:
   _succesfullParryEvent: {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
   _onFailedParryEvent: {fileID: 11400000, guid: e4d2257f33828fe45a8ba3c1de9a6a8c, type: 2}
   _onDisarmEvent: {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
-  _minParrySwingAngle: 100
+  _minParrySwingAngle: 120
   _minParryStabAngle: 60
-  _timeForParryingSwing: 1
+  _timeForParryingSwing: 0.8
   _timeForParryingStab: 0.4
 --- !u!1 &1851133573
 GameObject:

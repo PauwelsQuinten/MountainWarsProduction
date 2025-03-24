@@ -31,7 +31,7 @@ public class Parry : MonoBehaviour
         AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
 
-        if (_attackEventValues != null && _tryDisarm)
+        if (_attackEventValues != null && _tryDisarm && args.AttackState == AttackState.SwordDefence)
         {
             AttemptDisarm(args);
         }
