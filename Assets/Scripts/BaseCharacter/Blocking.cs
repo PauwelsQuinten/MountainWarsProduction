@@ -80,8 +80,9 @@ public class Blocking : MonoBehaviour
             AttackPower = args.AttackPower
         };
 
+
         if (blockResult == BlockResult.Hit)
-            _succesfullHitEvent.Raise(this, defenceEventArgs);
+            _succesfullHitEvent.Raise(this, args);
         else
             _succesfullBlockevent.Raise(this, defenceEventArgs);
 

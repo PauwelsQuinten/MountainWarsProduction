@@ -808,7 +808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1007054170
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1058,7 +1058,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Attacking, Assembly-CSharp
-        m_MethodName: Attack
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1165,7 +1165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20b34aa3e83034996fae4520c0383b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockEvent: {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
+  _succesfullBlockevent: {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
+  _succesfullHitEvent: {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
 --- !u!114 &1088028349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,7 +1181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackEvent: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   _timeInterval: 2
-  _attackType: 1
+  _attackType: 2
   _attackHeight: 1
   _attackPower: 1
 --- !u!114 &1088028350
@@ -1200,7 +1201,7 @@ MonoBehaviour:
   _basePower: 5
   _chargeSpeed: 0
   _attackRange: 0
-  _doAttack: {fileID: 0}
+  _doAttack: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   _characterLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -1583,6 +1584,8 @@ GameObject:
   - component: {fileID: 1810299846}
   - component: {fileID: 1810299847}
   - component: {fileID: 1810299845}
+  - component: {fileID: 1810299849}
+  - component: {fileID: 1810299848}
   m_Layer: 3
   m_Name: AimingTest
   m_TagString: Untagged
@@ -1831,6 +1834,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3ce36d1a0cee9b64db3b05b01a8aece3, type: 2}
   - {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
+  - {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
+  - {fileID: 11400000, guid: adf3d2d15933fe3409767bb76cff4168, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -1886,6 +1891,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1810299849}
+        m_TargetAssemblyTypeName: HitDetection, Assembly-CSharp
+        m_MethodName: DetectHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1810299848}
+        m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
+        m_MethodName: TakeDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1810299846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1919,7 +1952,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20b34aa3e83034996fae4520c0383b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockEvent: {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
+  _succesfullBlockevent: {fileID: 0}
+  _succesfullHitEvent: {fileID: 0}
+--- !u!114 &1810299848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810299839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1fe130a0b9fa34190fff8ab2bca321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxBaseLimbHealth: 20
+  _regenRate: 15
+  _changedHealth: {fileID: 11400000, guid: 76601f3ffea2c334ab44c82b48491b3d, type: 2}
+  _currentBlood: 0
+  _maxBlood: 100
+  _bleedOutSpeed: 5
+  _changedBlood: {fileID: 11400000, guid: e4f4ee8ab6150234d9854f343b1fed94, type: 2}
+  _damageDropOff: 1
+--- !u!114 &1810299849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810299839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b784d3553d8fc874dbe416aceb2f41c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _DealDamage: {fileID: 11400000, guid: adf3d2d15933fe3409767bb76cff4168, type: 2}
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0

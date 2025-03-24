@@ -75,6 +75,7 @@ public class HealthManager : MonoBehaviour
         }
 
         _currentHealth = _maxHealth;
+        _maxBodyPartHealth = _bodyPartHealth;
     }
 
     private void LoseHealth(float damage, DamageEventArgs args)
