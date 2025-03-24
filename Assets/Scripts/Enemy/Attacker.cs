@@ -40,6 +40,5 @@ public class Attacker : MonoBehaviour
             AttackPower = _attackPower
         };
         _attackEvent.Raise(this, attackPackage);
-        Debug.Log("Attack send");
     }
 }
