@@ -69,7 +69,7 @@ public class CharacterController : MonoBehaviour
         }
         else if (ctx.performed)
         {
-            _stateManager.AttackState = AttackState.Idle;
+            _stateManager.AttackState = AttackState.ShieldDefence;
             _isHoldingShield = false;
             _stateManager.IsHoldingShield = _isHoldingShield;
         }
