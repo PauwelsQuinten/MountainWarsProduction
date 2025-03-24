@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Blocking : MonoBehaviour
 {
-    [SerializeField] private GameEvent _blockEvent;
+    [SerializeField] private GameEvent _succesfullBlockevent;
+    [SerializeField] private GameEvent _succesfullHitEvent;
     private Direction _blockDirection;
     private AimingInputState _aimingInputState;
     private BlockMedium _blockMedium = BlockMedium.Shield;
@@ -42,7 +43,7 @@ public class Blocking : MonoBehaviour
     public void CheckBlock(Component sender, object obj)
     {
         //Check for vallid signal
-        if (sender.gameObject == gameObject) return;
+        if (sender.gameObject != gameObject) return;
 
         AttackEventArgs args = obj as AttackEventArgs;
         if (args == null) return;
@@ -78,7 +79,11 @@ public class Blocking : MonoBehaviour
             AttackHeight = args.AttackHeight,
             AttackPower = args.AttackPower
         };
-        _blockEvent.Raise(sender, defenceEventArgs);
+
+        if (blockResult == BlockResult.Hit)
+            _succesfullHitEvent.Raise(this, defenceEventArgs);
+        else
+            _succesfullBlockevent.Raise(this, defenceEventArgs);
 
         Debug.Log($"{blockResult}");
     }
@@ -150,6 +155,8 @@ public class Blocking : MonoBehaviour
             case AttackType.HorizontalSlashToLeft:
                 if (_blockDirection == Direction.ToLeft)
                     blockResult = BlockResult.FullyBlocked;
+                else if (_blockDirection == Direction.ToRight)
+                    blockResult = BlockResult.Hit;
                 else
                     blockResult = BlockResult.HalfBlocked;
                 break;
