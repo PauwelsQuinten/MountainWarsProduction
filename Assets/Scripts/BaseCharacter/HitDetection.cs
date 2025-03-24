@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class HitDetection : MonoBehaviour
 {
+    [SerializeField] GameEvent _DealDamage;
+
     private List<Bodyparts> _hitParts = new List<Bodyparts>();
 
     public void DetectHit(Component sender, object obj)
@@ -13,6 +15,7 @@ public class HitDetection : MonoBehaviour
         if (args == null) return;
 
         _hitParts = GetDamagedParts(args);
+        _DealDamage.Raise(this, new DamageEventArgs { AttackPower = args.AttackPower, HitParts = _hitParts});
     }
 
     private List<Bodyparts> GetDamagedParts(AttackEventArgs args)
