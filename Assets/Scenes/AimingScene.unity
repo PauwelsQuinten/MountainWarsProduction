@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackEvent: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
-  _timeInterval: 1
+  _timeInterval: 2
   _attackType: 1
   _attackHeight: 1
   _attackPower: 1
@@ -941,7 +941,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1810299848}
         m_TargetAssemblyTypeName: Parry, Assembly-CSharp
-        m_MethodName: CheckParry
+        m_MethodName: StartParry
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1056,8 +1056,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _succesfullParryEvent: {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
   _onFailedParryEvent: {fileID: 11400000, guid: e4d2257f33828fe45a8ba3c1de9a6a8c, type: 2}
+  _onDisarmEvent: {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
   _minParrySwingAngle: 100
   _minParryStabAngle: 60
+  _timeForParryingSwing: 1
+  _timeForParryingStab: 0.4
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0

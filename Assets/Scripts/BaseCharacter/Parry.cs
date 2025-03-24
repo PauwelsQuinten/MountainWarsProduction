@@ -1,75 +1,194 @@
 using UnityEngine;
+using System.Collections;
+using static UnityEngine.Rendering.GPUSort;
+
 
 public class Parry : MonoBehaviour
 {
     [Header("Events")]
     [SerializeField] private GameEvent _succesfullParryEvent;
     [SerializeField] private GameEvent _onFailedParryEvent;
-
-    private Direction _swingDirection = Direction.Idle;
-    private float _swingAngle = 0f;
+    [SerializeField] private GameEvent _onDisarmEvent;
 
     [Header("ParryValues")]
     [SerializeField] private float _minParrySwingAngle = 100f;
     [SerializeField] private float _minParryStabAngle = 60f;
+    [SerializeField] private float _timeForParryingSwing = 1f;
+    [SerializeField] private float _timeForParryingStab = 0.4f;
+
+
+    private Direction _swingDirection = Direction.Idle;
+    private float _swingAngle = 0f;
+    private Coroutine _parryroutine;
+    private AttackEventArgs _attackEventValues;
+    private bool _tryDisarm = false;
+
 
     public void ParryMovement(Component sender, object obj)
     {
         if (sender.gameObject != gameObject)
             return;
-        AttackEventArgs args = obj as AttackEventArgs;
+        AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
+
+        if (_attackEventValues != null && _tryDisarm)
+        {
+            AttemptDisarm(args);
+        }
+        else if (_attackEventValues != null && (args.AttackState == AttackState.ShieldDefence || args.AttackState == AttackState.SwordDefence) )
+        {
+            AttemptParry(args);
+        }
+        else
+        {
+            _swingDirection = Direction.Idle;
+            _swingAngle = 0f;
+        }
+        
 
     }
 
-    public void CheckParry(Component sender, object obj)
+    public void StartParry(Component sender, object obj)
     {
         if (sender.gameObject == gameObject)
             return;
         AttackEventArgs args = obj as AttackEventArgs;
         if (args == null) return;
 
+        float time = args.AttackType == AttackType.Stab? _timeForParryingStab: _timeForParryingSwing;
+
+        if (_attackEventValues == null)
+        {
+            _parryroutine = StartCoroutine(ParryAction(time));
+            _attackEventValues = args;
+        }
+    }
+
+
+    private void AttemptParry(AimingOutputArgs args)
+    {
+        _swingDirection = args.Direction;
+        _swingAngle = args.AngleTravelled;
+        if (IsSuccesfullParry(_attackEventValues))
+        {
+            OnSuccesfullParry(_attackEventValues);
+        }
+    }
+
+    private void AttemptDisarm(AimingOutputArgs args)
+    {
+        _swingDirection = args.Direction;
+        _swingAngle = args.AngleTravelled;
+        if (IsSuccesfullDisarm(_attackEventValues))
+        {
+            OnSuccesfullDisarm();
+            _attackEventValues = null;
+        }
+    }
+
+    public bool IsSuccesfullParry(AttackEventArgs args)
+    {
+        Debug.Log($"ParryAction : {_swingAngle} in {_swingDirection}");
         switch (args.AttackType)
         {
             case AttackType.Stab:
                 if (_swingAngle >= _minParrySwingAngle)
                 {
-                    OnSuccesfullParry(args);
-                    return;
+                    return true;
                 }
                 break;
 
             case AttackType.HorizontalSlashToLeft:
                 if (_swingDirection == Direction.ToLeft && _swingAngle >= _minParrySwingAngle)
                 {
-                    OnSuccesfullParry(args);
-                    return;
+                    return true;
                 }
                 break;
 
             case AttackType.HorizontalSlashToRight:
                 if (_swingDirection == Direction.ToRight && _swingAngle >= _minParrySwingAngle)
                 {
-                    OnSuccesfullParry(args);
-                    return;
+                    return true;
                 } 
                 break;
         }
 
-        OnFaildedParry(args);
+        return false;
     }
 
+    public bool IsSuccesfullDisarm(AttackEventArgs args)
+    {
+        Debug.Log($"DisarmAction : {_swingAngle} in {_swingDirection}");
+        switch (args.AttackType)
+        {
+            case AttackType.Stab:
+                if (_swingAngle >= _minParrySwingAngle)
+                {
+                    return true;
+                }
+                break;
 
+            case AttackType.HorizontalSlashToLeft:
+                if (_swingDirection == Direction.ToRight && _swingAngle >= _minParrySwingAngle)
+                {
+                    return true;
+                }
+                break;
+
+            case AttackType.HorizontalSlashToRight:
+                if (_swingDirection == Direction.ToLeft && _swingAngle >= _minParrySwingAngle)
+                {
+                    return true;
+                }
+                break;
+        }
+
+        return false;
+    }
 
 
     private void OnSuccesfullParry(AttackEventArgs attackValues)
     {
         _succesfullParryEvent.Raise(this, attackValues);
+
+        _tryDisarm = true;
+        float time = attackValues.AttackType == AttackType.Stab ? _timeForParryingStab : _timeForParryingSwing;
+        StartCoroutine(DisarmAction(time));
+        
+    }
+    private void OnSuccesfullDisarm()
+    {
+        _onDisarmEvent.Raise(this, null);
+        _tryDisarm = false;
+        _attackEventValues = null;
+        Debug.Log("Disarmed");
     }
     
     private void OnFaildedParry(AttackEventArgs attackValues)
     {
         _onFailedParryEvent.Raise(this, attackValues);
     }
+    
+
+    private IEnumerator ParryAction(float timeForParrying)
+    {
+        yield return new WaitForSeconds(timeForParrying);
+
+        if(!_tryDisarm)
+        {
+            OnFaildedParry(_attackEventValues);
+            _attackEventValues = null;
+        }
+    }
+    
+    private IEnumerator DisarmAction(float timeForParrying)
+    {
+        yield return new WaitForSeconds(timeForParrying);
+
+        _tryDisarm = false;
+        _attackEventValues = null;
+
+    }
+
 
 }
