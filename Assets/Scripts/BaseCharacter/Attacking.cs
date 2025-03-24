@@ -41,6 +41,8 @@ public class Attacking : MonoBehaviour
         AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
 
+        PrintInput(args);
+
         CalculateChargePower(args);
 
         if (DidFeint(args.AttackSignal)) return;
@@ -125,5 +127,10 @@ public class Attacking : MonoBehaviour
             }
         }
             return false;
+    }
+
+    private void PrintInput(AimingOutputArgs args)
+    {
+        Debug.Log($"{args.AttackSignal}, {args.Direction}, {args.AngleTravelled}");
     }
 }

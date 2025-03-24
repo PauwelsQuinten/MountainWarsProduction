@@ -128,7 +128,7 @@ public class Aiming : MonoBehaviour
             _vec2Start = Vector2.zero;
             _traversedAngle = 0f;
             StartCoroutine(ResetAttack(F_TIME_BETWEEN_STAB));
-            Debug.Log($"Stab owner: {gameObject}");
+            //Debug.Log($"Stab owner: {gameObject}");
             SendPackage();
         }
 

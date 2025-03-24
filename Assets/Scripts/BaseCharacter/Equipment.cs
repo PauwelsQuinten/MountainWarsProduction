@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    [SerializeField] private EquipmentType _type;
+    private EquipmentType _type;
     public EquipmentType Type { get { return _type; } private set { _type = value; } }
-    [SerializeField] private float _durability = 10f;
+    private float _durability = 10f;
     public float Durability { get { return _durability; } set {_durability = value; } }
+    private bool _isRightHandEquipment = false;
+    public bool IsRightHandEquipment { get { return _isRightHandEquipment; } private set { _isRightHandEquipment = value; } }
+
     void Start()
     {
         
