@@ -1,63 +1,64 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class HitDetection : MonoBehaviour
 {
-    //private List<Bodyparts> _hitParts = new List<Bodyparts>();
+    private List<BodyParts> _hitParts = new List<BodyParts>();
 
-//    //public void DetectHit(Component sender, object obj)
-    //{
-    //    if (sender.gameObject == gameObject) return;
+    public void DetectHit(Component sender, object obj)
+    {
+        if (sender.gameObject == gameObject) return;
 
-//    //    AttackEventArgs args = obj as AttackEventArgs;
-    //    if (args == null) return;
+        AttackEventArgs args = obj as AttackEventArgs;
+        if (args == null) return;
 
-//    //    _hitParts = GetDamagedParts(args);
-    //}
+        _hitParts = GetDamagedParts(args);
+    }
 
-//    //private List<Bodyparts> GetDamagedParts(AttackEventArgs args)
-    //{
-    //    _hitParts.Clear();
-    //    List<Bodyparts> parts = new List<Bodyparts>();
-    //    switch (args.AttackType) 
-    //    {
-    //        case AttackType.Stab:
+    private List<BodyParts> GetDamagedParts(AttackEventArgs args)
+    {
+        _hitParts.Clear();
+        List<BodyParts> parts = new List<BodyParts>();
+        switch (args.AttackType)
+        {
+            case AttackType.Stab:
 
-//    //            switch (args.AttackHeight) 
-    //            {
-    //                case AttackHeight.Head:
-    //                    parts.Add(Bodyparts.Head);
-    //                    break;
-    //                case AttackHeight.Torso:
-    //                    parts.Add(Bodyparts.Torso);
-    //                    break;
-    //            }
-    //            break;
-    //        case AttackType.HorizontalSlashToLeft:
+                switch (args.AttackHeight)
+                {
+                    case AttackHeight.Head:
+                        parts.Add(BodyParts.Head);
+                        break;
+                    case AttackHeight.Torso:
+                        parts.Add(BodyParts.Torso);
+                        break;
+                }
+                break;
+            case AttackType.HorizontalSlashToLeft:
 
-//    //            switch (args.AttackHeight)
-    //            {
-    //                case AttackHeight.Head:
-    //                    parts.Add(Bodyparts.Head);
-    //                    break;
-    //                case AttackHeight.Torso:
-    //                    //TODO shield gets hit animation
-    //                    break;
-    //            }
-    //            break;
-    //        case AttackType.HorizontalSlashToRight:
+                switch (args.AttackHeight)
+                {
+                    case AttackHeight.Head:
+                        parts.Add(BodyParts.Head);
+                        break;
+                    case AttackHeight.Torso:
+                        //TODO shield gets hit animation
+                        break;
+                }
+                break;
+            case AttackType.HorizontalSlashToRight:
 
-//    //            switch (args.AttackHeight)
-    //            {
-    //                case AttackHeight.Head:
-    //                    parts.Add(Bodyparts.Head);
-    //                    break;
-    //                case AttackHeight.Torso:
-    //                    parts.Add(Bodyparts.LeftArm);
-    //                    break;
-    //            }
-    //            break;
-    //    }
-    //    return parts;
-    //}
+                switch (args.AttackHeight)
+                {
+                    case AttackHeight.Head:
+                        parts.Add(BodyParts.Head);
+                        break;
+                    case AttackHeight.Torso:
+                        parts.Add(BodyParts.LeftArm);
+                        break;
+                }
+                break;
+        }
+        return parts;
+    }
 }

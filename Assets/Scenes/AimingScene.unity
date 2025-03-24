@@ -484,6 +484,7 @@ GameObject:
   - component: {fileID: 1088028345}
   - component: {fileID: 1088028348}
   - component: {fileID: 1088028350}
+  - component: {fileID: 1088028351}
   - component: {fileID: 1088028349}
   - component: {fileID: 1088028341}
   m_Layer: 3
@@ -509,6 +510,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3ce36d1a0cee9b64db3b05b01a8aece3, type: 2}
   - {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
+  - {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -564,6 +566,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1088028340}
+        m_TargetAssemblyTypeName: Blocking, Assembly-CSharp
+        m_MethodName: CheckBlock
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1088028345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,6 +595,7 @@ MonoBehaviour:
   AttackState: 0
   AttackHeight: 0
   Orientation: -90
+  IsHoldingShield: 0
 --- !u!4 &1088028347
 Transform:
   m_ObjectHideFlags: 0
@@ -641,10 +658,22 @@ MonoBehaviour:
   _basePower: 5
   _chargeSpeed: 0
   _attackRange: 0
-  _detectHit: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  _doAttack: {fileID: 0}
   _characterLayer:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &1088028351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088028340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b784d3553d8fc874dbe416aceb2f41c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1810299839
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,6 +921,7 @@ MonoBehaviour:
   AttackState: 0
   AttackHeight: 0
   Orientation: 90
+  IsHoldingShield: 0
 --- !u!114 &1810299845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -980,7 +1010,7 @@ MonoBehaviour:
   _basePower: 5
   _chargeSpeed: 0
   _attackRange: 0
-  _detectHit: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  _doAttack: {fileID: 0}
   _characterLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -1382,3 +1412,4 @@ SceneRoots:
   - {fileID: 1810299841}
   - {fileID: 2122913676}
   - {fileID: 1007054171}
+  - {fileID: 1088028347}

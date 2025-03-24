@@ -68,6 +68,17 @@ namespace UnityEngine
         HorizontalSlashToRight,
     }
 
+    public enum BodyParts 
+    { 
+        Head,
+        Torso,
+        LeftArm,
+        RightArm,
+        LeftLeg,
+        RightLeg,
+    }
+
+
     public enum BlockResult
     {
         //When no defence and clean hit
