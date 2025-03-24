@@ -28,13 +28,6 @@ namespace UnityEngine
         BlockAttack
     }
 
-    public enum CurrentWeapon
-    {
-        Fist,
-        Sword,
-        Shield
-    }
-
     public enum AimingInputState
     {
         Idle, 
@@ -107,5 +100,14 @@ namespace UnityEngine
         Sword,
         Nothing
     }
+
+    public enum EquipmentType
+    {
+        Melee,
+        Ranged,
+        Shield,
+        Fist
+    }
+
 
 }
