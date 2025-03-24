@@ -1056,6 +1056,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _succesfullParryEvent: {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
   _onFailedParryEvent: {fileID: 11400000, guid: e4d2257f33828fe45a8ba3c1de9a6a8c, type: 2}
+  _minParrySwingAngle: 100
+  _minParryStabAngle: 60
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0
