@@ -6,7 +6,7 @@ namespace UnityEngine
 {
     public class DamageEventArgs : EventArgs
     {
-        public List<Bodyparts> HitParts = new List<Bodyparts>();
+        public List<BodyParts> HitParts = new List<BodyParts>();
         public float AttackPower;
     }
 }

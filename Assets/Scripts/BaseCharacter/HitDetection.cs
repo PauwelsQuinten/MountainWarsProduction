@@ -6,7 +6,7 @@ public class HitDetection : MonoBehaviour
 {
     [SerializeField] GameEvent _DealDamage;
 
-    private List<Bodyparts> _hitParts = new List<Bodyparts>();
+    private List<BodyParts> _hitParts = new List<BodyParts>();
 
     public void DetectHit(Component sender, object obj)
     {

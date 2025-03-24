@@ -59,7 +59,7 @@ public class HealthManager : MonoBehaviour
             _maxHealth += part.Value;
         }
 
-        _currentHealth.variable.value = _maxHealth;
+        _currentHealth = _maxHealth;
     }
 
     private void LoseHealth(float damage, DamageEventArgs args)
