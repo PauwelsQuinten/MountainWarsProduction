@@ -101,10 +101,22 @@ public class Aiming : MonoBehaviour
                 _traversedAngle = 0f;
             }
             
-            _enmAimingInput = AimingInputState.Idle;
-            _enmAttackSignal = AttackSignal.Idle;
-            _vec2Start = Vector2.zero;
-            _traversedAngle = 0f;
+            if (_enmAimingInput != AimingInputState.Idle)
+            {
+                _enmAimingInput = AimingInputState.Idle;
+                _enmAttackSignal = AttackSignal.Idle;
+                _vec2Start = Vector2.zero;
+                _traversedAngle = 0f;
+                SendPackage();
+            }
+            else
+            {
+                _enmAttackSignal = AttackSignal.Idle;
+                _vec2Start = Vector2.zero;
+                _traversedAngle = 0f;
+
+            }
+            
         }
 
 
