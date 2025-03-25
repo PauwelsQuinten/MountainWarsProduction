@@ -8,6 +8,8 @@ public class Equipment : MonoBehaviour
     public float Durability { get { return _durability; } set {_durability = value; } }
     [SerializeField] private bool _isRightHandEquipment = false;
     public bool IsRightHandEquipment { get { return _isRightHandEquipment; } private set { _isRightHandEquipment = value; } }
+    [SerializeField] private float _power = 1f;
+    public float Power { get { return _power; } private set { _power = value; } }
 
     public void Damage(float damage, BlockResult blockResult)
     {

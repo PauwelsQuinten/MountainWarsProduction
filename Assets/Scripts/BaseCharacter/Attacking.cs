@@ -41,14 +41,14 @@ public class Attacking : MonoBehaviour
         AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
 
-        PrintInput(args);
+        //PrintInput(args);
 
         CalculateChargePower(args);
 
         if (DidFeint(args.AttackSignal)) return;
 
 
-        if (args.AttackSignal != AttackSignal.Stab || args.AttackSignal != AttackSignal.Swing) return;
+        if (args.AttackSignal != AttackSignal.Stab && args.AttackSignal != AttackSignal.Swing) return;
 
         if(args.AttackSignal != AttackSignal.Stab)
         {
@@ -101,9 +101,9 @@ public class Attacking : MonoBehaviour
     private float CalculatePower(AimingOutputArgs aimOutput)
     {
         float swingAngle = aimOutput.AngleTravelled / 100;
-        float power = 0;
-        if (aimOutput.Speed != 0) power = _basePower / aimOutput.Speed + _chargePower;
-        else power = _basePower + _chargePower;
+        float power = aimOutput.EquipmentManager.GetEquipmentPower();
+        if (aimOutput.Speed != 0) power += _basePower * aimOutput.Speed + _chargePower;
+        else power += _basePower + _chargePower;
         return swingAngle + power;
     }
 

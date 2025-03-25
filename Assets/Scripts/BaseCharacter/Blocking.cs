@@ -13,9 +13,20 @@ public class Blocking : MonoBehaviour
     {
         //Check for vallid signal
         if (sender.gameObject != gameObject) return;
-
         AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
+
+        Debug.Log($"package to Block State = {args.AttackState}, hold: {args.AimingInputState}");
+
+        //only set movement when using a Blocking input
+        if (args.AttackState == AttackState.BlockAttack || 
+            args.AttackState == AttackState.ShieldDefence || 
+            args.AttackState == AttackState.SwordDefence || 
+            args.AttackState == AttackState.Knock 
+            )
+            _blockMedium = Blocking.GetBlockMedium(args);
+        else
+            return;
 
 
         //When Shield is locked and state hasnt changed, keep previous values
@@ -27,9 +38,6 @@ public class Blocking : MonoBehaviour
         //Store Blocking values
         _blockDirection = args.BlockDirection;
         _aimingInputState = args.AimingInputState;
-
-        //Set to nothing if equipment is zero
-        _blockMedium = GetBlockMedium(args);
 
         if (args.AttackState == AttackState.BlockAttack)
         {
@@ -80,13 +88,13 @@ public class Blocking : MonoBehaviour
             AttackPower = args.AttackPower,
             BlockMedium = _blockMedium
         };
+        Debug.Log($"{blockResult}");
 
         if (blockResult == BlockResult.Hit)
             _succesfullHitEvent.Raise(this, defenceEventArgs);
         else
             _succesfullBlockevent.Raise(this, defenceEventArgs);
 
-        Debug.Log($"{blockResult}");
     }
 
 
@@ -109,6 +117,9 @@ public class Blocking : MonoBehaviour
                 return BlockMedium.Sword;
             return BlockMedium.Nothing;
         }
+
+        else if (args.AttackState == AttackState.Knock)
+            return BlockMedium.Nothing;
 
         Debug.LogError("No Blockstate, so what are you doing here");
         return BlockMedium.Nothing;

@@ -6,6 +6,7 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private Equipment _leftHand;
     [SerializeField] private Equipment _rightHand;
     [SerializeField] private Equipment _fists;
+    [SerializeField] private GameEvent _onEquipmentBreak;
     private List<Equipment> HeldEquipment = new List<Equipment> {null, null, null };
 
     private const int LEFT_HAND = 0;
@@ -53,9 +54,10 @@ public class EquipmentManager : MonoBehaviour
         HeldEquipment[index].Damage(args.AttackPower, args.BlockResult);
         if (HeldEquipment[index].Durability < 0f)
         {
+            Debug.Log($"!!!!!!!!!!!!!!!!!!!!! breaks {args.BlockMedium} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Destroy(HeldEquipment[index].gameObject);
             HeldEquipment[index] = null;
-            Debug.Log($"breaks {args.BlockMedium}");
+            _onEquipmentBreak.Raise(this);
         }
     }
 
@@ -66,7 +68,8 @@ public class EquipmentManager : MonoBehaviour
 
     public Equipment GetEquipment(bool isRighthand)
     {
-        return null;
+        int index = isRighthand ? 1 : 0;
+        return HeldEquipment[index];
     }
     
     public bool HasEquipmentInHand(bool isRighthand)
@@ -77,7 +80,11 @@ public class EquipmentManager : MonoBehaviour
     
     public float GetEquipmentPower()
     {
-        return 0f;
+        if (HeldEquipment[RIGHT_HAND])
+            return HeldEquipment[RIGHT_HAND].Power;
+        else if (HeldEquipment[LEFT_HAND])
+            return HeldEquipment[RIGHT_HAND].Power;
+        return HeldEquipment[FISTS].Power;
     }
 
     public void DropEquipment()

@@ -547,9 +547,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2909b8547fd4161429a8659c53b32d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OnKnockbackRecovery: {fileID: 0}
   AttackState: 0
   AttackHeight: 0
   Orientation: -90
+  CharacterState: 0
   IsHoldingShield: 0
   EquipmentManager: {fileID: 0}
 --- !u!4 &1088028347
@@ -611,7 +613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _minAttackAngle: 15
-  _overCommitAngle: 140
+  _overCommitAngle: 180
   _basePower: 5
   _chargeSpeed: 0
   _attackRange: 0
@@ -877,9 +879,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2909b8547fd4161429a8659c53b32d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OnKnockbackRecovery: {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
   AttackState: 0
   AttackHeight: 0
   Orientation: 90
+  CharacterState: 0
   IsHoldingShield: 0
   EquipmentManager: {fileID: 1810299849}
 --- !u!114 &1810299845
@@ -902,6 +906,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
   - {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
   - {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
+  - {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
+  - {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -1025,6 +1031,46 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1810299844}
+        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
+        m_MethodName: GetKnockback
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1810299843}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: GetKnockBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1810299843}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: RecoverKnockBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1810299846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1094,6 +1140,7 @@ MonoBehaviour:
   _leftHand: {fileID: 6464342419627203891, guid: 3f5fe7f426ca66e469ff79b95b61b74a, type: 3}
   _rightHand: {fileID: 6464342419627203891, guid: e07e17f7199209b49ab3de04485be0b6, type: 3}
   _fists: {fileID: 6464342419627203891, guid: a2d74654fef498746aa20509befcd693, type: 3}
+  _onEquipmentBreak: {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0

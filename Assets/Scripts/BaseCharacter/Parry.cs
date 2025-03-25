@@ -32,7 +32,12 @@ public class Parry : MonoBehaviour
         AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
 
-        _parryMedium = Blocking.GetBlockMedium(args);
+
+        if (args.AttackState == AttackState.BlockAttack || args.AttackState == AttackState.ShieldDefence || args.AttackState == AttackState.SwordDefence)
+            _parryMedium = Blocking.GetBlockMedium(args);
+        else
+            return;
+
 
         if (_attackEventValues != null && _tryDisarm && _parryMedium == BlockMedium.Sword)
         {
@@ -47,8 +52,6 @@ public class Parry : MonoBehaviour
             _swingDirection = Direction.Idle;
             _swingAngle = 0f;
         }
-        
-
     }
 
     public void StartParry(Component sender, object obj)
@@ -91,7 +94,7 @@ public class Parry : MonoBehaviour
 
     public bool IsSuccesfullParry(AttackEventArgs args)
     {
-        Debug.Log($"ParryAction : {_swingAngle} in {_swingDirection}");
+        //Debug.Log($"ParryAction : {_swingAngle} in {_swingDirection}");
         switch (args.AttackType)
         {
             case AttackType.Stab:
@@ -121,7 +124,7 @@ public class Parry : MonoBehaviour
 
     public bool IsSuccesfullDisarm(AttackEventArgs args)
     {
-        Debug.Log($"DisarmAction : {_swingAngle} in {_swingDirection}");
+        //Debug.Log($"DisarmAction : {_swingAngle} in {_swingDirection}");
         switch (args.AttackType)
         {
             case AttackType.Stab:
