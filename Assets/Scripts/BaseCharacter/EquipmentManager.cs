@@ -6,7 +6,7 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private Equipment _leftHand;
     [SerializeField] private Equipment _rightHand;
     [SerializeField] private Equipment _fists;
-    private List<Equipment> HeldEquipment = new List<Equipment>();
+    private List<Equipment> HeldEquipment = new List<Equipment>(3);
 
     private const int LEFT_HAND = 0;
     private const int RIGHT_HAND = 1;
@@ -18,10 +18,13 @@ public class EquipmentManager : MonoBehaviour
     void Start()
     {
         if (_leftHand && !_leftHand.IsRightHandEquipment)
-            HeldEquipment.Add(_leftHand);
+            HeldEquipment[LEFT_HAND] = _leftHand;
 
         if (_rightHand && _rightHand.IsRightHandEquipment)
-            HeldEquipment.Add(_rightHand);
+            HeldEquipment[RIGHT_HAND] = _rightHand;
+
+        if (_fists && _fists.Type == EquipmentType.Fist)
+            HeldEquipment[FISTS] = _fists;
 
     }
 
