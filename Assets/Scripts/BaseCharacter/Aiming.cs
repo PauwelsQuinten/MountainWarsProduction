@@ -181,7 +181,9 @@ public class Aiming : MonoBehaviour
             if (_enmCurrentAttackState == AttackState.Knock)
             {
                 ResetValues();
-            }    
+                SendPackage();
+            }
+            else if (_enmAttackSignal == AttackSignal.Idle)
                 SendPackage();
         }
     }
