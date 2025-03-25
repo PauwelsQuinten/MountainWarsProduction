@@ -12,14 +12,14 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     private float _speed;
 
-    private Rigidbody2D _rb;
+    private Rigidbody _rb;
     private StateManager _stateManager;
     private Vector2 _movedirection;
     private float _angleInterval = 22.5f;
 
     private void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody>();
         _stateManager = _moveInput.variable.StateManager;
         _moveInput.variable.ValueChanged += MoveInput_ValueChanged;
     }
