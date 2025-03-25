@@ -12,5 +12,7 @@ namespace UnityEngine
 
         public Dictionary<BodyParts, float> BodyPartsHealth;
         public Dictionary<BodyParts, float> MaxBodyPartsHealth;
+
+        public List<BodyParts> DamagedBodyParts = new List<BodyParts>();
     }
 }

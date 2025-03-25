@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HealthManager : MonoBehaviour
@@ -26,17 +27,24 @@ public class HealthManager : MonoBehaviour
     [SerializeField]
     private float _damageDropOff;
 
+    [Header("Healing")]
+    [SerializeField]
+    private float _patchUpSpeed;
+
     private float _currentHealth;
     private float _maxHealth;
+
     private Dictionary<BodyParts, float> _bodyPartHealth = new Dictionary<BodyParts, float>();
     private Dictionary<BodyParts, float> _maxBodyPartHealth = new Dictionary<BodyParts, float>();
     private float _bleedOutRate;
 
-    private bool _canRegenBlood;
-    private bool _canRegenHealth;
+    private bool _canRegenBlood = false;
+    private bool _canRegenHealth = false;
     private Coroutine _canRegenCoroutine;
 
     private List<BodyParts> _damagedBodyParts = new List<BodyParts>();
+
+    private bool _isBleeding;
 
     private void Start()
     {
@@ -45,10 +53,13 @@ public class HealthManager : MonoBehaviour
 
     private void Update()
     {
-        if(_bleedOutRate > 0) LoseBlood();
+        if(_bleedOutRate > 0 && _isBleeding) 
+            LoseBlood();
 
-        if(_canRegenHealth) RegenHealth();
-        if(_canRegenBlood) RegenBlood();
+        if(_canRegenHealth) 
+            RegenHealth();
+        if(_canRegenBlood && !_isBleeding) 
+            RegenBlood();
     }
     public void TakeDamage(Component sender, object obj)
     {
@@ -75,7 +86,7 @@ public class HealthManager : MonoBehaviour
         }
 
         _currentHealth = _maxHealth;
-        _maxBodyPartHealth = _bodyPartHealth;
+        _maxBodyPartHealth = _bodyPartHealth.ToDictionary(entry => entry.Key, entry => entry.Value);
     }
 
     private void LoseHealth(float damage, DamageEventArgs args)
@@ -95,9 +106,11 @@ public class HealthManager : MonoBehaviour
 
                 index++;
                 _changedHealth.Raise
-                    (this, new HealthEventArgs { BodyPartsHealth = _bodyPartHealth, MaxBodyPartsHealth = _maxBodyPartHealth, 
+                    (this, new HealthEventArgs { BodyPartsHealth = _bodyPartHealth, 
+                        MaxBodyPartsHealth = _maxBodyPartHealth, 
                         CurrentBlood = _currentBlood, MaxBlood = _maxBlood, 
-                        CurrentHealth = _currentHealth, MaxHealth = _maxHealth 
+                        CurrentHealth = _currentHealth, MaxHealth = _maxHealth,
+                        DamagedBodyParts = _damagedBodyParts,
                     });
 
                 if (_canRegenCoroutine != null) StopCoroutine(_canRegenCoroutine);
@@ -114,6 +127,7 @@ public class HealthManager : MonoBehaviour
                         _bleedOutRate += _bleedOutSpeed;
 
                     _canRegenBlood = false;
+                    _isBleeding = true;
                 }
             }
             else
@@ -125,7 +139,15 @@ public class HealthManager : MonoBehaviour
 
     private void LoseBlood()
     {
-        _currentBlood -= _bleedOutRate;
+        if (!_isBleeding) _isBleeding = true;
+        if (_currentBlood <= 0)
+        {
+            _currentBlood = 0;
+            return;
+        }
+
+        _currentBlood -= _bleedOutRate * Time.deltaTime;
+
         _changedBlood.Raise
                     (this, new HealthEventArgs
                     {
@@ -134,8 +156,10 @@ public class HealthManager : MonoBehaviour
                         CurrentBlood = _currentBlood,
                         MaxBlood = _maxBlood,
                         CurrentHealth = _currentHealth,
-                        MaxHealth = _maxHealth
+                        MaxHealth = _maxHealth,
+                        DamagedBodyParts = _damagedBodyParts
                     });
+
         if(_canRegenCoroutine !=  null) StopCoroutine( _canRegenCoroutine );
         _canRegenCoroutine = StartCoroutine(ResetCanRegen());
     }
@@ -143,12 +167,11 @@ public class HealthManager : MonoBehaviour
     private void RegenBlood()
     {
         float healing = _regenRate * 0.75f;
-        _currentBlood += healing;
+        _currentBlood += healing * Time.deltaTime;
 
         if (_currentBlood >= _maxBlood)
         {
             _currentBlood = _maxBlood;
-            _canRegenBlood = false;
         }
 
         _changedBlood.Raise
@@ -159,18 +182,20 @@ public class HealthManager : MonoBehaviour
                 CurrentBlood = _currentBlood,
                 MaxBlood = _maxBlood,
                 CurrentHealth = _currentHealth,
-                MaxHealth = _maxHealth
+                MaxHealth = _maxHealth,
+                DamagedBodyParts = _damagedBodyParts
             });  
     }
 
     private void RegenHealth()
     {
         float healing = _regenRate;
-        _currentHealth += healing;
+        _currentHealth += healing * Time.deltaTime;
 
         foreach(BodyParts part in _damagedBodyParts)
         {
-            _bodyPartHealth[part] += healing / _damagedBodyParts.Count;
+            _bodyPartHealth[part] += healing / _damagedBodyParts.Count * Time.deltaTime;
+            if (_bodyPartHealth[part] >= _maxBodyPartHealth[part]) _bodyPartHealth[part] = _maxBodyPartHealth[part];
         }
 
         if(_currentHealth >= _maxHealth)
@@ -187,18 +212,45 @@ public class HealthManager : MonoBehaviour
                 CurrentBlood = _currentBlood,
                 MaxBlood = _maxBlood,
                 CurrentHealth = _currentHealth,
-                MaxHealth = _maxHealth
+                MaxHealth = _maxHealth,
+                DamagedBodyParts = _damagedBodyParts
             });
+    }
+
+    public void PatchUpBleeding(Component sender, object obj)
+    {
+        if (!_isBleeding) return;
+        if (sender.gameObject != gameObject) return;
+        _bleedOutRate = 0;
+
+        bool? canRegen = obj as bool?;
+
+        if (!(bool)canRegen)
+        {
+            StartCoroutine(PatchUp());
+            return;
+        }
+            _isBleeding = false;
+        if (_canRegenCoroutine != null) StopCoroutine(_canRegenCoroutine);
+        _canRegenCoroutine = StartCoroutine(ResetCanRegen());
     }
 
     private IEnumerator ResetCanRegen()
     {
         yield return new WaitForSeconds(2);
-        if (_canRegenBlood || _currentBlood == _maxBlood) _canRegenHealth = true;
+        if (_canRegenBlood && _currentBlood == _maxBlood) 
+            _canRegenHealth = true;
         else 
         {
-            _canRegenBlood = true;
+            if(_currentBlood != _maxBlood) 
+                _canRegenBlood = true;
             StartCoroutine(ResetCanRegen());
         }
+    }
+
+    private IEnumerator PatchUp()
+    {
+        yield return new WaitForSeconds(_patchUpSpeed);
+        PatchUpBleeding(this, true);
     }
 }

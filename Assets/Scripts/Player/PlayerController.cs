@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,11 +16,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private MovingInputReference _moveInputRef;
 
+    [Header("Healing")]
+    [SerializeField]
+    private float _patchUpDuration;
+    [SerializeField]
+    private GameEvent _patchUpEvent;
+
     private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
 
     private bool _wasSprinting;
     private bool _isHoldingShield;
+
+    private float _patchTimer;
     private void Start()
     {
         _aimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
@@ -136,6 +145,27 @@ public class PlayerController : MonoBehaviour
         _stateManager.IsHoldingShield = _isHoldingShield;
         _stateManager.AttackState = AttackState.BlockAttack;
         _aimInputRef.variable.State = _stateManager.AttackState;
+    }
+
+    public void ProssesPatchUpInput(InputAction.CallbackContext ctx)
+    {
+        float startTime = 0;
+        float endTime = 0;
+
+        if (ctx.action.WasPressedThisFrame())
+        {
+            startTime = Time.time;
+            _patchUpEvent.Raise(this, false);
+        }
+
+        if(ctx.action.WasReleasedThisFrame())
+        {
+            endTime = Time.time;
+            _patchTimer = endTime - startTime;
+
+            if (_patchUpDuration <= _patchTimer) 
+                _patchUpEvent.Raise(this, true);
+        }
     }
 
     private IEnumerator ResetAttackHeight()
