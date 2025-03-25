@@ -22,6 +22,7 @@ public class Parry : MonoBehaviour
     private Coroutine _parryroutine;
     private AttackEventArgs _attackEventValues;
     private bool _tryDisarm = false;
+    private BlockMedium _parryMedium;
 
 
     public void ParryMovement(Component sender, object obj)
@@ -31,11 +32,13 @@ public class Parry : MonoBehaviour
         AimingOutputArgs args = obj as AimingOutputArgs;
         if (args == null) return;
 
-        if (_attackEventValues != null && _tryDisarm && args.AttackState == AttackState.SwordDefence)
+        _parryMedium = Blocking.GetBlockMedium(args);
+
+        if (_attackEventValues != null && _tryDisarm && _parryMedium == BlockMedium.Sword)
         {
             AttemptDisarm(args);
         }
-        else if (_attackEventValues != null && (args.AttackState == AttackState.ShieldDefence || args.AttackState == AttackState.SwordDefence) )
+        else if (_attackEventValues != null && (_parryMedium == BlockMedium.Sword || _parryMedium == BlockMedium.Shield))
         {
             AttemptParry(args);
         }
@@ -92,7 +95,7 @@ public class Parry : MonoBehaviour
         switch (args.AttackType)
         {
             case AttackType.Stab:
-                if (_swingAngle >= _minParrySwingAngle)
+                if (_swingAngle >= _minParryStabAngle)
                 {
                     return true;
                 }
@@ -122,7 +125,7 @@ public class Parry : MonoBehaviour
         switch (args.AttackType)
         {
             case AttackType.Stab:
-                if (_swingAngle >= _minParrySwingAngle)
+                if (_swingAngle >= _minParryStabAngle)
                 {
                     return true;
                 }
@@ -166,6 +169,8 @@ public class Parry : MonoBehaviour
     
     private void OnFaildedParry(AttackEventArgs attackValues)
     {
+       
+        //signal to Block
         _onFailedParryEvent.Raise(this, attackValues);
     }
     

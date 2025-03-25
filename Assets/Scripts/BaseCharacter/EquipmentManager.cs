@@ -6,7 +6,7 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private Equipment _leftHand;
     [SerializeField] private Equipment _rightHand;
     [SerializeField] private Equipment _fists;
-    private List<Equipment> HeldEquipment = new List<Equipment>(3);
+    private List<Equipment> HeldEquipment = new List<Equipment> {null, null, null };
 
     private const int LEFT_HAND = 0;
     private const int RIGHT_HAND = 1;
@@ -17,20 +17,46 @@ public class EquipmentManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         if (_leftHand && !_leftHand.IsRightHandEquipment)
-            HeldEquipment[LEFT_HAND] = _leftHand;
+        {
+            var leftEquipment = Instantiate(_leftHand);
+            HeldEquipment[LEFT_HAND] = leftEquipment;
+        }
+
 
         if (_rightHand && _rightHand.IsRightHandEquipment)
-            HeldEquipment[RIGHT_HAND] = _rightHand;
+        {
+            var rightEquipment = Instantiate(_rightHand);
+            HeldEquipment[RIGHT_HAND] = rightEquipment;
+        }
+
 
         if (_fists && _fists.Type == EquipmentType.Fist)
-            HeldEquipment[FISTS] = _fists;
+        {
+            var fist = Instantiate(_fists);
+            HeldEquipment[FISTS] = fist;
+        }
+
 
     }
 
-    public void CheckDurability(float damage, bool isRightHand)
+    public void CheckDurability(Component sender, object obj)
     {
+        //Check for vallid signal
+        if (sender.gameObject != gameObject) return;
+        DefenceEventArgs args = obj as DefenceEventArgs;
+        if (args == null) return;
 
+
+        int index = args.BlockMedium == BlockMedium.Sword ? 1 : 0;
+        HeldEquipment[index].Damage(args.AttackPower, args.BlockResult);
+        if (HeldEquipment[index].Durability < 0f)
+        {
+            Destroy(HeldEquipment[index].gameObject);
+            HeldEquipment[index] = null;
+            Debug.Log($"breaks {args.BlockMedium}");
+        }
     }
 
     public void PickupEquipment(Equipment equip)
@@ -41,6 +67,12 @@ public class EquipmentManager : MonoBehaviour
     public Equipment GetEquipment(bool isRighthand)
     {
         return null;
+    }
+    
+    public bool HasEquipmentInHand(bool isRighthand)
+    {
+        int index = isRighthand ? 1 : 0;
+        return HeldEquipment[index] != null;
     }
     
     public float GetEquipmentPower()

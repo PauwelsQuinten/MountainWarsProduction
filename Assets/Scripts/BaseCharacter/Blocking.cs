@@ -27,6 +27,7 @@ public class Blocking : MonoBehaviour
         //Store Blocking values
         _blockDirection = args.BlockDirection;
         _aimingInputState = args.AimingInputState;
+
         //Set to nothing if equipment is zero
         _blockMedium = GetBlockMedium(args);
 
@@ -62,12 +63,11 @@ public class Blocking : MonoBehaviour
                 break;
 
             case BlockMedium.Nothing:
-                blockResult = BlockResult.Hit;
-                break;
-
             default:
                 blockResult = BlockResult.Hit;
                 break;
+
+               
         }
 
 
@@ -77,7 +77,8 @@ public class Blocking : MonoBehaviour
         {
             BlockResult = blockResult,
             AttackHeight = args.AttackHeight,
-            AttackPower = args.AttackPower
+            AttackPower = args.AttackPower,
+            BlockMedium = _blockMedium
         };
 
         if (blockResult == BlockResult.Hit)
@@ -89,13 +90,28 @@ public class Blocking : MonoBehaviour
     }
 
 
-    private BlockMedium GetBlockMedium(AimingOutputArgs args)
+    static public BlockMedium GetBlockMedium(AimingOutputArgs args)
     {
         if (args.AttackState == AttackState.SwordDefence)
-            return BlockMedium.Sword;
-        else
-            return BlockMedium.Shield;
+        {
+            if (args.EquipmentManager.HasEquipmentInHand(true))
+                return BlockMedium.Sword;
+            else if (args.EquipmentManager.HasEquipmentInHand(false))
+                return BlockMedium.Shield;
+            return BlockMedium.Nothing;
+        }
 
+        else if (args.AttackState == AttackState.ShieldDefence || args.AttackState == AttackState.BlockAttack)
+        {
+             if (args.EquipmentManager.HasEquipmentInHand(false))
+                return BlockMedium.Shield;
+             else if (args.EquipmentManager.HasEquipmentInHand(true))
+                return BlockMedium.Sword;
+            return BlockMedium.Nothing;
+        }
+
+        Debug.LogError("No Blockstate, so what are you doing here");
+        return BlockMedium.Nothing;
     }
 
 

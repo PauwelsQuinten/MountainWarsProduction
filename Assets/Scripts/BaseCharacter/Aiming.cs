@@ -366,6 +366,8 @@ public class Aiming : MonoBehaviour
             AttackSignal = _enmAttackSignal
                 ,
             AttackState = _refAimingInput.variable.State
+                ,
+            EquipmentManager = _refAimingInput.variable.StateManager.EquipmentManager
         };
         _AimOutputEvent.Raise(this, package);
     }

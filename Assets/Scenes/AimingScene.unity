@@ -551,6 +551,7 @@ MonoBehaviour:
   AttackHeight: 0
   Orientation: -90
   IsHoldingShield: 0
+  EquipmentManager: {fileID: 0}
 --- !u!4 &1088028347
 Transform:
   m_ObjectHideFlags: 0
@@ -596,7 +597,7 @@ MonoBehaviour:
   _timeInterval: 3
   _attackType: 2
   _attackHeight: 1
-  _attackPower: 1
+  _attackPower: 10
 --- !u!114 &1088028350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -880,6 +881,7 @@ MonoBehaviour:
   AttackHeight: 0
   Orientation: 90
   IsHoldingShield: 0
+  EquipmentManager: {fileID: 1810299849}
 --- !u!114 &1810299845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,9 +985,9 @@ MonoBehaviour:
         m_CallState: 2
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1810299839}
-        m_TargetAssemblyTypeName: Blocking, Assembly-CSharp
-        m_MethodName: CheckBlock
+      - m_Target: {fileID: 1810299849}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: CheckDurability
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1089,9 +1091,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bcd86ad7a5d6a149adde88817baded7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftHand: {fileID: 0}
-  _rightHand: {fileID: 0}
-  _fists: {fileID: 0}
+  _leftHand: {fileID: 6464342419627203891, guid: 3f5fe7f426ca66e469ff79b95b61b74a, type: 3}
+  _rightHand: {fileID: 6464342419627203891, guid: e07e17f7199209b49ab3de04485be0b6, type: 3}
+  _fists: {fileID: 6464342419627203891, guid: a2d74654fef498746aa20509befcd693, type: 3}
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0
