@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d6b319ef31216c498f1c881ae7e8f6c, type: 3}
-  m_Name: MovingInput
+  m_Name: PlayerMovingInput
   m_EditorClassIdentifier: 
   StateManager: {fileID: 0}
   SpeedMultiplier: 1
