@@ -4,8 +4,8 @@ using static UnityEngine.Rendering.GPUSort;
 
 public class Attacker : MonoBehaviour
 {
-    [Header("Event")]
-    [SerializeField] GameEvent _attackEvent;
+    [Header("Input")]
+    [SerializeField] private GameEvent _attackEvent;
     [SerializeField] float _timeInterval = 1f;
     [Header("State")]
     [SerializeField] AttackType _attackType = AttackType.Stab;
@@ -40,5 +40,7 @@ public class Attacker : MonoBehaviour
             AttackPower = _attackPower
         };
         _attackEvent.Raise(this, attackPackage);
+            Debug.Log("Attack send");
     }
+
 }

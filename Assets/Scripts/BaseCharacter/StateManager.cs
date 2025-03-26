@@ -9,6 +9,7 @@ public class StateManager : MonoBehaviour
     public Orientation Orientation;
     public CharacterState CharacterState;
 
+    public GameObject Target;
     public bool IsHoldingShield;
 
     public EquipmentManager EquipmentManager;
@@ -21,16 +22,34 @@ public class StateManager : MonoBehaviour
 
     public void GetKnockback(Component sender, object obj)
     {
-        
             Debug.Log("start knockback");
+        AttackState = AttackState.Knock;
          StartCoroutine(RecoverKnockback());
+    }
+    
+    public void SetTarget(Component sender, object obj)
+    {
+        if(sender.gameObject != gameObject) return;
+        var args = obj as NewTargetEventArgs;
+        if (args == null) return;
 
+        Target = args.NewTarget;
+    }
+
+     public void ChangeOrientation(Component sender, object obj)
+    {
+        if (sender.gameObject != gameObject) return;
+        var args = obj as OrientationEventArgs;
+        if (args == null) return;
+
+        Orientation = args.NewOrientation;
     }
 
     private IEnumerator RecoverKnockback()
     {
         yield return new WaitForSeconds(5.4f);
         _OnKnockbackRecovery.Raise(this);
+        AttackState = AttackState.Idle;
             Debug.Log("stop knockback");
     }
 

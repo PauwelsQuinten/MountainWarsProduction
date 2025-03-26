@@ -32,7 +32,9 @@ public class CharacterMovement : MonoBehaviour
     private void MoveInput_ValueChanged(object sender, EventArgs e)
     {
         _movedirection = _moveInput.Value;
-        UpdateOrientation();
+
+        if (_stateManager.Target == null)
+            UpdateOrientation();
     }
 
     private void UpdateOrientation()
