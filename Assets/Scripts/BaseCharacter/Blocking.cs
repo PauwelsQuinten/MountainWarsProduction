@@ -1,9 +1,18 @@
+using UnityEditor;
 using UnityEngine;
 
 public class Blocking : MonoBehaviour
 {
+    [Header("Events")]
     [SerializeField] private GameEvent _succesfullBlockevent;
     [SerializeField] private GameEvent _succesfullHitEvent;
+
+    [Header("Stamina")]
+    [SerializeField]
+    private FloatReference _staminaCost;
+    [SerializeField]
+    private GameEvent _loseStamina;
+
     private Direction _blockDirection;
     private AimingInputState _aimingInputState;
     private BlockMedium _blockMedium = BlockMedium.Shield;
@@ -92,9 +101,29 @@ public class Blocking : MonoBehaviour
 
 
         if (blockResult == BlockResult.Hit)
+        {
             _succesfullHitEvent.Raise(this, args);
+        }
         else
+        {
+            switch (blockResult)
+            {
+                case BlockResult.FullyBlocked:
+                    _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value});
+                    break;
+                case BlockResult.HalfBlocked:
+                    _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value * 1.5f});
+                    break;
+                case BlockResult.SwordBlock:
+                    _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value * 0.5f });
+                    break;
+                case BlockResult.SwordHalfBlock:
+                    _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value * 0.75f });
+                    break;
+            }
+            
             _succesfullBlockevent.Raise(this, defenceEventArgs);
+        }
 
     }
 

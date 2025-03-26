@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.Experimental;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
@@ -11,6 +10,12 @@ public class CharacterMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField]
     private float _speed;
+
+    [Header("Stamina")]
+    [SerializeField]
+    private FloatReference _staminaCost;
+    [SerializeField]
+    private GameEvent _removeStamina;
 
     private Rigidbody _rb;
     private StateManager _stateManager;
@@ -31,6 +36,8 @@ public class CharacterMovement : MonoBehaviour
 
     private void MoveInput_ValueChanged(object sender, EventArgs e)
     {
+        if (_moveInput.variable.SpeedMultiplier > 1)
+            _removeStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value * Time.deltaTime });
         _movedirection = _moveInput.Value;
 
         if (_stateManager.Target == null)

@@ -23,6 +23,13 @@ public class UIHealthManager : MonoBehaviour
     [SerializeField]
     private List<SpriteRenderer> _bodyParts = new List<SpriteRenderer>();
 
+    [Header("Stamina")]
+    [SerializeField]
+    private SpriteRenderer _staminaBar;
+
+    private Coroutine _patchUp;
+    private bool _completedPatchUp;
+
     public void UpdateHealth(Component sender, object obj)
     {
         HealthEventArgs args = obj as HealthEventArgs;
@@ -74,7 +81,7 @@ public class UIHealthManager : MonoBehaviour
 
     public void UpdateBlood(Component sender, object obj)
     {
-        HealthEventArgs args = obj as HealthEventArgs;
+        BloodEventArgs args = obj as BloodEventArgs;
         if (args == null) return;
 
         if (sender.gameObject.GetComponent<PlayerController>() == null)
@@ -92,16 +99,46 @@ public class UIHealthManager : MonoBehaviour
 
     public void UpdatePatchUp(Component sender, object obj)
     {
-        StartCoroutine(PathUpBar());
+        if (_completedPatchUp)
+        {
+            _completedPatchUp = false;
+            return;
+        }
+        if(_patchUp == null) 
+            _patchUp = StartCoroutine(PathUpBar());
+
         bool? canReset = obj as bool?;
         if((bool)canReset)
         {
+            StopCoroutine(_patchUp);
+
             _patchUpBar.transform.parent.gameObject.SetActive(false);
             Vector2 size = new Vector2(0, 1);
             _patchUpBar.size = size;
             _patchUpBar.gameObject.transform.localPosition = new Vector3(0 - ((1 - size.x) / 2), 0, 0);
+
+            _patchUp = null;
         }
     } 
+
+    public void UpdateStamina(Component sender, object obj)
+    {
+        StaminaEventArgs args = obj as StaminaEventArgs;
+        if (args == null) return;
+
+        if (sender.gameObject.GetComponent<PlayerController>() == null)
+        {
+            if (sender.gameObject != gameObject) return;
+        }
+        else
+        {
+            if (gameObject.GetComponent<AIController>() != null) return;
+        }
+
+        Vector2 barSize = new Vector2(args.CurrentStamina / args.MaxStamina, 1);
+        _staminaBar.size = barSize;
+        _staminaBar.gameObject.transform.localPosition = new Vector3(0 - ((1 - barSize.x) / 2), 0, 0);
+    }
 
     private IEnumerator PathUpBar()
     {
@@ -121,5 +158,7 @@ public class UIHealthManager : MonoBehaviour
         size = new Vector2(0, 1);
         _patchUpBar.size = size;
         _patchUpBar.gameObject.transform.localPosition = new Vector3(0 - ((1 - size.x) / 2), 0, 0);
+        _completedPatchUp = true;
+        _patchUp = null;
     }
 }

@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  _staminaBar: {fileID: 0}
 --- !u!114 &4702368978736829080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,6 +74,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 76601f3ffea2c334ab44c82b48491b3d, type: 2}
   - {fileID: 11400000, guid: e4f4ee8ab6150234d9854f343b1fed94, type: 2}
   - {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
+  - {fileID: 11400000, guid: d96f2c247ec32f843932f40997f1c382, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -107,6 +109,20 @@ MonoBehaviour:
       - m_Target: {fileID: 7044637763604957616}
         m_TargetAssemblyTypeName: UIHealthManager, Assembly-CSharp
         m_MethodName: UpdatePatchUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7044637763604957616}
+        m_TargetAssemblyTypeName: UIHealthManager, Assembly-CSharp
+        m_MethodName: UpdateStamina
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
