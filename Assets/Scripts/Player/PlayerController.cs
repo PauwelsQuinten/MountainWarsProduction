@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         if (sender.gameObject != gameObject) return;
 
         _storredAttackState = _stateManager.AttackState;
-        _stateManager.AttackState = AttackState.Knock;
+        //_stateManager.AttackState = AttackState.Knock;
         _aimInputRef.variable.State = AttackState.Knock;
     }
     

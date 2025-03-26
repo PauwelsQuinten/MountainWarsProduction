@@ -6,7 +6,9 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private Equipment _leftHand;
     [SerializeField] private Equipment _rightHand;
     [SerializeField] private Equipment _fists;
+    [Header("Events")]
     [SerializeField] private GameEvent _onEquipmentBreak;
+    [Header("Item")]
     [SerializeField] private LayerMask _itemMask;
     private List<Equipment> HeldEquipment = new List<Equipment> {null, null, null };
 
