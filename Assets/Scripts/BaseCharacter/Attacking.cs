@@ -22,6 +22,12 @@ public class Attacking : MonoBehaviour
     [SerializeField]
     private GameEvent _doAttack;
 
+    [Header("Stamina")]
+    [SerializeField]
+    private FloatReference _staminaCost;
+    [SerializeField]
+    private GameEvent _loseStamina;
+
     [Header("Enemy")]
     [SerializeField]
     private LayerMask _characterLayer;
@@ -34,6 +40,7 @@ public class Attacking : MonoBehaviour
     private bool _wasCharging;
     private float _startChargeTime;
     private float _endChargeTime;
+
     public void Attack(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
@@ -58,6 +65,9 @@ public class Attacking : MonoBehaviour
 
         _attackPower = CalculatePower(args);
         _attackType = DetermineAttack(args);
+
+        if (_attackType == AttackType.Stab) _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value * 0.75f });
+        else _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value });
 
         if (!IsEnemyInRange()) return;
         _doAttack.Raise(this, new AttackEventArgs { AttackType = _attackType, AttackHeight = args.AttackHeight, AttackPower = _attackPower});
