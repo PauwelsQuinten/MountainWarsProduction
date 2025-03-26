@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameEvent _patchUpEvent;
 
-    private Vector2 _moveInput;
+    //private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
     private AttackState _storredAttackState = AttackState.Idle;
 
@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
     public void ProccesInteractInput(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
-            _pickupEvent.Raise();
+            _pickupEvent.Raise(this);
         //TODO add intract event
     }
 

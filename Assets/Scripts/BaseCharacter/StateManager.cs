@@ -7,7 +7,7 @@ public class StateManager : MonoBehaviour
     public AttackState AttackState;
     public AttackHeight AttackHeight;
     public Orientation Orientation;
-    public CharacterState CharacterState;
+    //public CharacterState CharacterState;
 
     public GameObject Target;
     public bool IsHoldingShield;

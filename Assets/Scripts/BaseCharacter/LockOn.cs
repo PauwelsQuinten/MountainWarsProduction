@@ -13,8 +13,8 @@ public class LockOn : MonoBehaviour
             return;
 
         var newOrientation = CalculateOrientation();
-        _storedOrientation = newOrientation;
 
+        _storedOrientation = newOrientation;
         _lockonEvent.Raise(this, new OrientationEventArgs { NewOrientation = _storedOrientation });
         
     }
@@ -40,7 +40,13 @@ public class LockOn : MonoBehaviour
         var args = obj as NewTargetEventArgs;
         if (args == null) return;
 
-        _lockonTarget = args.NewTarget; 
+        _lockonTarget = args.NewTarget;
+
+        if (!_lockonTarget || !_lockonEvent)
+            return;
+        var newOrientation = CalculateOrientation();
+        _storedOrientation = newOrientation;
+        _lockonEvent.Raise(this, new OrientationEventArgs { NewOrientation = _storedOrientation });
     }
 
     private Orientation CalculateOrientation()
