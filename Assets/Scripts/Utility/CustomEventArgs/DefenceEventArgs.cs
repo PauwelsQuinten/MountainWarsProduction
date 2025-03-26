@@ -7,6 +7,7 @@ namespace UnityEngine
         public BlockResult BlockResult;
         public AttackHeight AttackHeight;
         public float AttackPower;
+        public BlockMedium BlockMedium;
     }
 
 

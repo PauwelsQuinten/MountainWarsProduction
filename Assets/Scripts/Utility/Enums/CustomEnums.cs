@@ -19,20 +19,21 @@ namespace UnityEngine
     }
 
 
+    public enum CharacterState
+    {
+        Idle,
+        Knocked,
+        Dodging
+    }
+
     public enum AttackState
     {
         Idle,
         Attack,
         ShieldDefence,
         SwordDefence,
-        BlockAttack
-    }
-
-    public enum CurrentWeapon
-    {
-        Fist,
-        Sword,
-        Shield
+        BlockAttack,
+        Knock
     }
 
     public enum AimingInputState
@@ -81,6 +82,7 @@ namespace UnityEngine
 
     public enum BlockResult
     {
+        
         //When no defence and clean hit
         //Take full damage and stamina loss
         Hit,
@@ -107,5 +109,14 @@ namespace UnityEngine
         Sword,
         Nothing
     }
+
+    public enum EquipmentType
+    {
+        Melee,
+        Ranged,
+        Shield,
+        Fist
+    }
+
 
 }

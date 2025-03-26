@@ -128,7 +128,7 @@ public class Aiming : MonoBehaviour
             _vec2Start = Vector2.zero;
             _traversedAngle = 0f;
             StartCoroutine(ResetAttack(F_TIME_BETWEEN_STAB));
-            Debug.Log($"Stab owner: {gameObject}");
+            //Debug.Log($"Stab owner: {gameObject}");
             SendPackage();
         }
 
@@ -162,6 +162,7 @@ public class Aiming : MonoBehaviour
         //Store measured length to use as comparision for the IsStabMovement
         _previousLength = inputLength;
     }
+
     private void OnStateChanged()
     {
         if (_enmCurrentAttackState == AttackState.ShieldDefence && _refAimingInput.variable.State == AttackState.BlockAttack)
@@ -177,6 +178,13 @@ public class Aiming : MonoBehaviour
         if (_enmCurrentAttackState != _refAimingInput.variable.State)
         {
             _enmCurrentAttackState = _refAimingInput.variable.State;
+            if (_enmCurrentAttackState == AttackState.Knock)
+            {
+                ResetValues();
+                SendPackage();
+            }
+            else if (_enmAttackSignal == AttackSignal.Idle)
+                SendPackage();
         }
     }
 
@@ -366,6 +374,8 @@ public class Aiming : MonoBehaviour
             AttackSignal = _enmAttackSignal
                 ,
             AttackState = _refAimingInput.variable.State
+                ,
+            EquipmentManager = _refAimingInput.variable.StateManager.EquipmentManager
         };
         _AimOutputEvent.Raise(this, package);
     }
@@ -520,4 +530,17 @@ public class Aiming : MonoBehaviour
 
         return Mathf.Acos(dot) < angleDegree * Mathf.Deg2Rad;
     }
+
+    private void ResetValues()
+    {
+        _enmAimingInput = AimingInputState.Idle;
+        _enmAttackSignal = AttackSignal.Idle;
+        _vec2Start = Vector2.zero;
+        _vec2previousDirection = Vector2.zero;
+        _traversedAngle = 0f;
+        _previousLength = 0f;
+        _fNotMovingTime = 0f;
+        _fMovingTime = 0f;
+    }
+
 }
