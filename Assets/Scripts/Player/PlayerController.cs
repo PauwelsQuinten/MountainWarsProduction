@@ -25,16 +25,23 @@ public class PlayerController : MonoBehaviour
     [Header("Stamina")]
     [SerializeField]
     private StaminaManager _staminaManager;
+    [SerializeField]
     private FloatReference _dodgeCost;
+    [SerializeField]
     private FloatReference _aimCost;
+    [SerializeField]
+    private FloatReference _sprintCost;
 
     private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
 
-    private bool _wasSprinting;
     private bool _isHoldingShield;
 
     private float _patchTimer;
+    private float _patchStartTime;
+    private float _patchEndTime;
+
+    private bool _wasSprinting;
     private void Start()
     {
         _aimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
@@ -114,20 +121,30 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesDodgeInput(InputAction.CallbackContext ctx)
     {
-        if (_staminaManager.CurrentStamina < _dodgeCost.value) return;
+        if (ctx.started)
+        {
+            //start exlerating?
+        }
+
         if (ctx.performed)
         {
             _wasSprinting = true;
             _moveInputRef.variable.SpeedMultiplier = 1.5f;
         }
-        if (ctx.canceled && _wasSprinting)
+        if (ctx.canceled)
         {
-            _wasSprinting = false;
-            _moveInputRef.variable.SpeedMultiplier = 1;
-            return;
+            if (!_wasSprinting)
+            {
+                if (_staminaManager.CurrentStamina < _dodgeCost.value) return;
+                Debug.Log("dodge");
+            }
+            else
+            {
+                if (_staminaManager.CurrentStamina < _sprintCost.value) return;
+                _wasSprinting = false;
+                _moveInputRef.variable.SpeedMultiplier = 1;
+            }
         }
-
-            //TODO add doge event
     }
 
     public void ProccesInteractInput(InputAction.CallbackContext ctx)
@@ -157,22 +174,23 @@ public class PlayerController : MonoBehaviour
 
     public void ProssesPatchUpInput(InputAction.CallbackContext ctx)
     {
-        float startTime = 0;
-        float endTime = 0;
-
         if (ctx.action.WasPressedThisFrame())
         {
-            startTime = Time.time;
+            _patchStartTime = Time.time;
             _patchUpEvent.Raise(this, false);
         }
 
         if(ctx.action.WasReleasedThisFrame())
         {
-            endTime = Time.time;
-            _patchTimer = endTime - startTime;
+            _patchEndTime = Time.time;
+            _patchTimer = _patchEndTime - _patchStartTime;
 
-            if (_patchUpDuration <= _patchTimer) 
+            if (_patchUpDuration >= _patchTimer) 
                 _patchUpEvent.Raise(this, true);
+            else _patchUpEvent.Raise(this, false);
+
+            _patchStartTime = 0;
+            _patchEndTime = 0;
         }
     }
 

@@ -30,6 +30,8 @@ public class HealthManager : MonoBehaviour
     [Header("Healing")]
     [SerializeField]
     private float _patchUpSpeed;
+    [SerializeField]
+    private GameEvent _patchUp;
 
     private float _currentHealth;
     private float _maxHealth;
@@ -106,9 +108,9 @@ public class HealthManager : MonoBehaviour
 
                 index++;
                 _changedHealth.Raise
-                    (this, new HealthEventArgs { BodyPartsHealth = _bodyPartHealth, 
+                    (this, new HealthEventArgs 
+                    {   BodyPartsHealth = _bodyPartHealth, 
                         MaxBodyPartsHealth = _maxBodyPartHealth, 
-                        CurrentBlood = _currentBlood, MaxBlood = _maxBlood, 
                         CurrentHealth = _currentHealth, MaxHealth = _maxHealth,
                         DamagedBodyParts = _damagedBodyParts,
                     });
@@ -149,15 +151,10 @@ public class HealthManager : MonoBehaviour
         _currentBlood -= _bleedOutRate * Time.deltaTime;
 
         _changedBlood.Raise
-                    (this, new HealthEventArgs
+                    (this, new BloodEventArgs
                     {
-                        BodyPartsHealth = _bodyPartHealth,
-                        MaxBodyPartsHealth = _maxBodyPartHealth,
                         CurrentBlood = _currentBlood,
                         MaxBlood = _maxBlood,
-                        CurrentHealth = _currentHealth,
-                        MaxHealth = _maxHealth,
-                        DamagedBodyParts = _damagedBodyParts
                     });
 
         if(_canRegenCoroutine !=  null) StopCoroutine( _canRegenCoroutine );
@@ -175,15 +172,10 @@ public class HealthManager : MonoBehaviour
         }
 
         _changedBlood.Raise
-            (this, new HealthEventArgs
+            (this, new BloodEventArgs
             {
-                BodyPartsHealth = _bodyPartHealth,
-                MaxBodyPartsHealth = _maxBodyPartHealth,
                 CurrentBlood = _currentBlood,
                 MaxBlood = _maxBlood,
-                CurrentHealth = _currentHealth,
-                MaxHealth = _maxHealth,
-                DamagedBodyParts = _damagedBodyParts
             });  
     }
 
@@ -209,8 +201,6 @@ public class HealthManager : MonoBehaviour
             {
                 BodyPartsHealth = _bodyPartHealth,
                 MaxBodyPartsHealth = _maxBodyPartHealth,
-                CurrentBlood = _currentBlood,
-                MaxBlood = _maxBlood,
                 CurrentHealth = _currentHealth,
                 MaxHealth = _maxHealth,
                 DamagedBodyParts = _damagedBodyParts

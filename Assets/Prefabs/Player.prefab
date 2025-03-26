@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3036795874959978044, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _maxStamina
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036795874959978044, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _regenSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036795874959978044, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _changedStamina
+      value: 
+      objectReference: {fileID: 11400000, guid: d96f2c247ec32f843932f40997f1c382, type: 2}
     - target: {fileID: 3755031848856493801, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
       propertyPath: _refAimingInput.variable
       value: 
@@ -377,6 +389,30 @@ MonoBehaviour:
     variable: {fileID: 11400000, guid: c55f2ba539c90fe47aa63c8b3747c837, type: 2}
   _patchUpDuration: 1
   _patchUpEvent: {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
+  _staminaManager: {fileID: 7585508724304672117}
+  _dodgeCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: b759dc72c5305134d9f0398a9005ef43, type: 2}
+  _aimCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: 9b72d4ffd42065e41ac0e85d9ad213fe, type: 2}
+  _sprintCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: 4aa2a05291286a74bb9920c75d553284, type: 2}
+--- !u!114 &7585508724304672117 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3036795874959978044, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+  m_PrefabInstance: {fileID: 4855441409325538121}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5402298541532010716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff737f9c0e64a5b4e9c9aed95f9385ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8840197384405096349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4165634575879343316, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}

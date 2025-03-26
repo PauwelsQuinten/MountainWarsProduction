@@ -16,6 +16,12 @@ public class Parry : MonoBehaviour
     [SerializeField] private float _timeForParryingSwing = 1f;
     [SerializeField] private float _timeForParryingStab = 0.4f;
 
+    [Header("Stamina")]
+    [SerializeField]
+    private FloatReference _staminaCost;
+    [SerializeField]
+    private GameEvent _loseStamina;
+
 
     private Direction _swingDirection = Direction.Idle;
     private float _swingAngle = 0f;
@@ -149,6 +155,7 @@ public class Parry : MonoBehaviour
 
     private void OnSuccesfullParry(AttackEventArgs attackValues)
     {
+        _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value });
         _succesfullParryEvent.Raise(this, attackValues);
 
         _tryDisarm = true;
@@ -158,6 +165,7 @@ public class Parry : MonoBehaviour
     }
     private void OnSuccesfullDisarm()
     {
+        _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value * 1.5f });
         _onDisarmEvent.Raise(this, null);
         _tryDisarm = false;
         _attackEventValues = null;

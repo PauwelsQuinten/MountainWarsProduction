@@ -75,6 +75,11 @@ MonoBehaviour:
     constantValue: {x: 0, y: 0}
     variable: {fileID: 0}
   _speed: 5
+  _staminaCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: 4aa2a05291286a74bb9920c75d553284, type: 2}
+  _removeStamina: {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
 --- !u!114 &3755031848856493801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +119,11 @@ MonoBehaviour:
   _chargeSpeed: 2
   _attackRange: 2
   _doAttack: {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  _staminaCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: b800ab1f6bf0c9949a8cb81bac2036dd, type: 2}
+  _loseStamina: {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
   _characterLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -131,6 +141,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _succesfullBlockevent: {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
   _succesfullHitEvent: {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
+  _staminaCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: 509aa20229fc65144be6100a8cda973e, type: 2}
+  _loseStamina: {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
 --- !u!114 &2973509247929452200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +178,11 @@ MonoBehaviour:
   _minParryStabAngle: 60
   _timeForParryingSwing: 1
   _timeForParryingStab: 0.4
+  _staminaCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: d865cd3ff03d9e44cab4ee59ab1ff115, type: 2}
+  _loseStamina: {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
 --- !u!114 &4200951442303491891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff737f9c0e64a5b4e9c9aed95f9385ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentStamina: 0
+  _maxStamina: 100
+  _regenSpeed: 5
+  _changedStamina: {fileID: 11400000, guid: d96f2c247ec32f843932f40997f1c382, type: 2}
 --- !u!114 &3805331497090860965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +239,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
   - {fileID: 11400000, guid: adf3d2d15933fe3409767bb76cff4168, type: 2}
   - {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
+  - {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -315,6 +340,20 @@ MonoBehaviour:
       - m_Target: {fileID: 4200951442303491891}
         m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
         m_MethodName: PatchUpBleeding
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3036795874959978044}
+        m_TargetAssemblyTypeName: StaminaManager, Assembly-CSharp
+        m_MethodName: LoseStamina
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

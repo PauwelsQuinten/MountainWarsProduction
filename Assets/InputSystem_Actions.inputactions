@@ -56,7 +56,7 @@
                     "id": "21cdb036-d2d7-4232-8059-606bed8062ad",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.1,pressPoint=0.5)",
                     "initialStateCheck": false
                 },
                 {
