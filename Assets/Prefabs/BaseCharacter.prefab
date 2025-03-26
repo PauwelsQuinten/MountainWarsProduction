@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8819790937953159563}
+  - component: {fileID: 5687449145564820169}
   - component: {fileID: 4165634575879343316}
   - component: {fileID: 5547100133384318507}
   - component: {fileID: 3755031848856493801}
@@ -19,6 +20,8 @@ GameObject:
   - component: {fileID: 4200951442303491891}
   - component: {fileID: 3036795874959978044}
   - component: {fileID: 3805331497090860965}
+  - component: {fileID: 1490819108717279631}
+  - component: {fileID: 3485612452898370163}
   m_Layer: 0
   m_Name: BaseCharacter
   m_TagString: Untagged
@@ -42,6 +45,33 @@ Transform:
   - {fileID: 8259717152020767260}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &5687449145564820169
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &4165634575879343316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,10 +84,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2909b8547fd4161429a8659c53b32d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OnKnockbackRecovery: {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
   AttackState: 0
   AttackHeight: 0
   Orientation: 0
+  CharacterState: 0
+  Target: {fileID: 0}
   IsHoldingShield: 0
+  EquipmentManager: {fileID: 1490819108717279631}
 --- !u!114 &5547100133384318507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +273,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
   - {fileID: 11400000, guid: adf3d2d15933fe3409767bb76cff4168, type: 2}
   - {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
-  - {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
+  - {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
+  - {fileID: 11400000, guid: 6ae7cf8fbff13b34baa83d4c5c01a86f, type: 2}
+  - {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
+  - {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2}
+  - {fileID: 11400000, guid: 3bcbf57665777d1489ff9e53220b0be4, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -351,9 +389,9 @@ MonoBehaviour:
         m_CallState: 2
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3036795874959978044}
-        m_TargetAssemblyTypeName: StaminaManager, Assembly-CSharp
-        m_MethodName: LoseStamina
+      - m_Target: {fileID: 4165634575879343316}
+        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
+        m_MethodName: GetKnockback
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -363,6 +401,107 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1490819108717279631}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: PickupEquipment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1490819108717279631}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: LoseEquipment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4165634575879343316}
+        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
+        m_MethodName: ChangeOrientation
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3485612452898370163}
+        m_TargetAssemblyTypeName: LockOn, Assembly-CSharp
+        m_MethodName: FoundTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4165634575879343316}
+        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
+        m_MethodName: SetTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1490819108717279631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcd86ad7a5d6a149adde88817baded7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leftHand: {fileID: 6464342419627203891, guid: 3f5fe7f426ca66e469ff79b95b61b74a, type: 3}
+  _rightHand: {fileID: 6464342419627203891, guid: e07e17f7199209b49ab3de04485be0b6, type: 3}
+  _fists: {fileID: 6464342419627203891, guid: a2d74654fef498746aa20509befcd693, type: 3}
+  _onEquipmentBreak: {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
+  _itemMask:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &3485612452898370163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4f0ed89ec20a84090b3a6998576f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lockonTarget: {fileID: 0}
+  _lockonEvent: {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2
 --- !u!1 &3070592678275608158
 GameObject:
   m_ObjectHideFlags: 0

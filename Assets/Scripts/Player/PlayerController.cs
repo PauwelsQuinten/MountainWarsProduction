@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     private AimingInputReference _aimInputRef;
     [SerializeField]
     private MovingInputReference _moveInputRef;
+    [SerializeField]
+    private GameEvent _pickupEvent;
 
     [Header("Healing")]
     [SerializeField]
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
+    private AttackState _storredAttackState = AttackState.Idle;
 
     private bool _isHoldingShield;
 
@@ -49,6 +52,24 @@ public class PlayerController : MonoBehaviour
         _moveInputRef.variable.StateManager = _stateManager;
     }
 
+    public void GetKnockBack(Component sender, object obj)
+    {
+        if (sender.gameObject != gameObject) return;
+
+        _storredAttackState = _stateManager.AttackState;
+        //_stateManager.AttackState = AttackState.Knock;
+        _aimInputRef.variable.State = AttackState.Knock;
+    }
+    
+    public void RecoverKnockBack(Component sender, object obj)
+    {
+        if (sender.gameObject != gameObject) return;
+
+        _stateManager.AttackState = _storredAttackState;
+        _aimInputRef.variable.State = _storredAttackState;
+    }
+
+
     public void ProcessAimInput(InputAction.CallbackContext ctx)
     {
         if (_staminaManager.CurrentStamina < _aimCost.value) return;
@@ -57,6 +78,12 @@ public class PlayerController : MonoBehaviour
 
     private void AimInputRef_ValueChanged(object sender, AimInputEventArgs e)
     {
+        if (_stateManager.AttackState == AttackState.Knock)
+        {
+            return;
+        }
+
+
         if (_stateManager.AttackState == AttackState.ShieldDefence ||
             _stateManager.AttackState == AttackState.SwordDefence ||
             _stateManager.AttackState == AttackState.BlockAttack)
@@ -68,7 +95,9 @@ public class PlayerController : MonoBehaviour
         if (_stateManager.AttackState != AttackState.Idle && _aimInputRef.Value == Vector2.zero) _stateManager.AttackState = AttackState.Idle;
         else if(_stateManager.AttackState != AttackState.Attack && _aimInputRef.Value != Vector2.zero) _stateManager.AttackState = AttackState.Attack;
 
-        _aimInputRef.variable.State = _stateManager.AttackState;
+
+       _aimInputRef.variable.State = _stateManager.AttackState;
+
     }
 
     public void ProccesMoveInput(InputAction.CallbackContext ctx)
@@ -78,6 +107,23 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesSetBlockInput(InputAction.CallbackContext ctx)
     {
+        if (_stateManager.AttackState == AttackState.Knock)
+        {
+            if (ctx.action.WasPressedThisFrame())
+            {
+
+                _storredAttackState = AttackState.ShieldDefence;
+            }
+
+            if (ctx.action.WasReleasedThisFrame())
+            {
+
+                _storredAttackState = AttackState.Idle;
+            }
+            return;
+        }
+
+
         if (_stateManager.AttackState != AttackState.BlockAttack)
         {
             if (ctx.action.WasPressedThisFrame())
@@ -102,6 +148,22 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesSetParryInput(InputAction.CallbackContext ctx)
     {
+        if (_stateManager.AttackState == AttackState.Knock)
+        {
+            if (ctx.action.WasPressedThisFrame())
+            {
+               
+                _storredAttackState = AttackState.SwordDefence;
+            }
+
+            if (ctx.action.WasReleasedThisFrame())
+            {
+                
+                _storredAttackState = AttackState.Idle;
+            }
+            return;
+        }
+
         if (ctx.action.WasPressedThisFrame())
         {
             if (_stateManager.AttackState == AttackState.BlockAttack) _isHoldingShield = true;
@@ -115,6 +177,7 @@ public class PlayerController : MonoBehaviour
             if (_isHoldingShield) _stateManager.AttackState = AttackState.BlockAttack;
             else _stateManager.AttackState = AttackState.Idle;
         }
+
 
         _aimInputRef.variable.State = _stateManager.AttackState;
     }
@@ -149,7 +212,8 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesInteractInput(InputAction.CallbackContext ctx)
     {
-        if (!ctx.performed) return;
+        if (ctx.performed)
+            _pickupEvent.Raise();
         //TODO add intract event
     }
 

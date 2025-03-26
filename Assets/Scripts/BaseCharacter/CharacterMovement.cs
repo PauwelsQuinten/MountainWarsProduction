@@ -39,7 +39,9 @@ public class CharacterMovement : MonoBehaviour
         if (_moveInput.variable.SpeedMultiplier > 1)
             _removeStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value * Time.deltaTime });
         _movedirection = _moveInput.Value;
-        UpdateOrientation();
+
+        if (_stateManager.Target == null)
+            UpdateOrientation();
     }
 
     private void UpdateOrientation()

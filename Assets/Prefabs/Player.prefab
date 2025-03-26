@@ -28,6 +28,70 @@ PrefabInstance:
       propertyPath: _refAimingInput.variable
       value: 
       objectReference: {fileID: 11400000, guid: c07edaff124f1b04e8b8a49de23949a5, type: 2}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Events.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: 'Events.Array.data[7]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: 'Events.Array.data[8]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[7].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[8].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7149287248149325788}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6327990856538596038}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RecoverKnockBack
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoseEquipment
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: EquipmentManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805331497090860965, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: Responses.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4200951442303491891, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
       propertyPath: _changedBlood
       value: 
@@ -387,30 +451,18 @@ MonoBehaviour:
     useConstant: 0
     constantValue: {x: 0, y: 0}
     variable: {fileID: 11400000, guid: c55f2ba539c90fe47aa63c8b3747c837, type: 2}
+  _pickupEvent: {fileID: 11400000, guid: 6ae7cf8fbff13b34baa83d4c5c01a86f, type: 2}
   _patchUpDuration: 1
   _patchUpEvent: {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
-  _staminaManager: {fileID: 7585508724304672117}
-  _dodgeCost:
-    useConstant: 0
-    constantValue: 0
-    variable: {fileID: 11400000, guid: b759dc72c5305134d9f0398a9005ef43, type: 2}
-  _aimCost:
-    useConstant: 0
-    constantValue: 0
-    variable: {fileID: 11400000, guid: 9b72d4ffd42065e41ac0e85d9ad213fe, type: 2}
-  _sprintCost:
-    useConstant: 0
-    constantValue: 0
-    variable: {fileID: 11400000, guid: 4aa2a05291286a74bb9920c75d553284, type: 2}
---- !u!114 &7585508724304672117 stripped
+--- !u!114 &6327990856538596038 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3036795874959978044, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1490819108717279631, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
   m_PrefabInstance: {fileID: 4855441409325538121}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5402298541532010716}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff737f9c0e64a5b4e9c9aed95f9385ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bcd86ad7a5d6a149adde88817baded7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8840197384405096349 stripped

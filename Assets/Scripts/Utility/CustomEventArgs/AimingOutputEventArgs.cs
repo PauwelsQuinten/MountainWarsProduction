@@ -11,6 +11,7 @@ namespace UnityEngine
         public float AngleTravelled;
         public AttackSignal AttackSignal;
         public AttackState AttackState;
+        public EquipmentManager EquipmentManager;
     }
     
 
