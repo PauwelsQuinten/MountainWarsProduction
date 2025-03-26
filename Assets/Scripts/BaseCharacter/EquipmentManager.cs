@@ -7,6 +7,7 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private Equipment _rightHand;
     [SerializeField] private Equipment _fists;
     [SerializeField] private GameEvent _onEquipmentBreak;
+    [SerializeField] private LayerMask _itemMask;
     private List<Equipment> HeldEquipment = new List<Equipment> {null, null, null };
 
     private const int LEFT_HAND = 0;
@@ -42,6 +43,33 @@ public class EquipmentManager : MonoBehaviour
 
     }
 
+    public void LoseEquipment(Component sender, object obj)
+    {
+        var args = obj as LoseEquipmentEventArgs;
+        if (args == null) return;
+
+        if (args.ToSelf && sender.gameObject != gameObject) return;
+        if (!args.ToSelf && sender.gameObject == gameObject) return;
+
+        bool isRighthand = false;
+        switch (args.EquipmentType)
+        {
+            case EquipmentType.Ranged:
+            case EquipmentType.Melee:
+                isRighthand = true;
+                break;
+              
+            case EquipmentType.Shield:
+                isRighthand = false;
+                break;
+
+            case EquipmentType.Fist:
+                return;
+        }
+
+        DropEquipment(isRighthand);
+    }
+
     public void CheckDurability(Component sender, object obj)
     {
         //Check for vallid signal
@@ -57,13 +85,42 @@ public class EquipmentManager : MonoBehaviour
             Debug.Log($"!!!!!!!!!!!!!!!!!!!!! breaks {args.BlockMedium} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Destroy(HeldEquipment[index].gameObject);
             HeldEquipment[index] = null;
-            _onEquipmentBreak.Raise(this);
+
+            var send = new LoseEquipmentEventArgs 
+            {
+                EquipmentType = args.BlockMedium == BlockMedium.Shield? EquipmentType.Shield : EquipmentType.Melee,
+                ToSelf = true
+            };
+            _onEquipmentBreak.Raise(this, send );
         }
     }
 
-    public void PickupEquipment(Equipment equip)
+    public void PickupEquipment(Component sender, object obj)
     {
+        float radius = 1f;
 
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, _itemMask);
+        foreach (var hitCollider in hitColliders)
+        {
+            var newEquip = hitCollider.gameObject.GetComponent<Equipment>();
+            if (newEquip)
+            {
+                if (newEquip.IsRightHandEquipment)
+                {
+                    DropEquipment(true);
+                    HeldEquipment[RIGHT_HAND] = newEquip;
+                }
+
+               else if (!newEquip.IsRightHandEquipment)
+               {
+                    DropEquipment(false);
+                    HeldEquipment[LEFT_HAND] = newEquip;
+               }
+
+
+                hitCollider.gameObject.transform.parent = transform;
+            }
+        }
     }
 
     public Equipment GetEquipment(bool isRighthand)
@@ -87,9 +144,13 @@ public class EquipmentManager : MonoBehaviour
         return HeldEquipment[FISTS].Power;
     }
 
-    public void DropEquipment()
+    private void DropEquipment(bool isRightHand)
     {
-
+        int index = isRightHand ? 1 : 0;
+        if (HeldEquipment[index] == null)
+            return;
+        HeldEquipment[index].transform.parent = null; 
+        HeldEquipment[index] = null; 
     }
 
 

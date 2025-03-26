@@ -487,6 +487,7 @@ GameObject:
   - component: {fileID: 1088028351}
   - component: {fileID: 1088028349}
   - component: {fileID: 1088028341}
+  - component: {fileID: 1088028352}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Untagged
@@ -547,7 +548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2909b8547fd4161429a8659c53b32d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _OnKnockbackRecovery: {fileID: 0}
+  _OnKnockbackRecovery: {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
   AttackState: 0
   AttackHeight: 0
   Orientation: -90
@@ -633,6 +634,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b784d3553d8fc874dbe416aceb2f41c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1088028352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088028340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcd86ad7a5d6a149adde88817baded7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leftHand: {fileID: 6464342419627203891, guid: 3f5fe7f426ca66e469ff79b95b61b74a, type: 3}
+  _rightHand: {fileID: 6464342419627203891, guid: e07e17f7199209b49ab3de04485be0b6, type: 3}
+  _fists: {fileID: 6464342419627203891, guid: a2d74654fef498746aa20509befcd693, type: 3}
+  _onEquipmentBreak: {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
+  _itemMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1810299839
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,7 +842,19 @@ MonoBehaviour:
     m_ActionId: 21cdb036-d2d7-4232-8059-606bed8062ad
     m_ActionName: 'Player/Dodge[/DualShock4GamepadHID/buttonSouth]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1810299843}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: ProccesInteractInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 3a54fd58-1eb7-4182-aba2-342986c80ffa
     m_ActionName: 'Player/Interact[/DualShock4GamepadHID/buttonWest]'
   - m_PersistentCalls:
@@ -867,6 +899,7 @@ MonoBehaviour:
     useConstant: 0
     constantValue: {x: 0, y: 0}
     variable: {fileID: 11400000, guid: c55f2ba539c90fe47aa63c8b3747c837, type: 2}
+  _pickupEvent: {fileID: 11400000, guid: 6ae7cf8fbff13b34baa83d4c5c01a86f, type: 2}
 --- !u!114 &1810299844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,6 +941,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
   - {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
   - {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
+  - {fileID: 11400000, guid: 6ae7cf8fbff13b34baa83d4c5c01a86f, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -1019,9 +1053,21 @@ MonoBehaviour:
         m_CallState: 2
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1810299839}
-        m_TargetAssemblyTypeName: Blocking, Assembly-CSharp
-        m_MethodName: CheckBlock
+      - m_Target: {fileID: 1088028352}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: LoseEquipment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1088028345}
+        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
+        m_MethodName: GetKnockback
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1062,6 +1108,20 @@ MonoBehaviour:
       - m_Target: {fileID: 1810299843}
         m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
         m_MethodName: RecoverKnockBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1810299849}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: PickupEquipment
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1141,6 +1201,9 @@ MonoBehaviour:
   _rightHand: {fileID: 6464342419627203891, guid: e07e17f7199209b49ab3de04485be0b6, type: 3}
   _fists: {fileID: 6464342419627203891, guid: a2d74654fef498746aa20509befcd693, type: 3}
   _onEquipmentBreak: {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
+  _itemMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &1851133573
 GameObject:
   m_ObjectHideFlags: 0

@@ -164,7 +164,8 @@ public class Parry : MonoBehaviour
     }
     private void OnSuccesfullDisarm()
     {
-        _onDisarmEvent.Raise(this, null);
+        _onDisarmEvent.Raise(this, new LoseEquipmentEventArgs{EquipmentType = EquipmentType.Melee, ToSelf = false});
+
         _tryDisarm = false;
         _attackEventValues = null;
         Debug.Log("Disarmed");

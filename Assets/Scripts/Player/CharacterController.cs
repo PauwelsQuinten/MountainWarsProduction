@@ -15,6 +15,8 @@ public class CharacterController : MonoBehaviour
     private AimingInputReference _aimInputRef;
     [SerializeField]
     private MovingInputReference _moveInputRef;
+    [SerializeField]
+    private GameEvent _pickupEvent;
 
     private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
@@ -177,7 +179,8 @@ public class CharacterController : MonoBehaviour
 
     public void ProccesInteractInput(InputAction.CallbackContext ctx)
     {
-        if (!ctx.performed) return;
+        if (ctx.performed)
+            _pickupEvent.Raise();
         //TODO add intract event
     }
 
