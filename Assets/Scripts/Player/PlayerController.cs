@@ -22,6 +22,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameEvent _patchUpEvent;
 
+    [Header("Stamina")]
+    [SerializeField]
+    private StaminaManager _staminaManager;
+    private FloatReference _dodgeCost;
+    private FloatReference _aimCost;
+
     private Vector2 _moveInput;
     private Coroutine _resetAttackheight;
 
@@ -38,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
     public void ProcessAimInput(InputAction.CallbackContext ctx)
     {
+        if (_staminaManager.CurrentStamina < _aimCost.value) return;
         _aimInputRef.variable.value = ctx.ReadValue<Vector2>();
     }
 
@@ -107,6 +114,7 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesDodgeInput(InputAction.CallbackContext ctx)
     {
+        if (_staminaManager.CurrentStamina < _dodgeCost.value) return;
         if (ctx.performed)
         {
             _wasSprinting = true;

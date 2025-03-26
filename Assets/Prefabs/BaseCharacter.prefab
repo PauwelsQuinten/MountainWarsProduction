@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2973509247929452200}
   - component: {fileID: 8814302524761109724}
   - component: {fileID: 4200951442303491891}
+  - component: {fileID: 3036795874959978044}
   - component: {fileID: 3805331497090860965}
   m_Layer: 0
   m_Name: BaseCharacter
@@ -183,6 +184,18 @@ MonoBehaviour:
   _changedBlood: {fileID: 0}
   _damageDropOff: 1
   _patchUpSpeed: 1
+--- !u!114 &3036795874959978044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff737f9c0e64a5b4e9c9aed95f9385ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3805331497090860965
 MonoBehaviour:
   m_ObjectHideFlags: 0
