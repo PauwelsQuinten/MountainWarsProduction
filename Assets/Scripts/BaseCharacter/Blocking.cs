@@ -90,8 +90,9 @@ public class Blocking : MonoBehaviour
         };
         Debug.Log($"{blockResult}");
 
+
         if (blockResult == BlockResult.Hit)
-            _succesfullHitEvent.Raise(this, defenceEventArgs);
+            _succesfullHitEvent.Raise(this, args);
         else
             _succesfullBlockevent.Raise(this, defenceEventArgs);
 
