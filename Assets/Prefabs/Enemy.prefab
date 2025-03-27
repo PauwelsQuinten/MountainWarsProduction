@@ -148,6 +148,10 @@ PrefabInstance:
       propertyPath: m_AngularDrag
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 8294375085882615592, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _moveInput.variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b7343704690fe44082a39bd90ac5296, type: 2}
     - target: {fileID: 8819790937953159563, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
