@@ -14,6 +14,8 @@ public class StateManager : MonoBehaviour
 
     public EquipmentManager EquipmentManager;
 
+    public bool IsBleeding;
+
     private void Start()
     {
         if (EquipmentManager == null)        
@@ -36,7 +38,7 @@ public class StateManager : MonoBehaviour
         Target = args.NewTarget;
     }
 
-     public void ChangeOrientation(Component sender, object obj)
+    public void ChangeOrientation(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
         var args = obj as OrientationEventArgs;

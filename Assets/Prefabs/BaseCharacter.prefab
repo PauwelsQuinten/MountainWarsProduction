@@ -92,7 +92,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &4165634575879343316
 MonoBehaviour:
@@ -113,6 +113,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   IsHoldingShield: 0
   EquipmentManager: {fileID: 1490819108717279631}
+  IsBleeding: 0
 --- !u!114 &5547100133384318507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +151,7 @@ MonoBehaviour:
   _refAimingInput:
     useConstant: 0
     constantValue: {x: 0, y: 0}
-    variable: {fileID: 0}
+    variable: {fileID: 11400000, guid: c07edaff124f1b04e8b8a49de23949a5, type: 2}
   _AimOutputEvent: {fileID: 11400000, guid: 3ce36d1a0cee9b64db3b05b01a8aece3, type: 2}
   _textMeshPro: {fileID: 0}
   _textMeshPro2: {fileID: 0}
@@ -252,14 +253,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxBaseLimbHealth: 100
   _regenRate: 10
-  _changedHealth: {fileID: 0}
+  _changedHealth: {fileID: 11400000, guid: 76601f3ffea2c334ab44c82b48491b3d, type: 2}
   _currentBlood: 100
   _maxBlood: 100
   _bleedOutSpeed: 5
-  _changedBlood: {fileID: 0}
+  _changedBlood: {fileID: 11400000, guid: e4f4ee8ab6150234d9854f343b1fed94, type: 2}
   _damageDropOff: 1
   _patchUpSpeed: 1
-  _patchUp: {fileID: 0}
+  _patchUp: {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
+  _stateManager: {fileID: 4165634575879343316}
 --- !u!114 &3036795874959978044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,9 +336,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2}
   - {fileID: 11400000, guid: 3bcbf57665777d1489ff9e53220b0be4, type: 2}
   - {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
-  - {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
-  - {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
   - {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
   Responses:
   - m_PersistentCalls:
@@ -534,20 +534,6 @@ MonoBehaviour:
       - m_Target: {fileID: 3036795874959978044}
         m_TargetAssemblyTypeName: StaminaManager, Assembly-CSharp
         m_MethodName: LoseStamina
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8814302524761109724}
-        m_TargetAssemblyTypeName: Parry, Assembly-CSharp
-        m_MethodName: StartParry
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

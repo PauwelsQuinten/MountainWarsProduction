@@ -33,6 +33,10 @@ public class HealthManager : MonoBehaviour
     [SerializeField]
     private GameEvent _patchUp;
 
+    [Header("Managers")]
+    [SerializeField]
+    private StateManager _stateManager;
+
     private float _currentHealth;
     private float _maxHealth;
 
@@ -141,8 +145,12 @@ public class HealthManager : MonoBehaviour
 
     private void LoseBlood()
     {
-        if (!_isBleeding) _isBleeding = true;
-        if (_currentBlood <= 0)
+        if (!_isBleeding)
+        {
+            _isBleeding = true;
+            _stateManager.IsBleeding = _isBleeding;
+        }
+            if (_currentBlood <= 0)
         {
             _currentBlood = 0;
             return;
@@ -220,7 +228,8 @@ public class HealthManager : MonoBehaviour
             StartCoroutine(PatchUp());
             return;
         }
-            _isBleeding = false;
+        _isBleeding = false;
+        _stateManager.IsBleeding = _isBleeding;
         if (_canRegenCoroutine != null) StopCoroutine(_canRegenCoroutine);
         _canRegenCoroutine = StartCoroutine(ResetCanRegen());
     }

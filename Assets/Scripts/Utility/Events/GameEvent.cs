@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -18,7 +19,9 @@ public class GameEvent : ScriptableObject
 
     public void RegisterListener(GameEventListener listener, int index)
     {
-        _listeners.Add(listener, index);
+        bool added = _listeners.TryAdd(listener, index);
+        if(!added) 
+            Debug.Log($"Event = {this.name}, listener = {listener.gameObject.name}");
     }
     public void RemoveListener(GameEventListener listener)
     {
