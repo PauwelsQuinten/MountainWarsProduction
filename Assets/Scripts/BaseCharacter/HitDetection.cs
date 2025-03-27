@@ -14,7 +14,6 @@ public class HitDetection : MonoBehaviour
 
         AttackEventArgs args = obj as AttackEventArgs;
         if (args == null) return;
-
         _hitParts = GetDamagedParts(args);
         _DealDamage.Raise(this, new DamageEventArgs { AttackPower = args.AttackPower, HitParts = _hitParts});
     }

@@ -239,6 +239,7 @@ public class PlayerController : MonoBehaviour
 
     public void ProssesPatchUpInput(InputAction.CallbackContext ctx)
     {
+        if(!_stateManager.IsBleeding) return;
         if (ctx.action.WasPressedThisFrame())
         {
             _patchStartTime = Time.time;
