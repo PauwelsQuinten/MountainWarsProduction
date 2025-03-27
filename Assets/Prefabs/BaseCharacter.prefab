@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8819790937953159563}
+  - component: {fileID: 8819841621748405202}
   - component: {fileID: 5687449145564820169}
   - component: {fileID: 4165634575879343316}
   - component: {fileID: 5547100133384318507}
@@ -19,9 +20,9 @@ GameObject:
   - component: {fileID: 8814302524761109724}
   - component: {fileID: 4200951442303491891}
   - component: {fileID: 3036795874959978044}
-  - component: {fileID: 3805331497090860965}
   - component: {fileID: 1490819108717279631}
   - component: {fileID: 3485612452898370163}
+  - component: {fileID: 3805331497090860965}
   m_Layer: 0
   m_Name: BaseCharacter
   m_TagString: Untagged
@@ -45,6 +46,27 @@ Transform:
   - {fileID: 8259717152020767260}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8819841621748405202
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5687449145564820169
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -88,7 +110,6 @@ MonoBehaviour:
   AttackState: 0
   AttackHeight: 0
   Orientation: 0
-  CharacterState: 0
   Target: {fileID: 0}
   IsHoldingShield: 0
   EquipmentManager: {fileID: 1490819108717279631}
@@ -238,6 +259,7 @@ MonoBehaviour:
   _changedBlood: {fileID: 0}
   _damageDropOff: 1
   _patchUpSpeed: 1
+  _patchUp: {fileID: 0}
 --- !u!114 &3036795874959978044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +276,39 @@ MonoBehaviour:
   _maxStamina: 100
   _regenSpeed: 5
   _changedStamina: {fileID: 11400000, guid: d96f2c247ec32f843932f40997f1c382, type: 2}
+--- !u!114 &1490819108717279631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcd86ad7a5d6a149adde88817baded7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leftHand: {fileID: 6464342419627203891, guid: 3f5fe7f426ca66e469ff79b95b61b74a, type: 3}
+  _rightHand: {fileID: 6464342419627203891, guid: e07e17f7199209b49ab3de04485be0b6, type: 3}
+  _fists: {fileID: 6464342419627203891, guid: a2d74654fef498746aa20509befcd693, type: 3}
+  _onEquipmentBreak: {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
+  _itemMask:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &3485612452898370163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4f0ed89ec20a84090b3a6998576f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lockonTarget: {fileID: 0}
+  _lockonEvent: {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2}
 --- !u!114 &3805331497090860965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,6 +333,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
   - {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2}
   - {fileID: 11400000, guid: 3bcbf57665777d1489ff9e53220b0be4, type: 2}
+  - {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
+  - {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
+  - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
+  - {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
+  - {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -405,20 +465,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1490819108717279631}
         m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
-        m_MethodName: PickupEquipment
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1490819108717279631}
-        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
         m_MethodName: LoseEquipment
         m_Mode: 0
         m_Arguments:
@@ -469,39 +515,76 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1490819108717279631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 691636631868949397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bcd86ad7a5d6a149adde88817baded7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _leftHand: {fileID: 6464342419627203891, guid: 3f5fe7f426ca66e469ff79b95b61b74a, type: 3}
-  _rightHand: {fileID: 6464342419627203891, guid: e07e17f7199209b49ab3de04485be0b6, type: 3}
-  _fists: {fileID: 6464342419627203891, guid: a2d74654fef498746aa20509befcd693, type: 3}
-  _onEquipmentBreak: {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
-  _itemMask:
-    serializedVersion: 2
-    m_Bits: 64
---- !u!114 &3485612452898370163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 691636631868949397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b4f0ed89ec20a84090b3a6998576f29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lockonTarget: {fileID: 0}
-  _lockonEvent: {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3485612452898370163}
+        m_TargetAssemblyTypeName: LockOn, Assembly-CSharp
+        m_MethodName: FoundTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3036795874959978044}
+        m_TargetAssemblyTypeName: StaminaManager, Assembly-CSharp
+        m_MethodName: LoseStamina
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8814302524761109724}
+        m_TargetAssemblyTypeName: Parry, Assembly-CSharp
+        m_MethodName: StartParry
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8814302524761109724}
+        m_TargetAssemblyTypeName: Parry, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8814302524761109724}
+        m_TargetAssemblyTypeName: Parry, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3070592678275608158
 GameObject:
   m_ObjectHideFlags: 0
