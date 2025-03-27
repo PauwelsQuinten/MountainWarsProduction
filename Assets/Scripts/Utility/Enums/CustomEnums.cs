@@ -119,4 +119,73 @@ namespace UnityEngine
     }
 
 
+    public enum WorldStateType
+    {
+        Desired,
+        Satisfying,
+        Current
+    }
+    
+    public enum EWorldState
+    {
+        Behaviour,
+        Health,
+        Stamina,
+        RHEquipment,
+        LHEquipment,
+        HasTarget,
+
+        TargetBehaviour,
+        TargetHealth,
+        TargetStamina,
+        TargetRHEquipment,
+        TargetLHEquipment,
+
+        TargetOpening,
+        TargetDistance
+
+    }
+
+    public enum EWorldStateValue
+    {
+        Full,
+        High,
+        Mid,
+        Low,
+        Zero,
+        Default
+    }
+    
+    public enum EWorldStatePossesion
+    {       
+        InPossesion,
+        NotInPossesion,
+        Default
+    }
+
+    public enum EBehaviourValue
+    {
+        Recovering,
+        Attacking,
+        Defending,
+        Default
+    }
+    
+    public enum EWorldStateRange
+    {
+       InRange,
+       OutOfRange,
+       FarAway,
+        Default
+    }
+     
+    public enum CharacterMentality
+    {
+       Basic,
+       Agressive,
+       Coward
+    }
+    
+
+
 }
