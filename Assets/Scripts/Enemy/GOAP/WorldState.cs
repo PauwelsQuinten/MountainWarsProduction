@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static UnityEngine.GraphicsBuffer;
+using static UnityEditor.PlayerSettings;
 
 public class WorldState : MonoBehaviour
 {
@@ -43,7 +42,9 @@ public class WorldState : MonoBehaviour
     
     [Header("Range")]
     [SerializeField]
-    private EWorldStateRange _targetDistance = EWorldStateRange.Default;
+    private EWorldStateRange _targetAttackRange = EWorldStateRange.Default;
+    [SerializeField]
+    private EWorldStateRange _attackRange = EWorldStateRange.Default;
     
     public Dictionary<EWorldState, EWorldStateValue> WorldStateValues = new Dictionary<EWorldState, EWorldStateValue>();
     public Dictionary<EWorldState, EWorldStatePossesion> WorldStatePossesions = new Dictionary<EWorldState, EWorldStatePossesion>();
@@ -51,15 +52,26 @@ public class WorldState : MonoBehaviour
     public Dictionary<EWorldState, EWorldStateRange> WorldStateRanges = new Dictionary<EWorldState, EWorldStateRange>();
 
 
-
     private void Start()
     {
         _blackboard.variable.ValueChanged += Blackboard_ValueChanged;
+        FillLists();
     }
+
 
     public void UpdateWorldState()
     {
+        if (WorldStateType != WorldStateType.Current)
+            return;
 
+        UpdateBehaviour();
+
+        if (HasTarget == EWorldStatePossesion.InPossesion)
+        {
+            CalculateRange();
+            LookForOpenings();
+        }
+        
     }
 
     public List<EWorldState> CompareWorldState(WorldState desiredWorldState)
@@ -105,6 +117,7 @@ public class WorldState : MonoBehaviour
         return listOfDifference;
     }
 
+
     //------------------------------------------------------------------------------
     //WORLDSTATE VALUES UPDATE FUNCTIONS
     //------------------------------------------------------------------------------
@@ -117,35 +130,48 @@ public class WorldState : MonoBehaviour
     {
         switch (e.ThisChanged)
         {
+            case BlackboardEventArgs.WhatChanged.Behaviour:
+                Behaviour = WatchBehaviour(_blackboard.variable.State);
+                break;
+            case BlackboardEventArgs.WhatChanged.TargetBehaviour:
+                TargetBehaviour = WatchBehaviour(_blackboard.variable.TargetState);
+                break;
             case BlackboardEventArgs.WhatChanged.Stamina:
-                CalculateValue(_blackboard.variable.Stamina);
+                Stamina = CalculateValue(_blackboard.variable.Stamina);
                 break;
             case BlackboardEventArgs.WhatChanged.Health:
-                CalculateValue(_blackboard.variable.Health);
+                Health = CalculateValue(_blackboard.variable.Health);
                 break;
             case BlackboardEventArgs.WhatChanged.RHEquipment:
-                CalculateValue(_blackboard.variable.RHEquipmentHealth);
+                RHEquipment = CalculateValue(_blackboard.variable.RHEquipmentHealth);
                 break;
             case BlackboardEventArgs.WhatChanged.LHEquipment:
-                CalculateValue(_blackboard.variable.LHEquipmentHealth);
+                LHEquipment = CalculateValue(_blackboard.variable.LHEquipmentHealth);
                 break;
             case BlackboardEventArgs.WhatChanged.Target:
+                HasTarget = SetInPossesion(_blackboard.variable.Target);
                 break;
             case BlackboardEventArgs.WhatChanged.TargetStamina:
-                CalculateValue(_blackboard.variable.TargetStamina);
+                TargetStamina = CalculateValue(_blackboard.variable.TargetStamina);
                 break;
             case BlackboardEventArgs.WhatChanged.TargetHealth:
-                CalculateValue(_blackboard.variable.TargetHealth);
+                TargetHealth = CalculateValue(_blackboard.variable.TargetHealth);
                 break;
             case BlackboardEventArgs.WhatChanged.TargetRHEquipment:
-                CalculateValue(_blackboard.variable.TargetRHEquipmentHealth);
+                TargetRHEquipment = CalculateValue(_blackboard.variable.TargetRHEquipmentHealth);
                 break;
             case BlackboardEventArgs.WhatChanged.TargetLHEquipment:
-                CalculateValue(_blackboard.variable.TargetLHEquipmentHealth);
+                TargetLHEquipment = CalculateValue(_blackboard.variable.TargetLHEquipmentHealth);
                 break;
+           
         }
     }
 
+
+
+    //------------------------------------------------------------------------------
+    //HELPER FUNCTIONS
+    //------------------------------------------------------------------------------
 
     private EWorldStateValue CalculateValue(float fValue)
     {
@@ -167,7 +193,102 @@ public class WorldState : MonoBehaviour
         return EWorldStateValue.Default;
     }
 
+    private EWorldStatePossesion SetInPossesion(GameObject target)
+    {
+        EWorldStatePossesion possesion;
+        possesion = target == null ? EWorldStatePossesion.NotInPossesion : EWorldStatePossesion.InPossesion;
+        return possesion;
+    }
 
+    private EBehaviourValue WatchBehaviour(AttackState attackState)
+    {
+        switch (attackState)
+        {
+            case AttackState.Idle:
+                return EBehaviourValue.Recovering;
+
+            case AttackState.Attack:
+                return EBehaviourValue.Attacking;
+
+            case AttackState.ShieldDefence:
+            case AttackState.SwordDefence:
+            case AttackState.BlockAttack:
+                return EBehaviourValue.Defending;
+                
+            case AttackState.Knock:
+                return EBehaviourValue.Knock;
+        }
+        
+        return EBehaviourValue.Default;
+    }
+
+    private void LookForOpenings()
+    {
+        HasOpening = EWorldStatePossesion.Default;
+    }
+
+    private void UpdateBehaviour()
+    {
+        Behaviour = WatchBehaviour(_blackboard.variable.State);
+
+        if (HasTarget == EWorldStatePossesion.InPossesion)
+        {
+            TargetBehaviour = WatchBehaviour(_blackboard.variable.TargetState);
+        }
+        else
+            TargetBehaviour = EBehaviourValue.Default;
+    }
+
+    private void CalculateRange()
+    {
+        float weaponRange = _blackboard.variable.WeaponRange;
+        float targetWeaponRange = _blackboard.variable.TargetWeaponRange;
+        float targetDistance = Vector3.Distance(gameObject.transform.position, _blackboard.variable.Target.transform.position);
+
+        if (targetDistance < weaponRange)
+            AttackRange = EWorldStateRange.InRange;
+        else if (targetDistance > weaponRange && targetDistance < weaponRange * 3f)
+            AttackRange = EWorldStateRange.OutOfRange;
+        else
+            AttackRange = EWorldStateRange.FarAway;
+
+        if (targetDistance < targetWeaponRange)
+            TargetAttackRange = EWorldStateRange.InRange;
+        else if (targetDistance > targetWeaponRange && targetDistance < targetWeaponRange * 3f)
+            TargetAttackRange = EWorldStateRange.OutOfRange;
+        else
+            TargetAttackRange = EWorldStateRange.FarAway;
+    }
+
+    private void FillLists()
+    {
+        //Values
+        WorldStateValues.Add(EWorldState.TargetHealth, TargetHealth);
+        WorldStateValues.Add(EWorldState.TargetStamina, TargetStamina);
+        WorldStateValues.Add(EWorldState.TargetRHEquipment, TargetRHEquipment);
+        WorldStateValues.Add(EWorldState.TargetLHEquipment, TargetLHEquipment);
+
+        WorldStateValues.Add(EWorldState.Health, Health);
+        WorldStateValues.Add(EWorldState.Stamina, Stamina);
+        WorldStateValues.Add(EWorldState.RHEquipment, RHEquipment);
+        WorldStateValues.Add(EWorldState.LHEquipment, LHEquipment);
+
+
+        //Possesions
+        WorldStatePossesions.Add(EWorldState.HasTarget, HasTarget);
+        WorldStatePossesions.Add(EWorldState.TargetOpening, HasOpening);
+
+
+        //Behaviours
+        WorldStateBehaviours.Add(EWorldState.Behaviour, Behaviour);
+        WorldStateBehaviours.Add(EWorldState.TargetBehaviour, TargetBehaviour);
+
+
+        //Ranges
+        WorldStateRanges.Add(EWorldState.AttackRange, AttackRange);
+        WorldStateRanges.Add(EWorldState.TargetAttackRange, TargetAttackRange);
+
+    }
 
 
     //------------------------------------------------------------------------------
@@ -297,14 +418,23 @@ public class WorldState : MonoBehaviour
         }
     }
 
-
-    public EWorldStateRange TargetDistance
+    public EWorldStateRange TargetAttackRange
     {
-        get { return _targetDistance; }
+        get { return _targetAttackRange; }
         set
         {
-            _targetDistance = value;
-            WorldStateRanges[EWorldState.TargetDistance] = _targetDistance;
+            _targetAttackRange = value;
+            WorldStateRanges[EWorldState.TargetAttackRange] = _targetAttackRange;
+        }
+    }
+    
+    public EWorldStateRange AttackRange
+    {
+        get { return _attackRange; }
+        set
+        {
+            _targetAttackRange = value;
+            WorldStateRanges[EWorldState.AttackRange] = _attackRange;
         }
     }
 

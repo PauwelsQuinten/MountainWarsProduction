@@ -23,6 +23,9 @@ public class StateManager : MonoBehaviour
     {
         if (EquipmentManager == null)        
             EquipmentManager = GetComponent<EquipmentManager>();
+
+        if (!gameObject.CompareTag(PLAYER))
+            _blackboardRef.variable.State = AttackState ;
     }
 
     public void SetTarget(Component sender, object obj)
@@ -33,8 +36,14 @@ public class StateManager : MonoBehaviour
 
         Target = args.NewTarget;
 
+        //Update Blackboard
         if (!gameObject.CompareTag(PLAYER))
+        {
             _blackboardRef.variable.Target = Target;
+            
+            if (Target)
+                _blackboardRef.variable.TargetState = Target.GetComponent<StateManager>().AttackState;
+        }
     }
 
     public void ChangeOrientation(Component sender, object obj)

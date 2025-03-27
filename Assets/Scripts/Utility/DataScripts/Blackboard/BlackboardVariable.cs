@@ -7,6 +7,21 @@ public class BlackboardVariable : ScriptableObject
 {
     public event EventHandler<BlackboardEventArgs> ValueChanged;
 
+
+    private AttackState _state;
+    public AttackState State
+    {
+        get => _state;
+        set
+        {
+            if (_state != value)
+            {
+                _state = value;
+                ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.Behaviour });
+            }
+        }
+    }
+
     private float _stamina;
     public float Stamina
     {
@@ -73,6 +88,21 @@ public class BlackboardVariable : ScriptableObject
             }
         }
     }
+
+    private AttackState _targetState;
+    public AttackState TargetState
+    {
+        get => _targetState;
+        set
+        {
+            if (_targetState != value)
+            {
+                _targetState = value;
+                ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.TargetBehaviour });
+            }
+        }
+    }
+
     private float _targetStamina;
     public float TargetStamina
     {
@@ -125,6 +155,34 @@ public class BlackboardVariable : ScriptableObject
             {
                 _targetLHEquipmentHealth = value;
                 ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.TargetLHEquipment });
+            }
+        }
+    }
+    
+    private float _targetWeaponRange;
+    public float TargetWeaponRange
+    {
+        get => _targetWeaponRange;
+        set
+        {
+            if (_targetWeaponRange != value)
+            {
+                _targetWeaponRange = value;
+                ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.TargetWeaponRange });
+            }
+        }
+    }
+    
+    private float _weaponRange;
+    public float WeaponRange
+    {
+        get => _weaponRange;
+        set
+        {
+            if (_weaponRange != value)
+            {
+                _weaponRange = value;
+                ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.WeaponRange });
             }
         }
     }

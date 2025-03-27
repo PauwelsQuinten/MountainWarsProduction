@@ -142,7 +142,8 @@ namespace UnityEngine
         TargetLHEquipment,
 
         TargetOpening,
-        TargetDistance
+        TargetAttackRange,
+        AttackRange
 
     }
 
@@ -168,6 +169,7 @@ namespace UnityEngine
         Recovering,
         Attacking,
         Defending,
+        Knock,
         Default
     }
     

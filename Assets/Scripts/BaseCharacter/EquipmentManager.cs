@@ -110,12 +110,14 @@ public class EquipmentManager : MonoBehaviour
         {
             _blackboard.variable.TargetLHEquipmentHealth = HeldEquipment[LEFT_HAND].GetDurabilityPercentage();
             _blackboard.variable.TargetRHEquipmentHealth = HeldEquipment[RIGHT_HAND].GetDurabilityPercentage();
+            _blackboard.variable.TargetWeaponRange = GetAttackRange();
         }
 
         else
         {
             _blackboard.variable.LHEquipmentHealth = HeldEquipment[LEFT_HAND].GetDurabilityPercentage();
             _blackboard.variable.RHEquipmentHealth = HeldEquipment[RIGHT_HAND].GetDurabilityPercentage();
+            _blackboard.variable.WeaponRange = GetAttackRange();
         }
     }
 
@@ -177,6 +179,14 @@ public class EquipmentManager : MonoBehaviour
         HeldEquipment[index] = null; 
     }
 
+    private float GetAttackRange()
+    {
+        if (HeldEquipment[RIGHT_HAND])
+            return HeldEquipment[RIGHT_HAND].Range;
+        else if (HeldEquipment[LEFT_HAND])
+            return HeldEquipment[RIGHT_HAND].Range;
+        return HeldEquipment[FISTS].Range;
+    }
 
 
 }

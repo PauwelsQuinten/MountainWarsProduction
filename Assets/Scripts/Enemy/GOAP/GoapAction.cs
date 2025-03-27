@@ -115,8 +115,8 @@ public class GoapAction : MonoBehaviour, Actions
     //protected bool AboutToBeHit(WorldState currentWorldState)
     //{
     //    return !currentWorldState.IsBlockInCorrectDirection()
-    //       && (currentWorldState._worldStateValues2[EWorldState.TargetDistance] == WorldStateValue.OutOfRange
-    //       || currentWorldState._worldStateValues2[EWorldState.TargetDistance] == WorldStateValue.InRange);
+    //       && (currentWorldState._worldStateValues2[EWorldState.TargetAttackRange] == WorldStateValue.OutOfRange
+    //       || currentWorldState._worldStateValues2[EWorldState.TargetAttackRange] == WorldStateValue.InRange);
     //}
     //
     //protected bool FamiliarAttack(WorldState currentWorldState)
@@ -127,8 +127,8 @@ public class GoapAction : MonoBehaviour, Actions
     //        if (att.Value >= 5 && currentWorldState.TargetCurrentAttack == att.Key)
     //            parryMoveFound = true;
     //    }
-    //    return parryMoveFound && (currentWorldState._worldStateValues2[EWorldState.TargetDistance] == WorldStateValue.OutOfRange
-    //       || currentWorldState._worldStateValues2[EWorldState.TargetDistance] == WorldStateValue.InRange);
+    //    return parryMoveFound && (currentWorldState._worldStateValues2[EWorldState.TargetAttackRange] == WorldStateValue.OutOfRange
+    //       || currentWorldState._worldStateValues2[EWorldState.TargetAttackRange] == WorldStateValue.InRange);
     //}
 
 }
