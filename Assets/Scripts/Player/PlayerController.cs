@@ -34,6 +34,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private FloatReference _sprintCost;
 
+    [Header("Dodge")]
+    [SerializeField]
+    private GameEvent _dodge;
+
     private Vector2 _moveInput;
 
     private Coroutine _resetAttackheight;
@@ -200,7 +204,7 @@ public class PlayerController : MonoBehaviour
             if (!_wasSprinting)
             {
                 if (_staminaManager.CurrentStamina < _dodgeCost.value) return;
-                Debug.Log("dodge");
+                _dodge.Raise(this, EventArgs.Empty);
             }
             else
             {

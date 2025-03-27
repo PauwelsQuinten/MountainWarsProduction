@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 3036795874959978044}
   - component: {fileID: 1490819108717279631}
   - component: {fileID: 3485612452898370163}
+  - component: {fileID: 8294375085882615592}
   - component: {fileID: 3805331497090860965}
   m_Layer: 0
   m_Name: BaseCharacter
@@ -90,7 +91,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -311,6 +312,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lockonTarget: {fileID: 0}
   _lockonEvent: {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2}
+--- !u!114 &8294375085882615592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 253ca2f2f5d5b084294e9c04399048c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveInput:
+    useConstant: 0
+    constantValue: {x: 0, y: 0}
+    variable: {fileID: 0}
+  _staminaCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 11400000, guid: b759dc72c5305134d9f0398a9005ef43, type: 2}
+  _loseStamina: {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
+  _dashSpeed: 5
+  _dashDistance: 4
+  _cooldown: 6
 --- !u!114 &3805331497090860965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,6 +363,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
   - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
   - {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
+  - {fileID: 11400000, guid: 184f7fec1fd39784a8c9e2055d74ab99, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -563,6 +589,20 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Parry, Assembly-CSharp
         m_MethodName: 
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8294375085882615592}
+        m_TargetAssemblyTypeName: Dodge, Assembly-CSharp
+        m_MethodName: ActivateDodge
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

@@ -237,6 +237,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9049763791193207314, guid: b86017f2f8100ff4296f48da22866a65, type: 3}
+      propertyPath: _cooldown
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9049763791193207314, guid: b86017f2f8100ff4296f48da22866a65, type: 3}
+      propertyPath: _dashSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9049763791193207314, guid: b86017f2f8100ff4296f48da22866a65, type: 3}
+      propertyPath: _dashDistance
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
