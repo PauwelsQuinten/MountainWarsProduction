@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
     [Header("health")]
     [SerializeField]
     private float _maxBaseLimbHealth;
@@ -36,6 +38,11 @@ public class HealthManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField]
     private StateManager _stateManager;
+
+    [Header("Blackboard")]
+    [SerializeField]
+    private BlackboardReference _blackboard;
+
 
     private float _currentHealth;
     private float _maxHealth;
@@ -75,6 +82,12 @@ public class HealthManager : MonoBehaviour
         if (args == null) return;
 
         LoseHealth(args.AttackPower, args);
+
+        //Update blackboard
+        if (gameObject.CompareTag(PLAYER))
+            _blackboard.variable.TargetHealth = _currentHealth/ _maxHealth;
+        else
+            _blackboard.variable.Health = _currentHealth/_maxHealth;
     }
 
     private void SetHealth()

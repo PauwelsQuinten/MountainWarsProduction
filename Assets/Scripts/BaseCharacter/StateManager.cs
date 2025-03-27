@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
     [SerializeField] GameEvent _OnKnockbackRecovery;
+    [SerializeField] BlackboardReference _blackboardRef;
     public AttackState AttackState;
     public AttackHeight AttackHeight;
     public Orientation Orientation;
@@ -22,13 +25,6 @@ public class StateManager : MonoBehaviour
             EquipmentManager = GetComponent<EquipmentManager>();
     }
 
-    public void GetKnockback(Component sender, object obj)
-    {
-            Debug.Log("start knockback");
-        AttackState = AttackState.Knock;
-         StartCoroutine(RecoverKnockback());
-    }
-    
     public void SetTarget(Component sender, object obj)
     {
         if(sender.gameObject != gameObject) return;
@@ -36,6 +32,9 @@ public class StateManager : MonoBehaviour
         if (args == null) return;
 
         Target = args.NewTarget;
+
+        if (!gameObject.CompareTag(PLAYER))
+            _blackboardRef.variable.Target = Target;
     }
 
     public void ChangeOrientation(Component sender, object obj)
@@ -47,6 +46,13 @@ public class StateManager : MonoBehaviour
         Orientation = args.NewOrientation;
     }
 
+    public void GetKnockback(Component sender, object obj)
+    {
+            Debug.Log("start knockback");
+        AttackState = AttackState.Knock;
+         StartCoroutine(RecoverKnockback());
+    }
+    
     private IEnumerator RecoverKnockback()
     {
         yield return new WaitForSeconds(5.4f);

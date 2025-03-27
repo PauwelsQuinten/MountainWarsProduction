@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
     [SerializeField] private Equipment _leftHand;
     [SerializeField] private Equipment _rightHand;
     [SerializeField] private Equipment _fists;
@@ -10,6 +13,10 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private GameEvent _onEquipmentBreak;
     [Header("Item")]
     [SerializeField] private LayerMask _itemMask;
+    [Header("Blackboard")]
+    [SerializeField]
+    private BlackboardReference _blackboard;
+
     private List<Equipment> HeldEquipment = new List<Equipment> {null, null, null };
 
     private const int LEFT_HAND = 0;
@@ -79,9 +86,11 @@ public class EquipmentManager : MonoBehaviour
         DefenceEventArgs args = obj as DefenceEventArgs;
         if (args == null) return;
 
-
+        //reduce durability
         int index = args.BlockMedium == BlockMedium.Sword ? 1 : 0;
         HeldEquipment[index].Damage(args.AttackPower, args.BlockResult);
+
+        //Check if broken
         if (HeldEquipment[index].Durability < 0f)
         {
             Debug.Log($"!!!!!!!!!!!!!!!!!!!!! breaks {args.BlockMedium} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -94,6 +103,19 @@ public class EquipmentManager : MonoBehaviour
                 ToSelf = true
             };
             _onEquipmentBreak.Raise(this, send );
+        }
+
+        //Update blackboard
+        if (gameObject.CompareTag(PLAYER))
+        {
+            _blackboard.variable.TargetLHEquipmentHealth = HeldEquipment[LEFT_HAND].GetDurabilityPercentage();
+            _blackboard.variable.TargetRHEquipmentHealth = HeldEquipment[RIGHT_HAND].GetDurabilityPercentage();
+        }
+
+        else
+        {
+            _blackboard.variable.LHEquipmentHealth = HeldEquipment[LEFT_HAND].GetDurabilityPercentage();
+            _blackboard.variable.RHEquipmentHealth = HeldEquipment[RIGHT_HAND].GetDurabilityPercentage();
         }
     }
 
