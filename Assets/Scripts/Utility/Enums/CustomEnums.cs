@@ -67,6 +67,7 @@ namespace UnityEngine
         Stab,
         HorizontalSlashToLeft,
         HorizontalSlashToRight,
+        ShieldBash
     }
 
     public enum BodyParts 

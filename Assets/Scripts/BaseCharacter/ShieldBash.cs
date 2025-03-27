@@ -1,11 +1,7 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.Experimental;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Dodge : MonoBehaviour
+public class ShieldBash : MonoBehaviour
 {
     [Header("Variables")]
     [SerializeField]
@@ -39,7 +35,7 @@ public class Dodge : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(_dashing) PerformDodge();
+        if (_dashing) PerformDodge();
     }
 
     public void ActivateDodge(Component sender, object obj)

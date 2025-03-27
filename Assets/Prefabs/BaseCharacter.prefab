@@ -333,9 +333,9 @@ MonoBehaviour:
     constantValue: 0
     variable: {fileID: 11400000, guid: b759dc72c5305134d9f0398a9005ef43, type: 2}
   _loseStamina: {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
-  _dashSpeed: 5
-  _dashDistance: 4
-  _cooldown: 6
+  _dashSpeed: 27.41
+  _dashDistance: 3
+  _cooldown: 0.5
 --- !u!114 &3805331497090860965
 MonoBehaviour:
   m_ObjectHideFlags: 0

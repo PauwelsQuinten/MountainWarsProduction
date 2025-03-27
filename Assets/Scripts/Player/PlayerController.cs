@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private FloatReference _dodgeCost;
     [SerializeField]
+    private FloatReference _shieldBashCost;
+    [SerializeField]
     private FloatReference _aimCost;
     [SerializeField]
     private FloatReference _sprintCost;
@@ -37,6 +39,10 @@ public class PlayerController : MonoBehaviour
     [Header("Dodge")]
     [SerializeField]
     private GameEvent _dodge;
+
+    [Header("ShieldBash")]
+    [SerializeField]
+    private GameEvent _shieldBash;
 
     private Vector2 _moveInput;
 
@@ -189,11 +195,6 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesDodgeInput(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
-        {
-            //start exlerating?
-        }
-
         if (ctx.performed)
         {
             _wasSprinting = true;
@@ -203,8 +204,16 @@ public class PlayerController : MonoBehaviour
         {
             if (!_wasSprinting)
             {
-                if (_staminaManager.CurrentStamina < _dodgeCost.value) return;
-                _dodge.Raise(this, EventArgs.Empty);
+                if(_stateManager.AttackState == AttackState.ShieldDefence || _stateManager.AttackState == AttackState.BlockAttack)
+                {
+                    if (_staminaManager.CurrentStamina < _shieldBashCost.value) return;
+                    _shieldBash.Raise(this, EventArgs.Empty);
+                }
+                else
+                {
+                    if (_staminaManager.CurrentStamina < _dodgeCost.value) return;
+                    _dodge.Raise(this, EventArgs.Empty);
+                }
             }
             else
             {

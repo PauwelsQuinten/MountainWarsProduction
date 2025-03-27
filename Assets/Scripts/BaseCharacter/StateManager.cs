@@ -24,7 +24,6 @@ public class StateManager : MonoBehaviour
 
     public void GetKnockback(Component sender, object obj)
     {
-            Debug.Log("start knockback");
         AttackState = AttackState.Knock;
          StartCoroutine(RecoverKnockback());
     }
@@ -52,7 +51,5 @@ public class StateManager : MonoBehaviour
         yield return new WaitForSeconds(5.4f);
         _OnKnockbackRecovery.Raise(this);
         AttackState = AttackState.Idle;
-            Debug.Log("stop knockback");
     }
-
 }
