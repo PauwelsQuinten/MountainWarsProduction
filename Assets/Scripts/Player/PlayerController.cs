@@ -10,13 +10,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private StateManager _stateManager;
 
-    [Header("Variables")]
+    [Header("Input")]
     [SerializeField]
     private AimingInputReference _aimInputRef;
     [SerializeField]
     private MovingInputReference _moveInputRef;
-    [SerializeField]
-    private GameEvent _pickupEvent;
 
     [Header("Healing")]
     [SerializeField]
@@ -43,6 +41,10 @@ public class PlayerController : MonoBehaviour
     [Header("ShieldBash")]
     [SerializeField]
     private GameEvent _shieldBash;
+
+    [Header("ItemPickup")]
+    [SerializeField]
+    private GameEvent _pickupEvent;
 
     private Vector2 _moveInput;
 

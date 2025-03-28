@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 1490819108717279631}
   - component: {fileID: 3485612452898370163}
   - component: {fileID: 8294375085882615592}
+  - component: {fileID: 8895177009908340797}
   - component: {fileID: 3805331497090860965}
   m_Layer: 0
   m_Name: BaseCharacter
@@ -336,6 +337,30 @@ MonoBehaviour:
   _dashSpeed: 27.41
   _dashDistance: 3
   _cooldown: 0.5
+--- !u!114 &8895177009908340797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691636631868949397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fada10d62315d214aa12cb3a4c2f87e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveInput:
+    useConstant: 0
+    constantValue: {x: 0, y: 0}
+    variable: {fileID: 0}
+  _staminaCost:
+    useConstant: 0
+    constantValue: 0
+    variable: {fileID: 0}
+  _loseStamina: {fileID: 0}
+  _dashSpeed: 0
+  _dashDistance: 0
+  _cooldown: 0
 --- !u!114 &3805331497090860965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,17 +378,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d9f26e2d81ed1fe40933eaca01e8ff59, type: 2}
   - {fileID: 11400000, guid: e4d2257f33828fe45a8ba3c1de9a6a8c, type: 2}
   - {fileID: 11400000, guid: 0bab4ec7dd547c941b5209c87202a055, type: 2}
+  - {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
+  - {fileID: 11400000, guid: 6ae7cf8fbff13b34baa83d4c5c01a86f, type: 2}
+  - {fileID: 11400000, guid: 184f7fec1fd39784a8c9e2055d74ab99, type: 2}
+  - {fileID: 11400000, guid: 5fdf0764ef8349f4891b1943b67a1199, type: 2}
   - {fileID: 11400000, guid: adf3d2d15933fe3409767bb76cff4168, type: 2}
   - {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
-  - {fileID: 11400000, guid: b498eace5ab60cf46967548c795e4d48, type: 2}
-  - {fileID: 11400000, guid: 6ae7cf8fbff13b34baa83d4c5c01a86f, type: 2}
-  - {fileID: 11400000, guid: 80230798183380d4d9daccd349bb9632, type: 2}
-  - {fileID: 11400000, guid: c2280fdb810be9143af68222eda93983, type: 2}
-  - {fileID: 11400000, guid: 3bcbf57665777d1489ff9e53220b0be4, type: 2}
   - {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
-  - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
-  - {fileID: 11400000, guid: dc4683c9b3a45b6489f572b0765e6e9e, type: 2}
-  - {fileID: 11400000, guid: 184f7fec1fd39784a8c9e2055d74ab99, type: 2}
+  - {fileID: 11400000, guid: 2cc625b4ec016e14899ad658a28da4c8, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -447,6 +469,62 @@ MonoBehaviour:
         m_CallState: 2
   - m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1490819108717279631}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: LoseEquipment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1490819108717279631}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: PickupEquipment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8294375085882615592}
+        m_TargetAssemblyTypeName: Dodge, Assembly-CSharp
+        m_MethodName: ActivateDodge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8895177009908340797}
+        m_TargetAssemblyTypeName: ShieldBash, Assembly-CSharp
+        m_MethodName: ActivateShieldBash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 4200951442303491891}
         m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
         m_MethodName: TakeDamage
@@ -475,88 +553,6 @@ MonoBehaviour:
         m_CallState: 2
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4165634575879343316}
-        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
-        m_MethodName: GetKnockback
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1490819108717279631}
-        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
-        m_MethodName: LoseEquipment
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4165634575879343316}
-        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
-        m_MethodName: ChangeOrientation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3485612452898370163}
-        m_TargetAssemblyTypeName: LockOn, Assembly-CSharp
-        m_MethodName: FoundTarget
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4165634575879343316}
-        m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
-        m_MethodName: SetTarget
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3485612452898370163}
-        m_TargetAssemblyTypeName: LockOn, Assembly-CSharp
-        m_MethodName: FoundTarget
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 3036795874959978044}
         m_TargetAssemblyTypeName: StaminaManager, Assembly-CSharp
         m_MethodName: LoseStamina
@@ -571,37 +567,9 @@ MonoBehaviour:
         m_CallState: 2
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8814302524761109724}
-        m_TargetAssemblyTypeName: Parry, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8814302524761109724}
-        m_TargetAssemblyTypeName: Parry, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8294375085882615592}
-        m_TargetAssemblyTypeName: Dodge, Assembly-CSharp
-        m_MethodName: ActivateDodge
+      - m_Target: {fileID: 3036795874959978044}
+        m_TargetAssemblyTypeName: StaminaManager, Assembly-CSharp
+        m_MethodName: LoseStamina
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

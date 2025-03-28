@@ -38,7 +38,7 @@ public class ShieldBash : MonoBehaviour
         if (_dashing) PerformDodge();
     }
 
-    public void ActivateDodge(Component sender, object obj)
+    public void ActivateShieldBash(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
         if (!_canRun) return;
