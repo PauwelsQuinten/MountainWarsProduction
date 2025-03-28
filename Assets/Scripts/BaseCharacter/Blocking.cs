@@ -30,7 +30,7 @@ public class Blocking : MonoBehaviour
         if (args.AttackState == AttackState.BlockAttack || 
             args.AttackState == AttackState.ShieldDefence || 
             args.AttackState == AttackState.SwordDefence || 
-            args.AttackState == AttackState.Knock 
+            args.AttackState == AttackState.Stun 
             )
             _blockMedium = Blocking.GetBlockMedium(args);
         else
@@ -61,10 +61,14 @@ public class Blocking : MonoBehaviour
     public void CheckBlock(Component sender, object obj)
     {
         //Check for vallid signal
-        if (sender.gameObject != gameObject) return;
-
         AttackEventArgs args = obj as AttackEventArgs;
         if (args == null) return;
+
+        if(args.AttackType == AttackType.ShieldBash)
+        {
+            if (sender.gameObject == gameObject) return;
+        }
+        else if (sender.gameObject != gameObject) return;
 
 
         //Compare attack with current defence
@@ -125,7 +129,7 @@ public class Blocking : MonoBehaviour
                     break;
             }
             
-            _succesfullBlockevent.Raise(this, defenceEventArgs);
+            _succesfullBlockevent.Raise(this, new StunEventArgs { StunDuration = 2, ComesFromEnemy = true});
         }
 
     }
@@ -151,7 +155,7 @@ public class Blocking : MonoBehaviour
             return BlockMedium.Nothing;
         }
 
-        else if (args.AttackState == AttackState.Knock)
+        else if (args.AttackState == AttackState.Stun)
             return BlockMedium.Nothing;
 
         Debug.LogError("No Blockstate, so what are you doing here");
