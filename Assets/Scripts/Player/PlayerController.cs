@@ -65,16 +65,15 @@ public class PlayerController : MonoBehaviour
         _moveInputRef.variable.StateManager = _stateManager;
     }
 
-    public void GetKnockBack(Component sender, object obj)
+    public void GetStun(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
 
         _storredAttackState = _stateManager.AttackState;
-        //_stateManager.AttackState = AttackState.Knock;
-        _aimInputRef.variable.State = AttackState.Knock;
+        _aimInputRef.variable.State = AttackState.Stun;
     }
     
-    public void RecoverKnockBack(Component sender, object obj)
+    public void RecoveredStun(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
 
@@ -91,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
     private void AimInputRef_ValueChanged(object sender, AimInputEventArgs e)
     {
-        if (_stateManager.AttackState == AttackState.Knock)
+        if (_stateManager.AttackState == AttackState.Stun)
         {
             return;
         }
@@ -120,7 +119,7 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesSetBlockInput(InputAction.CallbackContext ctx)
     {
-        if (_stateManager.AttackState == AttackState.Knock)
+        if (_stateManager.AttackState == AttackState.Stun)
         {
             if (ctx.action.WasPressedThisFrame())
             {
@@ -161,7 +160,7 @@ public class PlayerController : MonoBehaviour
 
     public void ProccesSetParryInput(InputAction.CallbackContext ctx)
     {
-        if (_stateManager.AttackState == AttackState.Knock)
+        if (_stateManager.AttackState == AttackState.Stun)
         {
             if (ctx.action.WasPressedThisFrame())
             {

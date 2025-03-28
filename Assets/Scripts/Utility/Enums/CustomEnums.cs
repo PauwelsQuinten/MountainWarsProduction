@@ -33,7 +33,7 @@ namespace UnityEngine
         ShieldDefence,
         SwordDefence,
         BlockAttack,
-        Knock
+        Stun
     }
 
     public enum AimingInputState

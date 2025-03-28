@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    [SerializeField] GameEvent _OnKnockbackRecovery;
+    [SerializeField] GameEvent _OnStunRecovery;
     public AttackState AttackState;
     public AttackHeight AttackHeight;
     public Orientation Orientation;
@@ -21,7 +21,7 @@ public class StateManager : MonoBehaviour
             EquipmentManager = GetComponent<EquipmentManager>();
     }
 
-    public void GetKnockback(Component sender, object obj)
+    public void GetStunned(Component sender, object obj)
     {
         StunEventArgs args = obj as StunEventArgs;
         if (args == null) return;
@@ -32,8 +32,8 @@ public class StateManager : MonoBehaviour
         }
         else if (sender.gameObject != gameObject) return;
 
-        AttackState = AttackState.Knock;
-         StartCoroutine(RecoverKnockback(args.StunDuration));
+        AttackState = AttackState.Stun;
+        StartCoroutine(RecoverStun(args.StunDuration));
     }
     
     public void SetTarget(Component sender, object obj)
@@ -54,10 +54,10 @@ public class StateManager : MonoBehaviour
         Orientation = args.NewOrientation;
     }
 
-    private IEnumerator RecoverKnockback(float stunDuration)
+    private IEnumerator RecoverStun(float stunDuration)
     {
         yield return new WaitForSeconds(stunDuration);
-        _OnKnockbackRecovery.Raise(this);
+        _OnStunRecovery.Raise(this);
         AttackState = AttackState.Idle;
     }
 }
