@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StaminaManager : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
     [HideInInspector]
     public float CurrentStamina;
 
@@ -19,12 +21,18 @@ public class StaminaManager : MonoBehaviour
     [SerializeField]
     private GameEvent _changedStamina;
 
+    [Header("Blackboard")]
+    [SerializeField]
+    private BlackboardReference _blackboard;
+
     private bool _canRegen;
     private Coroutine _resetRegen;
 
     private void Start()
     {
         CurrentStamina = _maxStamina;
+        UpdateBlackboard();
+
     }
 
     private void Update()
@@ -50,11 +58,22 @@ public class StaminaManager : MonoBehaviour
         if (CurrentStamina > staminaLos.StaminaCost)
         {
             CurrentStamina -= staminaLos.StaminaCost;
-            _changedStamina.Raise(this, new StaminaEventArgs { CurrentStamina = CurrentStamina, MaxStamina = _maxStamina});
+            _changedStamina.Raise(this, new StaminaEventArgs { CurrentStamina = CurrentStamina, MaxStamina = _maxStamina });
+
+            UpdateBlackboard();
         }
 
         if (_resetRegen != null) StopCoroutine(_resetRegen);
         _resetRegen = StartCoroutine(ResetCanRegen());
+    }
+
+    private void UpdateBlackboard()
+    {
+        //Update blackboard
+        if (gameObject.CompareTag(PLAYER))
+            _blackboard.variable.TargetStamina = CurrentStamina / _maxStamina;
+        else
+            _blackboard.variable.Stamina = CurrentStamina / _maxStamina;
     }
 
     private IEnumerator ResetCanRegen()

@@ -26,6 +26,7 @@ public class AIPerception : MonoBehaviour
         GameObject target = null;
 
         target = _hearing.HearSurrounding();
+
         if (target == null)
             target = _seeing.SeeSurrounding(args.NewOrientation);
         

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
     [Header("health")]
     [SerializeField]
     private float _maxBaseLimbHealth;
@@ -37,6 +39,11 @@ public class HealthManager : MonoBehaviour
     [SerializeField]
     private StateManager _stateManager;
 
+    [Header("Blackboard")]
+    [SerializeField]
+    private BlackboardReference _blackboard;
+
+
     private float _currentHealth;
     private float _maxHealth;
 
@@ -55,6 +62,8 @@ public class HealthManager : MonoBehaviour
     private void Start()
     {
         SetHealth();
+
+        UpdateBlackboard();
     }
 
     private void Update()
@@ -69,12 +78,23 @@ public class HealthManager : MonoBehaviour
     }
     public void TakeDamage(Component sender, object obj)
     {
-        if (sender.gameObject != gameObject) return;
+        if (sender.gameObject == gameObject) return;
 
         DamageEventArgs args = obj as DamageEventArgs;
         if (args == null) return;
 
         LoseHealth(args.AttackPower, args);
+
+        UpdateBlackboard();
+    }
+
+    private void UpdateBlackboard()
+    {
+        //Update blackboard
+        if (gameObject.CompareTag(PLAYER))
+            _blackboard.variable.TargetHealth = _currentHealth / _maxHealth;
+        else
+            _blackboard.variable.Health = _currentHealth / _maxHealth;
     }
 
     private void SetHealth()

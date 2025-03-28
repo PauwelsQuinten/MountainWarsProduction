@@ -72,7 +72,10 @@ public class Blocking : MonoBehaviour
 
 
         //Compare attack with current defence
-        BlockResult blockResult; 
+        if (!IsBlockMediumVallid())
+            _blockMedium = BlockMedium.Nothing;
+
+        BlockResult blockResult;
         switch(_blockMedium)
         {
             case BlockMedium.Shield:
@@ -143,7 +146,7 @@ public class Blocking : MonoBehaviour
             return BlockMedium.Nothing;
         }
 
-        else if (args.AttackState == AttackState.ShieldDefence || args.AttackState == AttackState.BlockAttack)
+        else if (args.AttackState != AttackState.Knock )
         {
              if (args.EquipmentManager.HasEquipmentInHand(false))
                 return BlockMedium.Shield;
@@ -157,6 +160,15 @@ public class Blocking : MonoBehaviour
 
         Debug.LogError("No Blockstate, so what are you doing here");
         return BlockMedium.Nothing;
+    }
+
+    private bool IsBlockMediumVallid()
+    {
+        var equipment = GetComponent<EquipmentManager>();
+        if (equipment == null) return false;
+
+        bool isRightHand = _blockMedium == BlockMedium.Shield ? false:  true;
+        return equipment.HasEquipmentInHand(isRightHand);
     }
 
 

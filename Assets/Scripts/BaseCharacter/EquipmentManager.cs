@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
     [SerializeField] private Equipment _leftHand;
     [SerializeField] private Equipment _rightHand;
     [SerializeField] private Equipment _fists;
@@ -10,6 +13,10 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private GameEvent _onEquipmentBreak;
     [Header("Item")]
     [SerializeField] private LayerMask _itemMask;
+    [Header("Blackboard")]
+    [SerializeField]
+    private BlackboardReference _blackboard;
+
     private List<Equipment> HeldEquipment = new List<Equipment> {null, null, null };
 
     private const int LEFT_HAND = 0;
@@ -79,21 +86,55 @@ public class EquipmentManager : MonoBehaviour
         DefenceEventArgs args = obj as DefenceEventArgs;
         if (args == null) return;
 
-
-        int index = args.BlockMedium == BlockMedium.Sword ? 1 : 0;
+        //Reduce durability
+        int index = 2;
+        switch (args.BlockMedium)
+        {
+            case BlockMedium.Shield:
+                index = LEFT_HAND;
+                break;
+            case BlockMedium.Sword:
+                index = RIGHT_HAND;
+                break;
+            case BlockMedium.Nothing:
+                index = FISTS;
+                break;
+        }
         HeldEquipment[index].Damage(args.AttackPower, args.BlockResult);
+
+        //Check if broken
         if (HeldEquipment[index].Durability < 0f)
         {
             Debug.Log($"!!!!!!!!!!!!!!!!!!!!! breaks {args.BlockMedium} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Destroy(HeldEquipment[index].gameObject);
             HeldEquipment[index] = null;
 
-            var send = new LoseEquipmentEventArgs 
+            var send = new LoseEquipmentEventArgs
             {
-                EquipmentType = args.BlockMedium == BlockMedium.Shield? EquipmentType.Shield : EquipmentType.Melee,
+                EquipmentType = args.BlockMedium == BlockMedium.Shield ? EquipmentType.Shield : EquipmentType.Melee,
                 ToSelf = true
             };
-            _onEquipmentBreak.Raise(this, send );
+            _onEquipmentBreak.Raise(this, send);
+        }
+
+        UpdateBlackboard();
+    }
+
+    private void UpdateBlackboard()
+    {
+        //Update blackboard
+        if (gameObject.CompareTag(PLAYER))
+        {
+            _blackboard.variable.TargetLHEquipmentHealth = GetDurabilityPercentage(LEFT_HAND);
+            _blackboard.variable.TargetRHEquipmentHealth = GetDurabilityPercentage(RIGHT_HAND);
+            _blackboard.variable.TargetWeaponRange = GetAttackRange();
+        }
+
+        else
+        {
+            _blackboard.variable.LHEquipmentHealth = GetDurabilityPercentage(LEFT_HAND);
+            _blackboard.variable.RHEquipmentHealth = GetDurabilityPercentage(RIGHT_HAND);
+            _blackboard.variable.WeaponRange = GetAttackRange();
         }
     }
 
@@ -155,6 +196,20 @@ public class EquipmentManager : MonoBehaviour
         HeldEquipment[index] = null; 
     }
 
+    private float GetAttackRange()
+    {
+        if (HeldEquipment[RIGHT_HAND])
+            return HeldEquipment[RIGHT_HAND].Range;
+        else if (HeldEquipment[LEFT_HAND])
+            return HeldEquipment[RIGHT_HAND].Range;
+        return HeldEquipment[FISTS].Range;
+    }
 
+    private float GetDurabilityPercentage(int index)
+    {
+        if (HeldEquipment[index])
+            return HeldEquipment[index].GetDurabilityPercentage();
+        return 0f;
+    }
 
 }

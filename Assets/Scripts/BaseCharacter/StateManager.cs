@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
+    [SerializeField] GameEvent _OnKnockbackRecovery;
+    [SerializeField] BlackboardReference _blackboardRef;
     [SerializeField] GameEvent _OnStunRecovery;
     public AttackState AttackState;
     public AttackHeight AttackHeight;
@@ -19,8 +23,10 @@ public class StateManager : MonoBehaviour
     {
         if (EquipmentManager == null)        
             EquipmentManager = GetComponent<EquipmentManager>();
-    }
-
+        if (!gameObject.CompareTag(PLAYER))
+            _blackboardRef.variable.State = AttackState ;
+    {
+    
     public void GetStunned(Component sender, object obj)
     {
         StunEventArgs args = obj as StunEventArgs;
@@ -35,7 +41,7 @@ public class StateManager : MonoBehaviour
         AttackState = AttackState.Stun;
         StartCoroutine(RecoverStun(args.StunDuration));
     }
-    
+
     public void SetTarget(Component sender, object obj)
     {
         if(sender.gameObject != gameObject) return;
@@ -43,6 +49,15 @@ public class StateManager : MonoBehaviour
         if (args == null) return;
 
         Target = args.NewTarget;
+
+        //Update Blackboard
+        if (!gameObject.CompareTag(PLAYER))
+        {
+            _blackboardRef.variable.Target = Target;
+            
+            if (Target)
+                _blackboardRef.variable.TargetState = Target.GetComponent<StateManager>().AttackState;
+        }
     }
 
     public void ChangeOrientation(Component sender, object obj)
@@ -53,8 +68,9 @@ public class StateManager : MonoBehaviour
 
         Orientation = args.NewOrientation;
     }
-
+    
     private IEnumerator RecoverStun(float stunDuration)
+
     {
         yield return new WaitForSeconds(stunDuration);
         _OnStunRecovery.Raise(this);

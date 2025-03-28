@@ -67,7 +67,8 @@ namespace UnityEngine
         Stab,
         HorizontalSlashToLeft,
         HorizontalSlashToRight,
-        ShieldBash
+        ShieldBash,
+        None
     }
 
     public enum BodyParts 
@@ -106,9 +107,9 @@ namespace UnityEngine
     
     public enum BlockMedium
     {
-        Shield,
-        Sword,
-        Nothing
+        Shield = 0,
+        Sword = 1,
+        Nothing = 2
     }
 
     public enum EquipmentType
@@ -120,4 +121,72 @@ namespace UnityEngine
     }
 
 
+    public enum WorldStateType
+    {
+        Desired,
+        Satisfying,
+        Current
+    }
+    
+    public enum EWorldState
+    {
+        Behaviour,
+        Health,
+        Stamina,
+        RHEquipment,
+        LHEquipment,
+        HasTarget,
+
+        TargetBehaviour,
+        TargetHealth,
+        TargetStamina,
+        TargetRHEquipment,
+        TargetLHEquipment,
+
+        TargetOpening,
+        TargetAttackRange,
+        AttackRange
+
+    }
+
+    public enum EWorldStateValue
+    {
+        Full,
+        High,
+        Mid,
+        Low,
+        Zero,
+        Default
+    }
+    
+    public enum EWorldStatePossesion
+    {       
+        InPossesion,
+        NotInPossesion,
+        Default
+    }
+
+    public enum EBehaviourValue
+    {
+        Recovering,
+        Attacking,
+        Defending,
+        Knock,
+        Default
+    }
+    
+    public enum EWorldStateRange
+    {
+       InRange,
+       OutOfRange,
+       FarAway,
+        Default
+    }
+     
+    public enum CharacterMentality
+    {
+       Basic,
+       Agressive,
+       Coward
+    }
 }

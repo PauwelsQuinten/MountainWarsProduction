@@ -30,6 +30,7 @@ public class UIHealthManager : MonoBehaviour
     private Coroutine _patchUp;
     private bool _completedPatchUp;
 
+   
     public void UpdateHealth(Component sender, object obj)
     {
         HealthEventArgs args = obj as HealthEventArgs;
