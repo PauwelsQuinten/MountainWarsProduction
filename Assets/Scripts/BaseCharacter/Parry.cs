@@ -162,7 +162,7 @@ public class Parry : MonoBehaviour
     private void OnSuccesfullParry(AttackEventArgs attackValues)
     {
         _loseStamina.Raise(this, new StaminaEventArgs { StaminaCost = _staminaCost.value });
-        _succesfullParryEvent.Raise(this, attackValues);
+        _succesfullParryEvent.Raise(this, new StunEventArgs {StunDuration = 3, ComesFromEnemy = true});
 
         _tryDisarm = true;
         float time = attackValues.AttackType == AttackType.Stab ? _timeForParryingStab : _timeForParryingSwing;

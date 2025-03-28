@@ -1,11 +1,7 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.Experimental;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Dodge : MonoBehaviour
+public class ShieldBash : MonoBehaviour
 {
     [Header("Variables")]
     [SerializeField]
@@ -25,6 +21,14 @@ public class Dodge : MonoBehaviour
     [SerializeField]
     private float _cooldown;
 
+    [Header("Events")]
+    [SerializeField]
+    private GameEvent _checkBlock;
+
+    [Header("Damage")]
+    [SerializeField]
+    private float _damage = 25;
+
     private Rigidbody _rb;
     private bool _canRun = true;
 
@@ -39,10 +43,17 @@ public class Dodge : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(_dashing) PerformDodge();
+        if (_dashing) PerformDodge();
     }
 
-    public void ActivateDodge(Component sender, object obj)
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name != "Enemy") return;
+        if (!_dashing) return;
+        _checkBlock.Raise(this, new AttackEventArgs { AttackHeight = AttackHeight.Torso, AttackPower = _damage, AttackType = AttackType.ShieldBash});
+    }
+
+    public void ActivateShieldBash(Component sender, object obj)
     {
         if (sender.gameObject != gameObject) return;
         if (!_canRun) return;
@@ -58,7 +69,7 @@ public class Dodge : MonoBehaviour
     private void PerformDodge()
     {
         _rb.linearVelocity = _dashDirection * _dashSpeed;
-        Debug.Log("Dashing");
+        Debug.Log("ShieldBash");
     }
 
     private IEnumerator EndDodge()

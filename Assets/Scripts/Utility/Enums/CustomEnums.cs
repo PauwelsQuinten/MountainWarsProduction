@@ -33,7 +33,7 @@ namespace UnityEngine
         ShieldDefence,
         SwordDefence,
         BlockAttack,
-        Knock
+        Stun
     }
 
     public enum AimingInputState
@@ -67,6 +67,7 @@ namespace UnityEngine
         Stab,
         HorizontalSlashToLeft,
         HorizontalSlashToRight,
+        ShieldBash
     }
 
     public enum BodyParts 

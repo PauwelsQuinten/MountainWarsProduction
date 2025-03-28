@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    [SerializeField] GameEvent _OnKnockbackRecovery;
+    [SerializeField] GameEvent _OnStunRecovery;
     public AttackState AttackState;
     public AttackHeight AttackHeight;
     public Orientation Orientation;
-    //public CharacterState CharacterState;
 
     public GameObject Target;
     public bool IsHoldingShield;
@@ -22,11 +21,19 @@ public class StateManager : MonoBehaviour
             EquipmentManager = GetComponent<EquipmentManager>();
     }
 
-    public void GetKnockback(Component sender, object obj)
+    public void GetStunned(Component sender, object obj)
     {
-            Debug.Log("start knockback");
-        AttackState = AttackState.Knock;
-         StartCoroutine(RecoverKnockback());
+        StunEventArgs args = obj as StunEventArgs;
+        if (args == null) return;
+
+        if (args.ComesFromEnemy)
+        {
+            if (sender.gameObject == gameObject) return;
+        }
+        else if (sender.gameObject != gameObject) return;
+
+        AttackState = AttackState.Stun;
+        StartCoroutine(RecoverStun(args.StunDuration));
     }
     
     public void SetTarget(Component sender, object obj)
@@ -47,12 +54,10 @@ public class StateManager : MonoBehaviour
         Orientation = args.NewOrientation;
     }
 
-    private IEnumerator RecoverKnockback()
+    private IEnumerator RecoverStun(float stunDuration)
     {
-        yield return new WaitForSeconds(5.4f);
-        _OnKnockbackRecovery.Raise(this);
+        yield return new WaitForSeconds(stunDuration);
+        _OnStunRecovery.Raise(this);
         AttackState = AttackState.Idle;
-            Debug.Log("stop knockback");
     }
-
 }

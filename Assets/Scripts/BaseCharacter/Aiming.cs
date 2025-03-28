@@ -178,7 +178,7 @@ public class Aiming : MonoBehaviour
         if (_enmCurrentAttackState != _refAimingInput.variable.State)
         {
             _enmCurrentAttackState = _refAimingInput.variable.State;
-            if (_enmCurrentAttackState == AttackState.Knock)
+            if (_enmCurrentAttackState == AttackState.Stun)
             {
                 ResetValues();
                 SendPackage();
