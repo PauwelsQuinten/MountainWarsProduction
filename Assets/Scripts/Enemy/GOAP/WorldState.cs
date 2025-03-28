@@ -225,7 +225,7 @@ public class WorldState : MonoBehaviour
             case AttackState.BlockAttack:
                 return EBehaviourValue.Defending;
                 
-            case AttackState.Knock:
+            case AttackState.Stun:
                 return EBehaviourValue.Knock;
         }
         

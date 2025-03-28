@@ -146,7 +146,7 @@ public class Blocking : MonoBehaviour
             return BlockMedium.Nothing;
         }
 
-        else if (args.AttackState != AttackState.Knock )
+        else if (args.AttackState != AttackState.Stun )
         {
              if (args.EquipmentManager.HasEquipmentInHand(false))
                 return BlockMedium.Shield;

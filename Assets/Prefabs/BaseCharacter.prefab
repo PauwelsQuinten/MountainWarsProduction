@@ -78,7 +78,7 @@ Rigidbody:
   m_GameObject: {fileID: 691636631868949397}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 7
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -108,6 +108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2909b8547fd4161429a8659c53b32d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OnKnockbackRecovery: {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
+  _blackboardRef:
+    useConstant: 0
+    constantValue: {x: 0, y: 0}
+    variable: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
   _OnStunRecovery: {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
   AttackState: 0
   AttackHeight: 0
@@ -172,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _minAttackAngle: 20
-  _overCommitAngle: 180
+  _overCommitAngle: 210
   _basePower: 5
   _chargeSpeed: 2
   _attackRange: 2
@@ -185,6 +190,10 @@ MonoBehaviour:
   _characterLayer:
     serializedVersion: 2
     m_Bits: 8
+  _blackboardRef:
+    useConstant: 0
+    constantValue: {x: 0, y: 0}
+    variable: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
 --- !u!114 &6469151571926413075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +273,10 @@ MonoBehaviour:
   _patchUpSpeed: 1
   _patchUp: {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
   _stateManager: {fileID: 4165634575879343316}
+  _blackboard:
+    useConstant: 0
+    constantValue: {x: 0, y: 0}
+    variable: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
 --- !u!114 &3036795874959978044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,6 +293,10 @@ MonoBehaviour:
   _maxStamina: 100
   _regenSpeed: 5
   _changedStamina: {fileID: 11400000, guid: d96f2c247ec32f843932f40997f1c382, type: 2}
+  _blackboard:
+    useConstant: 0
+    constantValue: {x: 0, y: 0}
+    variable: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
 --- !u!114 &1490819108717279631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,6 +316,10 @@ MonoBehaviour:
   _itemMask:
     serializedVersion: 2
     m_Bits: 64
+  _blackboard:
+    useConstant: 0
+    constantValue: {x: 0, y: 0}
+    variable: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
 --- !u!114 &3485612452898370163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +409,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b60a265955952bd458a744ff3fa08d58, type: 2}
   - {fileID: 11400000, guid: 0b82292daaabdcb4e964a69a69667662, type: 2}
   - {fileID: 11400000, guid: 2cc625b4ec016e14899ad658a28da4c8, type: 2}
+  - {fileID: 11400000, guid: 1fa0ac8c24365fa4fa43f0ccc057a02a, type: 2}
   Responses:
   - m_PersistentCalls:
       m_Calls:
@@ -572,6 +594,20 @@ MonoBehaviour:
       - m_Target: {fileID: 4165634575879343316}
         m_TargetAssemblyTypeName: StateManager, Assembly-CSharp
         m_MethodName: GetStunned
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1490819108717279631}
+        m_TargetAssemblyTypeName: EquipmentManager, Assembly-CSharp
+        m_MethodName: CheckDurability
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

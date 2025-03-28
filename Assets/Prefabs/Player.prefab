@@ -16,10 +16,30 @@ PrefabInstance:
       propertyPath: _onEquipmentBreak
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1490819108717279631, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _blackboard.variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
+    - target: {fileID: 3036795874959978044, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _blackboard.variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
     - target: {fileID: 3755031848856493801, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
       propertyPath: _refAimingInput.variable
       value: 
       objectReference: {fileID: 11400000, guid: c07edaff124f1b04e8b8a49de23949a5, type: 2}
+    - target: {fileID: 4165634575879343316, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _OnKnockbackRecovery
+      value: 
+      objectReference: {fileID: 11400000, guid: ef1c1e852f404ef41a2a5ae46280abb3, type: 2}
+    - target: {fileID: 4165634575879343316, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _blackboardRef.variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
+    - target: {fileID: 4200951442303491891, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _blackboard.variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
     - target: {fileID: 5547100133384318507, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
       propertyPath: _moveInput.variable
       value: 
@@ -28,6 +48,14 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6458811806028097463, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _overCommitAngle
+      value: 210
+      objectReference: {fileID: 0}
+    - target: {fileID: 6458811806028097463, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
+      propertyPath: _blackboardRef.variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a061d8ac2119774a93990abdf59c3ae, type: 2}
     - target: {fileID: 8294375085882615592, guid: b245a706e1a2a4d4eb3e08f64ac6340d, type: 3}
       propertyPath: _moveInput.variable
       value: 

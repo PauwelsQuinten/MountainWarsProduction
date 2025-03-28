@@ -21,11 +21,11 @@ public class StateManager : MonoBehaviour
 
     private void Start()
     {
-        if (EquipmentManager == null)        
+        if (EquipmentManager == null)
             EquipmentManager = GetComponent<EquipmentManager>();
         if (!gameObject.CompareTag(PLAYER))
-            _blackboardRef.variable.State = AttackState ;
-    {
+            _blackboardRef.variable.State = AttackState;
+    }
     
     public void GetStunned(Component sender, object obj)
     {
