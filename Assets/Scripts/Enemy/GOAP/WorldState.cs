@@ -56,6 +56,7 @@ public class WorldState : MonoBehaviour
     {
         _blackboard.variable.ValueChanged += Blackboard_ValueChanged;
         FillLists();
+        SetStartValues();
     }
 
 
@@ -168,6 +169,14 @@ public class WorldState : MonoBehaviour
         }
     }
 
+    private void SetStartValues()
+    {
+        Stamina = CalculateValue(_blackboard.variable.Stamina);
+        Health = CalculateValue(_blackboard.variable.Health);
+        RHEquipment = CalculateValue(_blackboard.variable.RHEquipmentHealth);
+        LHEquipment = CalculateValue(_blackboard.variable.LHEquipmentHealth);
+
+    }
 
 
     //------------------------------------------------------------------------------
@@ -185,7 +194,7 @@ public class WorldState : MonoBehaviour
         if (fValue >= 0.33f )
             return EWorldStateValue.Mid;
 
-        if (fValue < 0.33f && fValue >= 0f)
+        if (fValue < 0.33f && fValue > 0f)
             return EWorldStateValue.Low;
 
         if (fValue <= 0f )

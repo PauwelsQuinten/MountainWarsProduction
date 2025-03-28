@@ -31,6 +31,8 @@ public class StaminaManager : MonoBehaviour
     private void Start()
     {
         CurrentStamina = _maxStamina;
+        UpdateBlackboard();
+
     }
 
     private void Update()
@@ -56,17 +58,22 @@ public class StaminaManager : MonoBehaviour
         if (CurrentStamina > staminaLos.StaminaCost)
         {
             CurrentStamina -= staminaLos.StaminaCost;
-            _changedStamina.Raise(this, new StaminaEventArgs { CurrentStamina = CurrentStamina, MaxStamina = _maxStamina});
+            _changedStamina.Raise(this, new StaminaEventArgs { CurrentStamina = CurrentStamina, MaxStamina = _maxStamina });
 
-            //Update blackboard
-            if (gameObject.CompareTag(PLAYER))
-                _blackboard.variable.TargetStamina = CurrentStamina / _maxStamina;
-            else
-                _blackboard.variable.Stamina = CurrentStamina/_maxStamina;
+            UpdateBlackboard();
         }
 
         if (_resetRegen != null) StopCoroutine(_resetRegen);
         _resetRegen = StartCoroutine(ResetCanRegen());
+    }
+
+    private void UpdateBlackboard()
+    {
+        //Update blackboard
+        if (gameObject.CompareTag(PLAYER))
+            _blackboard.variable.TargetStamina = CurrentStamina / _maxStamina;
+        else
+            _blackboard.variable.Stamina = CurrentStamina / _maxStamina;
     }
 
     private IEnumerator ResetCanRegen()

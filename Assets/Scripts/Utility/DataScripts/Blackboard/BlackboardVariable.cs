@@ -44,11 +44,11 @@ public class BlackboardVariable : ScriptableObject
         get => _health;
         set
         {
-            if (_health != value)
-            {
                 _health = value;
                 ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.Health });
-            }
+            //if (_health != value)
+            //{
+            //}
         }
     }
     private float _rHEquipmentHealth;

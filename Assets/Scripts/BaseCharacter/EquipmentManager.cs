@@ -86,8 +86,20 @@ public class EquipmentManager : MonoBehaviour
         DefenceEventArgs args = obj as DefenceEventArgs;
         if (args == null) return;
 
-        //reduce durability
-        int index = args.BlockMedium == BlockMedium.Sword ? 1 : 0;
+        //Reduce durability
+        int index = 2;
+        switch (args.BlockMedium)
+        {
+            case BlockMedium.Shield:
+                index = LEFT_HAND;
+                break;
+            case BlockMedium.Sword:
+                index = RIGHT_HAND;
+                break;
+            case BlockMedium.Nothing:
+                index = FISTS;
+                break;
+        }
         HeldEquipment[index].Damage(args.AttackPower, args.BlockResult);
 
         //Check if broken
@@ -97,26 +109,31 @@ public class EquipmentManager : MonoBehaviour
             Destroy(HeldEquipment[index].gameObject);
             HeldEquipment[index] = null;
 
-            var send = new LoseEquipmentEventArgs 
+            var send = new LoseEquipmentEventArgs
             {
-                EquipmentType = args.BlockMedium == BlockMedium.Shield? EquipmentType.Shield : EquipmentType.Melee,
+                EquipmentType = args.BlockMedium == BlockMedium.Shield ? EquipmentType.Shield : EquipmentType.Melee,
                 ToSelf = true
             };
-            _onEquipmentBreak.Raise(this, send );
+            _onEquipmentBreak.Raise(this, send);
         }
 
+        UpdateBlackboard();
+    }
+
+    private void UpdateBlackboard()
+    {
         //Update blackboard
         if (gameObject.CompareTag(PLAYER))
         {
-            _blackboard.variable.TargetLHEquipmentHealth = HeldEquipment[LEFT_HAND].GetDurabilityPercentage();
-            _blackboard.variable.TargetRHEquipmentHealth = HeldEquipment[RIGHT_HAND].GetDurabilityPercentage();
+            _blackboard.variable.TargetLHEquipmentHealth = GetDurabilityPercentage(LEFT_HAND);
+            _blackboard.variable.TargetRHEquipmentHealth = GetDurabilityPercentage(RIGHT_HAND);
             _blackboard.variable.TargetWeaponRange = GetAttackRange();
         }
 
         else
         {
-            _blackboard.variable.LHEquipmentHealth = HeldEquipment[LEFT_HAND].GetDurabilityPercentage();
-            _blackboard.variable.RHEquipmentHealth = HeldEquipment[RIGHT_HAND].GetDurabilityPercentage();
+            _blackboard.variable.LHEquipmentHealth = GetDurabilityPercentage(LEFT_HAND);
+            _blackboard.variable.RHEquipmentHealth = GetDurabilityPercentage(RIGHT_HAND);
             _blackboard.variable.WeaponRange = GetAttackRange();
         }
     }
@@ -188,5 +205,11 @@ public class EquipmentManager : MonoBehaviour
         return HeldEquipment[FISTS].Range;
     }
 
+    private float GetDurabilityPercentage(int index)
+    {
+        if (HeldEquipment[index])
+            return HeldEquipment[index].GetDurabilityPercentage();
+        return 0f;
+    }
 
 }

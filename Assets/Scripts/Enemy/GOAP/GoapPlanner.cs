@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GoapPlanner : MonoBehaviour
 {
+    [SerializeField] private BlackboardReference _blackboard;
+    [Header("CharacterStyle")]
     [SerializeField] private CharacterMentality _characterMentality = CharacterMentality.Basic;
     [Range(0f, 1f)]
     public float Perception = 0.8f;
@@ -23,6 +25,7 @@ public class GoapPlanner : MonoBehaviour
     {
         _currentWorldState = gameObject.AddComponent<WorldState>();
         _currentWorldState.WorldStateType = WorldStateType.Current;
+        _currentWorldState.AsignBlackboard(_blackboard);
 
         foreach (var action in _allActionPrefabs)
         {
@@ -72,8 +75,8 @@ public class GoapPlanner : MonoBehaviour
                 bestGoal = goal;
             }
         }
-        if (bestGoal == null)
-            Debug.Log($"{bestGoal}");
+        //if (bestGoal == null)
+            //Debug.Log($"No current goal{bestGoal}");
         return bestGoal;
     }
 

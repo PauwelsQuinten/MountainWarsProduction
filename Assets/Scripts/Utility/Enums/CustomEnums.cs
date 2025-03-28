@@ -106,9 +106,9 @@ namespace UnityEngine
     
     public enum BlockMedium
     {
-        Shield,
-        Sword,
-        Nothing
+        Shield = 0,
+        Sword = 1,
+        Nothing = 2
     }
 
     public enum EquipmentType
