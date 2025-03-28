@@ -11,6 +11,7 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private Equipment _fists;
     [Header("Events")]
     [SerializeField] private GameEvent _onEquipmentBreak;
+    [SerializeField] private GameEvent _onEquipmentDamage;
     [Header("Item")]
     [SerializeField] private LayerMask _itemMask;
     [Header("Blackboard")]
@@ -101,6 +102,11 @@ public class EquipmentManager : MonoBehaviour
                 break;
         }
         HeldEquipment[index].Damage(args.AttackPower, args.BlockResult);
+        _onEquipmentDamage.Raise(this, new EquipmentEventArgs
+        {
+            ShieldDurability = GetDurabilityPercentage(LEFT_HAND),
+            WeaponDurability = GetDurabilityPercentage(RIGHT_HAND)
+        });
 
         //Check if broken
         if (HeldEquipment[index].Durability < 0f)

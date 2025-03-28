@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 2
-  _durability: 20
+  _durability: 100
   _isRightHandEquipment: 0
   _power: 2
+  _range: 1

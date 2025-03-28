@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.Rendering.GPUSort;
 
 public class UIHealthManager : MonoBehaviour
 {
@@ -30,6 +32,12 @@ public class UIHealthManager : MonoBehaviour
     private Coroutine _patchUp;
     private bool _completedPatchUp;
 
+    
+    [Header("Equipment")]
+    [SerializeField]
+    private SpriteRenderer _shield;
+    [SerializeField]
+    private SpriteRenderer _weapon;
    
     public void UpdateHealth(Component sender, object obj)
     {
@@ -140,6 +148,43 @@ public class UIHealthManager : MonoBehaviour
         _staminaBar.size = barSize;
         _staminaBar.gameObject.transform.localPosition = new Vector3(0 - ((1 - barSize.x) / 2), 0, 0);
     }
+
+    public void UpdateEquipment(Component sender, object obj)
+    {
+        EquipmentEventArgs args = obj as EquipmentEventArgs;
+        if (args == null) return;
+
+        if (sender.gameObject.GetComponent<PlayerController>() == null)
+        {
+            if (sender.gameObject != gameObject) return;
+        }
+        else
+        {
+            if (gameObject.GetComponent<AIController>() != null) return;
+        }
+
+
+        float progress = args.ShieldDurability;
+        Color newColor = Color.Lerp(_noHealthColor, _fullHealthColor, progress);
+        if (progress <= 0f)
+        {
+            _shield.enabled = false;
+        }
+        else
+            _shield.color = newColor;
+        
+        progress = args.WeaponDurability;
+        newColor = Color.Lerp(_noHealthColor, _fullHealthColor, progress);
+        if (progress <= 0f)
+        {
+            _weapon.enabled = false;
+        }
+        else
+            _weapon.color = newColor;
+
+
+    }
+
 
     private IEnumerator PathUpBar()
     {

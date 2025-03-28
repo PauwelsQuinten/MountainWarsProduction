@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour
     [Header("ItemPickup")]
     [SerializeField]
     private GameEvent _pickupEvent;
+    
+    [Header("Perception")]
+    [SerializeField]
+    private GameEvent _LookForTarget;
 
     private Vector2 _moveInput;
 
@@ -63,6 +67,9 @@ public class PlayerController : MonoBehaviour
         _aimInputRef.variable.ValueChanged += AimInputRef_ValueChanged;
         _aimInputRef.variable.StateManager = _stateManager;
         _moveInputRef.variable.StateManager = _stateManager;
+
+        StartCoroutine(CheckSurrounding());
+
     }
 
     public void GetStun(Component sender, object obj)
@@ -279,4 +286,17 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1);
         _stateManager.AttackHeight = AttackHeight.Torso;
     }
+
+
+    private IEnumerator CheckSurrounding()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+            _LookForTarget.Raise(this, new OrientationEventArgs { NewOrientation = _stateManager.Orientation });
+        }
+
+    }
+
+
 }
