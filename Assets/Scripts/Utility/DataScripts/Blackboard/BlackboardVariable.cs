@@ -1,4 +1,7 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -187,6 +190,69 @@ public class BlackboardVariable : ScriptableObject
         }
     }
 
+    //Holds the attacks the opponent throw at him, this is used for as the opponent uses 1 move to much. it needs to be parried/Disarmed.
+    private Dictionary<AttackType, int> _storredAttacks = new Dictionary<AttackType, int> { { AttackType.Stab, 0 }, { AttackType.HorizontalSlashToRight, 0 }, { AttackType.HorizontalSlashToLeft, 0 }};
+    public Dictionary<AttackType, int> StorredAttacks
+    {
+        get => _storredAttacks;
+        set
+        {
+            if (_storredAttacks != value)
+            {
+                _storredAttacks = value;
+                _observedAttack = EvaluateAttackCount();
+                ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.TargetObservedAttack });
+
+            }
+        }
+    }
+    private AttackType _observedAttack;
+    public AttackType ObservedAttack
+    {
+        get => _observedAttack;
+    }
+    private AttackType EvaluateAttackCount()
+    {
+        int lowestCount = 10;
+        int highestCount = 0;
+        AttackType attackType = AttackType.None;
+        foreach(KeyValuePair<AttackType, int> att in StorredAttacks)
+        {
+            if (att.Value < lowestCount) 
+                lowestCount = att.Value;
+            if (att.Value > highestCount)
+            {
+                highestCount = att.Value;
+                attackType = att.Key;
+            }
+        }
+        if (lowestCount > 0)
+        {
+            foreach (var key in StorredAttacks.Keys.ToList())
+            {
+                StorredAttacks[key] -= lowestCount;
+            }
+            highestCount -= lowestCount;
+        }
+        return highestCount >= 5? attackType : AttackType.None;
+    }
+
+    private AttackType _targetCurrentAttack;
+    public AttackType TargetCurrentAttack
+    {
+        get => _targetCurrentAttack;
+        set
+        {
+            if (_targetCurrentAttack != value)
+            {
+                _targetCurrentAttack = value;
+                ValueChanged?.Invoke(this, new BlackboardEventArgs { ThisChanged = BlackboardEventArgs.WhatChanged.TargetCurrentAttack });
+
+                StorredAttacks[_targetCurrentAttack] += 1;
+
+            }
+        }
+    }
 
 
 }

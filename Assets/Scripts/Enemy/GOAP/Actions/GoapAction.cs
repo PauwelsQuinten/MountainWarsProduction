@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-public interface Actions
+public interface IActions
 {
     void StartAction(WorldState currentWorldState);
     void UpdateAction(WorldState currentWorldState);
@@ -14,7 +14,7 @@ public interface Actions
     void CancelAction();
 }
 
-public class GoapAction : MonoBehaviour, Actions
+public class GoapAction : MonoBehaviour, IActions
 {
     [HideInInspector]
     public WorldState DesiredWorldState;

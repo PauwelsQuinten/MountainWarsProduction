@@ -23,6 +23,7 @@ public class GoapPlanner : MonoBehaviour
     {
         _currentWorldState = gameObject.AddComponent<WorldState>();
         _currentWorldState.WorldStateType = WorldStateType.Current;
+
         foreach (var action in _allActionPrefabs)
         {
             _allActions.Add(Instantiate(action, gameObject.transform));
@@ -31,7 +32,6 @@ public class GoapPlanner : MonoBehaviour
         {
             _allGoals.Add(Instantiate(goal, gameObject.transform));
         }
-
     }
 
     void Update()

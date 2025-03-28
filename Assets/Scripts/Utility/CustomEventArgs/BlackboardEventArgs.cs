@@ -21,7 +21,9 @@ namespace UnityEngine
             TargetHealth,//Set in healthManager
             TargetRHEquipment,//set in EquipmentManager
             TargetLHEquipment,//set in EquipmentManager
-            TargetWeaponRange//set in EquipmentManager
+            TargetWeaponRange,//set in EquipmentManager
+            TargetCurrentAttack,//Set in Attacking script
+            TargetObservedAttack, //Calculated in Blackboard when target attacks
         }
 
     }

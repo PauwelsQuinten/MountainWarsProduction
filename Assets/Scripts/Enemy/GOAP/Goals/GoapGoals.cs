@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public interface Goals
+public interface IGoals
 {
     bool IsVallid(WorldState currentWorldState);
     void SetInvallid();
@@ -9,7 +9,7 @@ public interface Goals
     bool InteruptGoal(WorldState currentWorldState);
 }
 
-public class GoapGoal : MonoBehaviour, Goals
+public class GoapGoal : MonoBehaviour, IGoals
 {
     public WorldState DesiredWorldState;
     protected bool _isVallid = true;

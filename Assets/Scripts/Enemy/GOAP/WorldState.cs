@@ -121,6 +121,7 @@ public class WorldState : MonoBehaviour
     //------------------------------------------------------------------------------
     //WORLDSTATE VALUES UPDATE FUNCTIONS
     //------------------------------------------------------------------------------
+
     public void AsignBlackboard(BlackboardReference blackboardReference)
     {
         _blackboard = blackboardReference;

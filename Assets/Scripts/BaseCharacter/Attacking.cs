@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Attacking : MonoBehaviour
 {
+    private const string PLAYER = "Player";
+
+
     [Header("AttackAngles")]
     [SerializeField]
     private float _minAttackAngle;
@@ -31,6 +34,7 @@ public class Attacking : MonoBehaviour
     [Header("Enemy")]
     [SerializeField]
     private LayerMask _characterLayer;
+    [SerializeField] BlackboardReference _blackboardRef;
 
 
     private float _chargePower;
@@ -55,7 +59,6 @@ public class Attacking : MonoBehaviour
 
         if (args.AttackSignal != AttackSignal.Stab && args.AttackSignal != AttackSignal.Swing) return;
 
-        PrintInput(args);
 
         if(args.AttackSignal != AttackSignal.Stab)
         {
@@ -71,6 +74,11 @@ public class Attacking : MonoBehaviour
 
         if (!IsEnemyInRange()) return;
         _doAttack.Raise(this, new AttackEventArgs { AttackType = _attackType, AttackHeight = args.AttackHeight, AttackPower = _attackPower});
+
+        PrintInput(args);
+        //Signal to blackboard
+        if (gameObject.CompareTag(PLAYER))
+            _blackboardRef.variable.TargetCurrentAttack = _attackType;
     }
 
     private bool DidFeint(AttackSignal signal)
@@ -126,9 +134,9 @@ public class Attacking : MonoBehaviour
 
     private bool IsEnemyInRange()
     {
-        List<Collider2D> enemy = Physics2D.OverlapCircleAll(transform.position, _attackRange * 2).ToList();
+        List<Collider> enemy = Physics.OverlapSphere(transform.position, _attackRange * 2).ToList();
         if (enemy == null) return false;
-        foreach (Collider2D c in enemy)
+        foreach (Collider c in enemy)
         {
             if (((1 << c.gameObject.layer) & _characterLayer) != 0)
             {
@@ -141,6 +149,6 @@ public class Attacking : MonoBehaviour
 
     private void PrintInput(AimingOutputArgs args)
     {
-        Debug.Log($"attack input : {args.AttackSignal}, {args.Direction}, {args.AngleTravelled}. owner: {gameObject}");
+        Debug.Log($"attack input : {args.AttackSignal}, state: {args.AttackState}, {args.Direction}, {args.AngleTravelled}. owner: {gameObject}");
     }
 }
